@@ -8,6 +8,10 @@
       </list>
     </option>
   </component>
+  <component name="ProjectResources">
+    <resource url="http://javafx.com/fxml" location="$USER_HOME$/Downloads/javafx-sdk-17.0.16/lib/javafx-fxml.jar" />
+    <resource url="http://javafx.com/javafx" location="$USER_HOME$/Downloads/javafx-sdk-17.0.16/lib/javafx-graphics.jar" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="ms-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
