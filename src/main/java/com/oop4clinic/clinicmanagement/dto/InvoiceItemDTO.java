@@ -3,7 +3,7 @@ package com.oop4clinic.clinicmanagement.dto;
 import java.math.BigDecimal;
 
 public class InvoiceItemDTO {
-    private long id;
+    private int id;
     private String description;
     private int quantity;
     private BigDecimal unitPrice;
@@ -11,7 +11,7 @@ public class InvoiceItemDTO {
 
     public InvoiceItemDTO() {}
 
-    public InvoiceItemDTO(long id, String description, int quantity, BigDecimal unitPrice, BigDecimal lineTotal) {
+    public InvoiceItemDTO(int id, String description, int quantity, BigDecimal unitPrice, BigDecimal lineTotal) {
         this.id = id;
         this.description = description;
         this.quantity = quantity;
@@ -20,8 +20,8 @@ public class InvoiceItemDTO {
     }
 
     // Getters/Setters
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }

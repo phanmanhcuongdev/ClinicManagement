@@ -6,7 +6,7 @@ import com.oop4clinic.clinicmanagement.model.enums.Specialty;
 import java.time.LocalDate;
 
 public class DoctorDTO {
-    private long id;
+    private int id;
     private String fullName;
     private Gender gender;
     private LocalDate dateOfBirth;
@@ -17,7 +17,7 @@ public class DoctorDTO {
 
     public DoctorDTO() {}
 
-    public DoctorDTO(long id, String fullName, Gender gender, LocalDate dateOfBirth,
+    public DoctorDTO(int id, String fullName, Gender gender, LocalDate dateOfBirth,
                      String phone, String email, String address, Specialty specialty) {
         this.id = id;
         this.fullName = fullName;
@@ -29,11 +29,11 @@ public class DoctorDTO {
         this.specialty = specialty;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -3,8 +3,8 @@ package com.oop4clinic.clinicmanagement.dto;
 import java.time.LocalDateTime;
 
 public class MedicalRecordDTO {
-    private long id;
-    private long appointmentId;
+    private int id;
+    private int appointmentId;
     private String symptoms;
     private String diagnosis;
     private String prescription;
@@ -14,7 +14,7 @@ public class MedicalRecordDTO {
 
     public MedicalRecordDTO() {}
 
-    public MedicalRecordDTO(long id, long appointmentId, String symptoms, String diagnosis,
+    public MedicalRecordDTO(int id, int appointmentId, String symptoms, String diagnosis,
                             String prescription, String notes,
                             LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
@@ -27,11 +27,11 @@ public class MedicalRecordDTO {
         this.updatedAt = updatedAt;
     }
 
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public long getAppointmentId() { return appointmentId; }
-    public void setAppointmentId(long appointmentId) { this.appointmentId = appointmentId; }
+    public int getAppointmentId() { return appointmentId; }
+    public void setAppointmentId(int appointmentId) { this.appointmentId = appointmentId; }
 
     public String getSymptoms() { return symptoms; }
     public void setSymptoms(String symptoms) { this.symptoms = symptoms; }

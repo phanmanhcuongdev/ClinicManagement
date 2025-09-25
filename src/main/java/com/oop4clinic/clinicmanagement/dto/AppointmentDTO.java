@@ -5,9 +5,9 @@ import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
 import java.time.LocalDateTime;
 
 public class AppointmentDTO {
-    private long id;
-    private long patientId;
-    private long doctorId;
+    private int id;
+    private int patientId;
+    private int doctorId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private AppointmentStatus status;
@@ -15,7 +15,7 @@ public class AppointmentDTO {
 
     public AppointmentDTO() {}
 
-    public AppointmentDTO(long id, long patientId, long doctorId,
+    public AppointmentDTO(int id, int patientId, int doctorId,
                           LocalDateTime startTime, LocalDateTime endTime,
                           AppointmentStatus status, String reason) {
         this.id = id;
@@ -27,27 +27,27 @@ public class AppointmentDTO {
         this.reason = reason;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public long getPatientId() {
+    public int getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(long patientId) {
+    public void setPatientId(int patientId) {
         this.patientId = patientId;
     }
 
-    public long getDoctorId() {
+    public int getDoctorId() {
         return doctorId;
     }
 
-    public void setDoctorId(long doctorId) {
+    public void setDoctorId(int doctorId) {
         this.doctorId = doctorId;
     }
 
