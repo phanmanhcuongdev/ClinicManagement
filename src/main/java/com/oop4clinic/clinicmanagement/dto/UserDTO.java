@@ -5,7 +5,7 @@ import com.oop4clinic.clinicmanagement.model.enums.UserRole;
 import java.time.LocalDateTime;
 
 public class UserDTO {
-    private long id;
+    private int id;
     private String username;
     private UserRole role;
     private boolean active;
@@ -13,7 +13,7 @@ public class UserDTO {
 
     public UserDTO() {}
 
-    public UserDTO(long id, String username, UserRole role, boolean active, LocalDateTime createdAt) {
+    public UserDTO(int id, String username, UserRole role, boolean active, LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
         this.role = role;
@@ -22,8 +22,8 @@ public class UserDTO {
     }
 
     // Getters & Setters
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }

@@ -5,7 +5,7 @@ import com.oop4clinic.clinicmanagement.model.enums.Gender;
 import java.time.LocalDate;
 
 public class PatientDTO {
-    private long id;
+    private int id;
     private String fullName;
     private Gender gender;       
     private LocalDate dateOfBirth;
@@ -15,7 +15,7 @@ public class PatientDTO {
 
     public PatientDTO() {}
 
-    public PatientDTO(long id, String fullName, Gender gender, LocalDate dateOfBirth,
+    public PatientDTO(int id, String fullName, Gender gender, LocalDate dateOfBirth,
                       String phone, String email, String address) {
         this.id = id;
         this.fullName = fullName;
@@ -27,8 +27,8 @@ public class PatientDTO {
     }
 
     // Getters & Setters
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public String getFullName() { return fullName; }
     public void setFullName(String fullName) { this.fullName = fullName; }
