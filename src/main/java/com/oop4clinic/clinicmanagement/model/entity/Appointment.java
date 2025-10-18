@@ -2,127 +2,79 @@ package com.oop4clinic.clinicmanagement.model.entity;
 
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
+
 @Entity
-@Table(
-  name = "appointments",
-  indexes = {
-    @Index(name = "idx_appt_doctor_time", columnList = "doctor_id,startTime"),
-    @Index(name = "idx_appt_patient_time", columnList = "patient_id,startTime")
-  }
-)
+@Table(name = "appointments",
+    indexes = {
+    @Index(name = "idx_appt_doctor_time", columnList = "doctor_id,start_time"),
+    @Index(name = "idx_appt_patient_time", columnList = "patient_id,start_time")
+})
 public class Appointment {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id; // PK int
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "patient_id", nullable = false)
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", nullable = false,
+        foreignKey = @ForeignKey(name = "fk_appt_patient"))
     private Patient patient;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "doctor_id", nullable = false)
-    private Doctor doctor;
 
-    @Column(nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", nullable = false,
+        foreignKey = @ForeignKey(name = "fk_appt_department"))
+    private Department department;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "doctor_id",
+        foreignKey = @ForeignKey(name = "fk_appt_doctor"))
+    private Doctor doctor; // có thể null
+
+
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
 
-    @Column(nullable = false)
-    private LocalDateTime endTime;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
-    private AppointmentStatus status;
+    @Column(nullable = false, length = 12)
+    private AppointmentStatus status = AppointmentStatus.PENDING;
 
-    @Column(length = 255)
+
+    @Column
     private String reason;
 
-    @PrePersist @PreUpdate
-    private void validateTimes() {
-        if (endTime != null && endTime.isBefore(startTime)) {
-        throw new IllegalArgumentException("endTime must be after startTime");
-        }
-    }
 
-    public Appointment() {}
-    public Appointment(Patient patient,Doctor doctor,LocalDateTime startTime,LocalDateTime endTime,AppointmentStatus status,String reason)
-    {
-        this.doctor = doctor;
-        this.patient = patient;
-        this.status = status;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.reason = reason;
-    }
+    @OneToOne(mappedBy = "appointment", fetch = FetchType.LAZY)
+    private Invoice invoice;
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    @OneToOne(mappedBy = "appointment", fetch = FetchType.LAZY)
+    private MedicalRecord medicalRecord;
 
-    public Patient getPatient() {
-        return patient;
-    }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public AppointmentStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(AppointmentStatus status) {
-        this.status = status;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    @Override
-    public String toString() {
-        return "Appointment{" +
-            "id=" + id +
-            ", patientId=" + (patient != null ? patient.getId() : null) +
-            ", doctorId=" + (doctor != null ? doctor.getId() : null) +
-            ", startTime=" + startTime +
-            ", endTime=" + endTime +
-            ", status=" + status +
-            ", reason='" + reason + '\'' +
-            '}';
-    }
+    // getters/setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+    public Patient getPatient() { return patient; }
+    public void setPatient(Patient patient) { this.patient = patient; }
+    public Department getDepartment() { return department; }
+    public void setDepartment(Department department) { this.department = department; }
+    public Doctor getDoctor() { return doctor; }
+    public void setDoctor(Doctor doctor) { this.doctor = doctor; }
+    public LocalDateTime getStartTime() { return startTime; }
+    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
+    public AppointmentStatus getStatus() { return status; }
+    public void setStatus(AppointmentStatus status) { this.status = status; }
+    public String getReason() { return reason; }
+    public void setReason(String reason) { this.reason = reason; }
+    public Invoice getInvoice() { return invoice; }
+    public void setInvoice(Invoice invoice) { this.invoice = invoice; }
+    public MedicalRecord getMedicalRecord() { return medicalRecord; }
+    public void setMedicalRecord(MedicalRecord medicalRecord) { this.medicalRecord = medicalRecord; }
 }

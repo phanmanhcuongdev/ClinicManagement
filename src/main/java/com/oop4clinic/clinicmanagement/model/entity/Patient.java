@@ -2,116 +2,95 @@ package com.oop4clinic.clinicmanagement.model.entity;
 
 import com.oop4clinic.clinicmanagement.model.enums.Gender;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 
 @Entity
-@Table(
-        name = "patients",
-        indexes = {
-                @Index(name = "idx_patient_name", columnList = "fullName"),
-                @Index(name = "idx_patient_phone", columnList = "phone")
-        }
-)
+@Table(name = "patients",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_patient_phone", columnNames = "phone"),
+        @UniqueConstraint(name = "uk_patient_email", columnNames = "email"),
+        @UniqueConstraint(name = "uk_patient_cccd", columnNames = "cccd"),
+        @UniqueConstraint(name = "uk_patient_insurance", columnNames = "insurance_code")
+})
 public class Patient {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id; // PK int
 
-    @Column(nullable = false,length = 100)
+
+    @Column(nullable = false)
     private String fullName;
 
+
     @Enumerated(EnumType.STRING)
-    @Column(length = 10)
+    @Column(nullable = false, length = 10)
     private Gender gender;
 
+
+    @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(length = 20, unique = true)
+
+    @Column(nullable = false)
     private String phone;
 
-    @Column(length = 100,unique = true)
+
+    @Column
     private String email;
 
-    @Column(length = 255)
+
+    @Column
     private String address;
 
-    public Patient(){}
 
-    public Patient(String fullName, Gender gender, LocalDate dob) {
-        this.fullName = fullName;
-        this.gender = gender;
-        this.dateOfBirth = dob;
-    }
+    @Column
+    private String cccd;
 
 
-    public long getId() {
-        return id;
-    }
+    @Column(name = "insurance_code")
+    private String insuranceCode;
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
-    public String getFullName() {
-        return fullName;
-    }
+    @OneToMany(mappedBy = "patient")
+    private Set<Appointment> appointments = new LinkedHashSet<>();
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 
-    public Gender getGender() {
-        return gender;
-    }
+    @OneToMany(mappedBy = "patient")
+    private Set<Invoice> invoices = new LinkedHashSet<>();
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
+    @OneToMany(mappedBy = "patient")
+    private Set<MedicalRecord> medicalRecords = new LinkedHashSet<>();
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "id=" + id +
-                ", fullName='" + fullName + '\'' +
-                ", gender=" + gender +
-                ", dateOfBirth=" + dateOfBirth +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                '}';
-    }
+    // getters/setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public Gender getGender() { return gender; }
+    public void setGender(Gender gender) { this.gender = gender; }
+    public LocalDate getDateOfBirth() { return dateOfBirth; }
+    public void setDateOfBirth(LocalDate dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+    public String getCccd() { return cccd; }
+    public void setCccd(String cccd) { this.cccd = cccd; }
+    public String getInsuranceCode() { return insuranceCode; }
+    public void setInsuranceCode(String insuranceCode) { this.insuranceCode = insuranceCode; }
+    public Set<Appointment> getAppointments() { return appointments; }
+    public void setAppointments(Set<Appointment> appointments) { this.appointments = appointments; }
+    public Set<Invoice> getInvoices() { return invoices; }
+    public void setInvoices(Set<Invoice> invoices) { this.invoices = invoices; }
+    public Set<MedicalRecord> getMedicalRecords() { return medicalRecords; }
+    public void setMedicalRecords(Set<MedicalRecord> medicalRecords) { this.medicalRecords = medicalRecords; }
 }
-
