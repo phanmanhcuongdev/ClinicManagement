@@ -1,5 +1,9 @@
 package com.oop4clinic.clinicmanagement.service.impl;
 
+import com.oop4clinic.clinicmanagement.dao.DepartmentRepository;
+import com.oop4clinic.clinicmanagement.dao.DoctorRepository;
+import com.oop4clinic.clinicmanagement.dao.impl.DepartmentRepositoryImpl;
+import com.oop4clinic.clinicmanagement.dao.impl.DoctorRepositoryImpl;
 import com.oop4clinic.clinicmanagement.dao.jpa.EntityManagerProvider;
 import com.oop4clinic.clinicmanagement.model.dto.DoctorDTO;
 import com.oop4clinic.clinicmanagement.model.entity.Department;
@@ -10,6 +14,9 @@ import jakarta.persistence.*;
 import java.util.*;
 
 public class DoctorServiceImpl implements DoctorService {
+    private final DoctorRepository doctorRepo = new DoctorRepositoryImpl();
+    private final DepartmentRepository deptRepo = new DepartmentRepositoryImpl();
+
     @Override
     public DoctorDTO create(DoctorDTO dto)
     {
@@ -30,27 +37,22 @@ public class DoctorServiceImpl implements DoctorService {
                 throw new IllegalArgumentException("Khoa rỗng");
 
             if(dto.getPhone() != null && !dto.getPhone().isBlank()){
-                Long phoneCnt = em.createQuery(
-                        "select count(d) from Doctor d where d.phone = :p", Long.class)
-                        .setParameter("p", dto.getPhone().trim())
-                        .getSingleResult();
-                if (phoneCnt > 0) throw new IllegalArgumentException("SĐT đã tồn tại");
+                if(doctorRepo.existsByPhone(em, dto.getPhone().trim()))
+                    throw new IllegalArgumentException("SĐT đã tồn tại");
             }
 
             if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
-                Long emailCnt = em.createQuery(
-                        "select count(d) from Doctor d where lower(d.email) = :e", Long.class)
-                        .setParameter("e", dto.getEmail().toLowerCase().trim())
-                        .getSingleResult();
-                if (emailCnt > 0) throw new IllegalArgumentException("Email đã tồn tại");
+                if(doctorRepo.existsByEmail(em,dto.getEmail().trim()))
+                    throw new IllegalArgumentException("Email đã tồn tại");
             }
 
             // ===== Tham chiếu Department bằng id trong DTO =====
-            Department depRef = em.getReference(Department.class, dto.getDepartmentId());
+            Department dep = deptRepo.findById(em,dto.getDepartmentId())
+                    .orElseThrow(() -> new IllegalArgumentException("Khoa không tòn tại"));
 
             // ===== Map DTO -> Entity & persist =====
-            Doctor entity = DoctorMapper.toEntityForCreate(dto, depRef);
-            em.persist(entity);
+            Doctor entity = DoctorMapper.toEntityForCreate(dto,dep);
+            Doctor saved = doctorRepo.save(em,entity);
 
             tx.commit();
 
@@ -70,10 +72,7 @@ public class DoctorServiceImpl implements DoctorService {
     {
         EntityManager em = EntityManagerProvider.em();
         try {
-            // fetch department để có tên khoa khi map DTO
-            var list = em.createQuery(
-                "select d from Doctor d join fetch d.department order by d.id", Doctor.class
-            ).getResultList();
+            var list = doctorRepo.findAll(em);
 
             return list.stream()
                     .map(DoctorMapper::toDTO)
