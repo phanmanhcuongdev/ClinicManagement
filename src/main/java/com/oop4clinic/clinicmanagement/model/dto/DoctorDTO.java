@@ -17,6 +17,15 @@ public class DoctorDTO {
     private String email;
     private String address;
     private Double consultationFee;
+    private String notes;
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
     public DoctorStatus getDoctorStatus() {
         return doctorStatus;

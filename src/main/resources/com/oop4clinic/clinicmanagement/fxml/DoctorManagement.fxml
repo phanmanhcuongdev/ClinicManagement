@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.DoctorManagementController">
+<BorderPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.DoctorManagementController">
 
     <!-- Thanh tiêu đề + tìm kiếm / hành động nhanh -->
     <top>
@@ -44,7 +44,7 @@
             <!-- KHỐI TRÁI: DANH SÁCH -->
             <VBox spacing="10.0" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
                 <Label style="-fx-text-fill:#0088ff; -fx-font-size:16; -fx-font-weight:bold;" text="Danh sách bác sĩ" />
-                <TableView fx:id="tblDoctors" minWidth="0.0" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tblDoctors" minWidth="0.0" onMouseClicked="#onDoctorTableClicked" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colCode" text="Mã" />
                         <TableColumn fx:id="colFullName" prefWidth="180" text="Họ tên" />
@@ -66,7 +66,7 @@
                 <HBox>
                     <Label style="-fx-text-fill:#0088ff; -fx-font-size:16; -fx-font-weight:bold;" text="Chi tiết bác sĩ" />
                     <Region HBox.hgrow="ALWAYS" />
-                    <Button fx:id="btnEdit" text="Sửa" />
+                    <Button fx:id="btnEdit" disable="true" onAction="#onUpdateDoctor" text="Sửa" />
                     <Button fx:id="btnSave" onAction="#onSaveDoctor" style="-fx-background-color:#1e80c7; -fx-text-fill:white;" text="Lưu" />
                     <Button fx:id="btnDeactivate" text="Ngưng kích hoạt" />
                 </HBox>

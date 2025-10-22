@@ -19,6 +19,8 @@ import static com.oop4clinic.clinicmanagement.ValidationUtils.*;
 public class DoctorManagementController {
     private final DepartmentService departmentService = new DepartmentServiceImpl();
 
+    private Integer selectedDoctorId;
+
     private final DoctorService doctorService = new DoctorServiceImpl();
     @FXML
     private TextField txtFullName;
@@ -53,6 +55,12 @@ public class DoctorManagementController {
     @FXML
     private SplitPane split;
 
+    @FXML
+    private Button btnEdit;
+
+    @FXML
+    private Button btnSave;
+
     @FXML private TableView<DoctorDTO> tblDoctors;
     @FXML private TableColumn<DoctorDTO, String> colCode;
     @FXML private TableColumn<DoctorDTO, String> colFullName;
@@ -72,6 +80,92 @@ public class DoctorManagementController {
         holdPosition();
         initDoctorTable();
         refreshTable();
+
+    }
+
+    @FXML
+    private void onDoctorTableClicked(javafx.scene.input.MouseEvent event)
+    {
+        DoctorDTO selectedDoctor = tblDoctors.getSelectionModel().getSelectedItem();
+        if (selectedDoctor == null) return;
+        DoctorDTO detail = doctorService.findById(selectedDoctor.getId());
+
+        selectedDoctorId = selectedDoctor.getId();
+        txtFullName.setText(detail.getFullName());
+        cbGender.setValue(detail.getGender());
+        dpDob.setValue(detail.getDateOfBirth());
+        txtPhone.setText(detail.getPhone());
+        txtEmail.setText(detail.getEmail());
+        txtFee.setText(detail.getConsultationFee() == null ? "" :String.valueOf(detail.getConsultationFee()));
+        txtAddress.setText(detail.getAddress());
+        doctorStatus.setValue(detail.getDoctorStatus());
+        txtNotes.setText(detail.getNotes());
+
+        for (DepartmentDTO dep : cbDepartmentForm.getItems()) {
+            if (dep.getId().equals(detail.getDepartmentId())) {
+                cbDepartmentForm.setValue(dep);
+                break;
+            }
+        }
+
+        btnEdit.setDisable(false);
+        btnSave.setDisable(true);
+
+    }
+
+    @FXML
+    private void onUpdateDoctor()
+    {
+
+        String fullName = trimOrNull(txtFullName.getText());
+        Gender gender = cbGender.getValue();
+        var dob = dpDob.getValue();
+        String phone = trimOrNull(txtPhone.getText());
+        String email = trimOrNull(txtEmail.getText());
+        DepartmentDTO dep = cbDepartmentForm.getValue();
+        String address = trimOrNull(txtAddress.getText());
+        Double fee = null;
+        DoctorStatus status = doctorStatus.getValue();
+        String notes = trimOrNull(txtNotes.getText());
+
+        if (isBlank(fullName)) { warn("Vui lòng nhập Họ tên."); return; }
+        if (gender == null)    { warn("Vui lòng chọn Giới tính."); return; }
+        if (status == null)    { warn("Vui lòng chọn Trạng thái."); return; }
+        if (!isValidDob(dob))  { warn("Ngày sinh không hợp lệ."); return; }
+        if (isBlank(phone))    { warn("Vui lòng nhập SĐT."); return; }
+        if (!isValidPhone(phone)) { warn("SĐT không hợp lệ (10–11 chữ số)."); return; }
+        if (email != null && !isValidEmail(email)) { warn("Email không hợp lệ."); return; }
+        if (dep == null)       { warn("Vui lòng chọn Khoa."); return; }
+        try {
+            fee = ValidationUtils.parseFee(txtFee.getText());
+        } catch (NumberFormatException ex) {
+            warn("Phí khám không hợp lệ (phải là số ≥ 0).");
+            return;
+        }
+
+        DoctorDTO dto = new DoctorDTO();
+        dto.setId(selectedDoctorId);
+        dto.setFullName(fullName);
+        dto.setGender(gender);
+        dto.setDateOfBirth(dob);
+        dto.setPhone(phone);
+        dto.setEmail(email);
+        dto.setAddress(address);
+        dto.setConsultationFee(fee);
+        dto.setDepartmentId(dep.getId());
+        dto.setDoctorStatus(status);
+        dto.setNotes(notes);
+
+        try {
+            DoctorDTO saved = doctorService.update(dto); // service lo transaction/unique check
+            info("Đã sửa bác sĩ: " + saved.getFullName() + " (ID=" + saved.getId() + ")");
+            clearForm();
+            refreshTable();
+        } catch (IllegalArgumentException dup) { // ví dụ SĐT/Email trùng
+            warn(dup.getMessage());
+        } catch (RuntimeException e) {
+            showSystemError(e);
+        }
     }
 
     private void initDoctorTable()
@@ -180,6 +274,7 @@ public class DoctorManagementController {
         String address = trimOrNull(txtAddress.getText());
         Double fee = null;
         DoctorStatus status = doctorStatus.getValue();
+        String notes = trimOrNull(txtNotes.getText());
 
         if (isBlank(fullName)) { warn("Vui lòng nhập Họ tên."); return; }
         if (gender == null)    { warn("Vui lòng chọn Giới tính."); return; }
@@ -206,6 +301,7 @@ public class DoctorManagementController {
         dto.setConsultationFee(fee);
         dto.setDepartmentId(dep.getId());
         dto.setDoctorStatus(status);
+        dto.setNotes(notes);
 
         try {
             DoctorDTO saved = doctorService.create(dto); // service lo transaction/unique check

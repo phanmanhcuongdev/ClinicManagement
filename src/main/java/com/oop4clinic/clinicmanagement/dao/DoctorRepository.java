@@ -10,4 +10,6 @@ public interface DoctorRepository {
     Doctor save(EntityManager em,Doctor doctor);
     boolean existsByEmail(EntityManager em,String email);
     boolean existsByPhone(EntityManager em,String phone);
+    Doctor findById(EntityManager em, int id);
+    Doctor update(EntityManager em,Doctor doctor);
 }

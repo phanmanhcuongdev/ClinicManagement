@@ -55,6 +55,9 @@ public class Doctor {
     @Column
     private Double consultationFee;
 
+    @Column
+    private String notes;
+
     public DoctorStatus getStatus() {
         return status;
     }
@@ -93,6 +96,13 @@ public class Doctor {
     public void setAddress(String address) { this.address = address; }
     public Double getConsultationFee() { return consultationFee; }
     public void setConsultationFee(Double consultationFee) { this.consultationFee = consultationFee; }
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
     public Set<Appointment> getAppointments() { return appointments; }
     public void setAppointments(Set<Appointment> appointments) { this.appointments = appointments; }
     public Set<MedicalRecord> getMedicalRecords() { return medicalRecords; }

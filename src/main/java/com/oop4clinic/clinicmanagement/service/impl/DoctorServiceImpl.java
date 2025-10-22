@@ -51,7 +51,7 @@ public class DoctorServiceImpl implements DoctorService {
                     .orElseThrow(() -> new IllegalArgumentException("Khoa không tòn tại"));
 
             // ===== Map DTO -> Entity & persist =====
-            Doctor entity = DoctorMapper.toEntityForCreate(dto,dep);
+            Doctor entity = DoctorMapper.toEntity(dto,dep);
             Doctor saved = doctorRepo.save(em,entity);
 
             tx.commit();
@@ -86,4 +86,72 @@ public class DoctorServiceImpl implements DoctorService {
             em.close();
         }
     }
+
+    @Override
+    public DoctorDTO findById(int id)
+    {
+        EntityManager em = EntityManagerProvider.em();
+        try
+        {
+            var doctor = doctorRepo.findById(em,id);
+            return DoctorMapper.toDTO(doctor);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public DoctorDTO update(DoctorDTO dto)
+    {
+        EntityManager em = EntityManagerProvider.em();
+        EntityTransaction tx = em.getTransaction();
+
+        try
+        {
+            tx.begin();
+
+            if(dto == null) throw new IllegalArgumentException("NULL DTO");
+            if(dto.getId() == null) throw new IllegalArgumentException("Miss Id");
+
+            Doctor existing = doctorRepo.findById(em,dto.getId());
+            if(existing == null)
+                throw new IllegalArgumentException("No Doctor "+ dto.getId());
+
+            Department dep = null;
+
+            if(dto.getDepartmentId()!=null)
+            {
+                dep = deptRepo.findById(em,dto.getDepartmentId())
+                    .orElseThrow(() -> new IllegalArgumentException("Khoa không tòn tại"));
+            }
+
+            existing.setFullName(dto.getFullName());
+            existing.setGender(dto.getGender());
+            existing.setDateOfBirth(dto.getDateOfBirth());
+            existing.setPhone(dto.getPhone());
+            existing.setEmail(dto.getEmail());
+            existing.setAddress(dto.getAddress());
+            existing.setConsultationFee(dto.getConsultationFee());
+            existing.setStatus(dto.getDoctorStatus());
+            existing.setNotes(dto.getNotes());
+            if (dep != null) existing.setDepartment(dep);
+
+            Doctor updated = doctorRepo.update(em, existing);
+
+            tx.commit();
+            return DoctorMapper.toDTO(updated);
+
+        }catch (RuntimeException e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+
+
+    }
+
 }

@@ -7,36 +7,37 @@ import com.oop4clinic.clinicmanagement.model.entity.Doctor;
 public final class DoctorMapper {
     private DoctorMapper() {}
 
-    public static DoctorDTO toDTO(Doctor e) {
-        if (e == null) return null;
+    public static DoctorDTO toDTO(Doctor entity)
+    {
+        if(entity == null) return null;
+
         DoctorDTO dto = new DoctorDTO();
-        dto.setId(e.getId());
-        if (e.getDepartment() != null) {
-            dto.setDepartmentId(e.getDepartment().getId());
-            dto.setDepartmentName(e.getDepartment().getName());
+        dto.setId(entity.getId());
+        if (entity.getDepartment() != null) {
+            dto.setDepartmentId(entity.getDepartment().getId());
+            dto.setDepartmentName(entity.getDepartment().getName());
         }
-        dto.setFullName(e.getFullName());
-        dto.setGender(e.getGender());
-        dto.setDateOfBirth(e.getDateOfBirth());
-        dto.setPhone(e.getPhone());
-        dto.setEmail(e.getEmail());
-        dto.setAddress(e.getAddress());
-        dto.setConsultationFee(e.getConsultationFee());
-        dto.setDoctorStatus(e.getStatus());
+        dto.setFullName(entity.getFullName());
+        dto.setGender(entity.getGender());
+        dto.setDateOfBirth(entity.getDateOfBirth());
+        dto.setPhone(entity.getPhone());
+        dto.setEmail(entity.getEmail());
+        dto.setAddress(entity.getAddress());
+        dto.setConsultationFee(entity.getConsultationFee());
+        dto.setDoctorStatus(entity.getStatus());
+        dto.setNotes(entity.getNotes());
         return dto;
+
     }
 
-    public static Doctor toEntityForCreate(DoctorDTO dto, Department managedDept) {
+    public static Doctor toEntity(DoctorDTO dto, Department managedDept)
+    {
+        if (dto == null) return null;
         Doctor e = new Doctor();
-        apply(dto, e, managedDept);
-        return e;
-    }
 
-    public static void applyForUpdate(DoctorDTO dto, Doctor target, Department managedDept) {
-        apply(dto, target, managedDept);
-    }
+        // Nếu DTO có id thì gán (tránh mất id khi update)
+        e.setId(dto.getId());
 
-    private static void apply(DoctorDTO dto, Doctor e, Department dept) {
         e.setFullName(dto.getFullName());
         e.setGender(dto.getGender());
         e.setDateOfBirth(dto.getDateOfBirth());
@@ -45,7 +46,12 @@ public final class DoctorMapper {
         e.setAddress(dto.getAddress());
         e.setConsultationFee(dto.getConsultationFee());
         e.setStatus(dto.getDoctorStatus());
-        if (dept != null) e.setDepartment(dept);
+        e.setNotes(dto.getNotes());
+
+        if (managedDept != null) e.setDepartment(managedDept);
+
+        return e;
     }
+
 }
 

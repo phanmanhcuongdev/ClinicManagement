@@ -6,4 +6,6 @@ import java.util.*;
 public interface DoctorService {
     DoctorDTO create(DoctorDTO dto);
     List<DoctorDTO> findAll();
+    DoctorDTO findById(int id);
+    DoctorDTO update(DoctorDTO dto);
 }
