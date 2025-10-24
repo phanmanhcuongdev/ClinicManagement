@@ -5,7 +5,7 @@ module com.oop4clinic.clinicmanagement {
     requires org.hibernate.orm.core; // <- thêm dòng này
     requires java.sql;
     requires java.desktop;
-
+    requires javafx.base;
 
 
     exports com.oop4clinic.clinicmanagement;

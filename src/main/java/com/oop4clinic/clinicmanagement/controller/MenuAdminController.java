@@ -18,4 +18,15 @@ public class MenuAdminController {
         }
     }
 
+    @FXML
+    private void openPatients()
+    {
+        try {
+            Node view = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/PatientManagement.fxml"));
+            root.setCenter(view);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }

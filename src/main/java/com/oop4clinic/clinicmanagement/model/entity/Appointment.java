@@ -2,6 +2,8 @@ package com.oop4clinic.clinicmanagement.model.entity;
 
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -50,6 +52,10 @@ public class Appointment {
     private String reason;
 
 
+
+    @Column
+    private LocalDate appointment_date;
+
     @OneToOne(mappedBy = "appointment", fetch = FetchType.LAZY)
     private Invoice invoice;
 
@@ -77,4 +83,11 @@ public class Appointment {
     public void setInvoice(Invoice invoice) { this.invoice = invoice; }
     public MedicalRecord getMedicalRecord() { return medicalRecord; }
     public void setMedicalRecord(MedicalRecord medicalRecord) { this.medicalRecord = medicalRecord; }
+    public LocalDate getAppointment_date() {
+        return appointment_date;
+    }
+
+    public void setAppointment_date(LocalDate appointment_date) {
+        this.appointment_date = appointment_date;
+    }
 }
