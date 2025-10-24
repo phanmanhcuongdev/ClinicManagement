@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.DoctorManagementController">
+<BorderPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.DoctorManagementController">
 
     <!-- Thanh tiêu đề + tìm kiếm / hành động nhanh -->
     <top>
@@ -29,11 +29,12 @@
                 <ComboBox fx:id="cbDepartment" promptText="Khoa" />
                 <ComboBox fx:id="cbSpecialty" promptText="Chuyên môn" />
                 <ComboBox fx:id="cbActive" promptText="Trạng thái" />
-                <Button fx:id="btnFilter" text="Lọc" />
+                <Button fx:id="btnFilter" onAction="#onApplyFilterTop" text="Lọc" />
+            <Button mnemonicParsing="false" onAction="#onClearFilterTop" text="Xóa Lọc" />
                 <Region HBox.hgrow="ALWAYS" />
                 <Button fx:id="btnImport" text="Import" />
                 <Button fx:id="btnExport" text="Export" />
-                <Button fx:id="btnAdd" style="-fx-background-color:#1e80c7; -fx-text-fill:white;" text="+ Thêm bác sĩ" />
+                <Button fx:id="btnAdd" onAction="#onAddDoctor" style="-fx-background-color:#1e80c7; -fx-text-fill:white;" text="+ Thêm bác sĩ" />
             </HBox>
         </VBox>
     </top>
@@ -62,7 +63,7 @@
             </VBox>
 
             <!-- KHỐI PHẢI: CHI TIẾT / FORM -->
-            <VBox minWidth="0.0" spacing="10.0" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
+            <VBox fx:id="detailPane" minWidth="0.0" spacing="10.0" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
                 <HBox>
                     <Label style="-fx-text-fill:#0088ff; -fx-font-size:16; -fx-font-weight:bold;" text="Chi tiết bác sĩ" />
                     <Region HBox.hgrow="ALWAYS" />

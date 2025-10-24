@@ -9,20 +9,28 @@ import com.oop4clinic.clinicmanagement.service.DepartmentService;
 import com.oop4clinic.clinicmanagement.service.DoctorService;
 import com.oop4clinic.clinicmanagement.service.impl.DepartmentServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.DoctorServiceImpl;
+import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 import static com.oop4clinic.clinicmanagement.ValidationUtils.*;
 
 public class DoctorManagementController {
 
-    //===== Service =====
+    // ============================================================
+    //  SERVICE
+    // ============================================================
     private final DepartmentService departmentService = new DepartmentServiceImpl();
     private final DoctorService doctorService = new DoctorServiceImpl();
 
-    //===== FXML fields =====
+    // ============================================================
+    //  FXML - FORM CHI TIẾT
+    // ============================================================
     @FXML private TextField txtFullName;
     @FXML private ComboBox<Gender> cbGender;
     @FXML private DatePicker dpDob;
@@ -33,9 +41,16 @@ public class DoctorManagementController {
     @FXML private TextArea txtAddress;
     @FXML private TextArea txtNotes;
     @FXML private ComboBox<DoctorStatus> doctorStatus;
-    @FXML private SplitPane split;
     @FXML private Button btnEdit;
     @FXML private Button btnSave;
+    @FXML private Button btnDeactivate; // chưa dùng nhưng vẫn để vì FXML có
+
+    // ============================================================
+    //  FXML - DANH SÁCH / LỌC
+    // ============================================================
+    @FXML private SplitPane split;
+    @FXML private VBox detailPane;
+
     @FXML private TableView<DoctorDTO> tblDoctors;
     @FXML private TableColumn<DoctorDTO, String> colCode;
     @FXML private TableColumn<DoctorDTO, String> colFullName;
@@ -46,57 +61,108 @@ public class DoctorManagementController {
     @FXML private TableColumn<DoctorDTO, String> colEmail;
     @FXML private TableColumn<DoctorDTO, String> colFee;
 
-    //===== State =====
-    private Integer selectedDoctorId;
+    @FXML private TextField txtSearch;
+    @FXML private ComboBox<DepartmentDTO> cbDepartment;
+    @FXML private ComboBox<DoctorStatus> cbActive;
+    @FXML private Button btnFilter;
+    @FXML private Button btnAdd;
+    @FXML private Button btnImport;
+    @FXML private Button btnExport;
 
-    //===== Init =====
+    // ============================================================
+    //  STATE
+    // ============================================================
+    private Integer selectedDoctorId;
+    private enum FormMode { NONE, CREATE, EDIT }
+    private FormMode currentMode = FormMode.NONE;
+    private int detailPaneIndex = -1;
+
+    // ============================================================
+    //  INIT
+    // ============================================================
     @FXML
     public void initialize() {
-        initDepartmentCombo();
-        initGender();
-        initDoctorStatus();
-        holdPosition();
+        initDepartmentCombos();
+        initEnumCombos();
         initDoctorTable();
-        refreshTable();
+
+        // load lần đầu
+        reloadAndShow();
+
+        // nhớ index ban đầu của panel detail để add lại đúng chỗ
+        detailPaneIndex = split.getItems().indexOf(detailPane);
+        hideDetailPane();
+
+        // trạng thái nút ban đầu
         btnEdit.setDisable(true);
         btnSave.setDisable(false);
+
+        // enable/disable nút "Sửa" theo selection
+        tblDoctors.getSelectionModel()
+            .selectedItemProperty()
+            .addListener((obs, oldSel, newSel) -> btnEdit.setDisable(newSel == null));
     }
 
-    //===== Events =====
+    // ============================================================
+    //  CLICK TRONG BẢNG
+    // ============================================================
     @FXML
-    private void onDoctorTableClicked() {
-        DoctorDTO row = tblDoctors.getSelectionModel().getSelectedItem();
-        if (row == null) return;
+    private void onDoctorTableClicked(MouseEvent event) {
+        DoctorDTO clicked = tblDoctors.getSelectionModel().getSelectedItem();
+        if (clicked == null) return;
 
-        DoctorDTO detail = doctorService.findById(row.getId());
-        selectedDoctorId = row.getId();
+        Integer clickedId = clicked.getId();
+
+        // Nếu đang EDIT đúng bác sĩ đó => toggle đóng panel
+        if (isDetailPaneShowing()
+                && currentMode == FormMode.EDIT
+                && selectedDoctorId != null
+                && selectedDoctorId.equals(clickedId)) {
+            hideDetailPane();
+            return;
+        }
+
+        // Load fresh detail từ service
+        DoctorDTO detail = doctorService.findById(clickedId);
         fillFormFrom(detail);
 
+        selectedDoctorId = clickedId;
+        currentMode = FormMode.EDIT;
+
+        showDetailPane();
+
+        // EDIT mode
         btnEdit.setDisable(false);
         btnSave.setDisable(true);
     }
 
+    // ============================================================
+    //  CRUD HANDLERS
+    // ============================================================
     @FXML
     private void onUpdateDoctor() {
-        if (selectedDoctorId == null) { warn("Chưa lựa chọn bác sĩ để sửa"); return; }
+        if (selectedDoctorId == null || currentMode != FormMode.EDIT) {
+            warn("Chưa chọn bác sĩ để sửa.");
+            return;
+        }
 
         String err = validateFormOrWarn();
         if (err != null) { warn(err); return; }
 
         DoctorDTO dto;
-        try { dto = buildDtoFromForm(); }
-        catch (IllegalArgumentException ex) { warn(ex.getMessage()); return; }
+        try {
+            dto = buildDtoFromForm();
+        } catch (IllegalArgumentException ex) {
+            warn(ex.getMessage());
+            return;
+        }
 
         dto.setId(selectedDoctorId);
 
         try {
             DoctorDTO saved = doctorService.update(dto);
-            info("Đã sửa bác sĩ: " + saved.getFullName() + " (ID=" + saved.getId() + ")");
-            clearForm();
-            selectedDoctorId = null;
-            refreshTable();
-            btnEdit.setDisable(true);
-            btnSave.setDisable(false);
+            info("Đã cập nhật bác sĩ: " + saved.getFullName());
+            afterSaveOrUpdate();
         } catch (IllegalArgumentException dup) {
             warn(dup.getMessage());
         } catch (RuntimeException e) {
@@ -106,20 +172,26 @@ public class DoctorManagementController {
 
     @FXML
     private void onSaveDoctor() {
+        if (currentMode != FormMode.CREATE) {
+            warn("Hiện tại không ở chế độ thêm bác sĩ mới.");
+            return;
+        }
+
         String err = validateFormOrWarn();
         if (err != null) { warn(err); return; }
 
         DoctorDTO dto;
-        try { dto = buildDtoFromForm(); }
-        catch (IllegalArgumentException ex) { warn(ex.getMessage()); return; }
+        try {
+            dto = buildDtoFromForm();
+        } catch (IllegalArgumentException ex) {
+            warn(ex.getMessage());
+            return;
+        }
 
         try {
             DoctorDTO saved = doctorService.create(dto);
-            info("Đã lưu bác sĩ: " + saved.getFullName() + " (ID=" + saved.getId() + ")");
-            clearForm();
-            refreshTable();
-            btnEdit.setDisable(true);
-            btnSave.setDisable(false);
+            info("Đã thêm bác sĩ: " + saved.getFullName());
+            afterSaveOrUpdate();
         } catch (IllegalArgumentException dup) {
             warn(dup.getMessage());
         } catch (RuntimeException e) {
@@ -127,40 +199,84 @@ public class DoctorManagementController {
         }
     }
 
-    //===== UI Init =====
+    @FXML
+    private void onAddDoctor() {
+        // nếu panel CREATE đang mở -> tắt
+        if (isDetailPaneShowing() && currentMode == FormMode.CREATE) {
+            hideDetailPane();
+            return;
+        }
+
+        // chuyển sang chế độ CREATE mới
+        clearForm();
+        selectedDoctorId = null;
+        currentMode = FormMode.CREATE;
+
+        showDetailPane();
+
+        btnEdit.setDisable(true);   // không "Sửa"
+        btnSave.setDisable(false);  // cho phép "Lưu"
+    }
+
+    /** Sau khi thêm mới / cập nhật xong */
+    private void afterSaveOrUpdate() {
+        clearForm();
+        selectedDoctorId = null;
+        reloadAndShow();
+        hideDetailPane();
+    }
+
+    // ============================================================
+    //  FILTER
+    // ============================================================
+    @FXML
+    private void onApplyFilterTop() {
+        reloadAndShow();
+    }
+
+    @FXML
+    private void onClearFilterTop() {
+        txtSearch.clear();
+        cbDepartment.getSelectionModel().clearSelection();
+        cbActive.getSelectionModel().clearSelection();
+
+        // reset placeholder cho combobox filter
+        cbDepartment.setButtonCell(deptPlaceholderCell());
+        cbActive.setButtonCell(statusPlaceholderCell());
+
+        reloadAndShow();
+    }
+
+    /** Gọi service lấy danh sách theo filter + đổ vào bảng */
+    private void reloadAndShow() {
+        String keyword = trimOrNull(txtSearch.getText());
+
+        DepartmentDTO dep = cbDepartment.getValue();
+        Integer depId = (dep == null ? null : dep.getId());
+
+        DoctorStatus st = cbActive.getValue();
+
+        var result = doctorService.searchDoctors(keyword, depId, st);
+        tblDoctors.setItems(FXCollections.observableArrayList(result));
+    }
+
+    // ============================================================
+    //  UI INIT
+    // ============================================================
     private void initDoctorTable() {
         colCode.setCellValueFactory(c -> {
-            var dto = c.getValue();
+            DoctorDTO dto = c.getValue();
             String prefix = codePrefixFromDepartmentName(dto.getDepartmentName());
-            String code = (dto.getId() == null) ? "" : prefix + String.format("%03d", dto.getId());
-            return new javafx.beans.property.ReadOnlyStringWrapper(code);
+            String code = (dto.getId() == null)
+                    ? ""
+                    : prefix + String.format("%03d", dto.getId());
+            return wrap(code);
         });
+
         colFullName.setCellValueFactory(c -> wrap(c.getValue().getFullName()));
         colDepartment.setCellValueFactory(c -> wrap(c.getValue().getDepartmentName()));
-        colGender.setCellValueFactory(c -> {
-            var g = c.getValue().getGender();
-            return wrap(g == null ? "" : genderVi(g));
-        });
-        colStatus.setCellValueFactory(c -> {
-            var st = c.getValue().getDoctorStatus();
-            return wrap(st == null ? "" : statusVi(st));
-        });
-        colStatus.setCellFactory(col -> new TableCell<>() {
-            @Override
-            protected void updateItem(String text, boolean empty) {
-                super.updateItem(text, empty);
-                if (empty || text == null || text.isBlank()) { setText(null); setStyle(""); return; }
-                setText(text);
-                switch (text) {
-                    case "Hoạt động"       -> setStyle("-fx-text-fill:#1a7f37; -fx-font-weight:bold;");
-                    case "Ngưng hoạt động" -> setStyle("-fx-text-fill:#b42318; -fx-font-weight:bold;");
-                    case "Chờ duyệt"       -> setStyle("-fx-text-fill:#b78103; -fx-font-weight:bold;");
-                    case "Đình chỉ"        -> setStyle("-fx-text-fill:#8a2be2; -fx-font-weight:bold;");
-                    case "Tạm nghỉ"        -> setStyle("-fx-text-fill:#555; -fx-font-weight:bold;");
-                    default                -> setStyle("");
-                }
-            }
-        });
+        colGender.setCellValueFactory(c -> wrap(genderVi(c.getValue().getGender())));
+        colStatus.setCellValueFactory(c -> wrap(statusVi(c.getValue().getDoctorStatus())));
         colPhone.setCellValueFactory(c -> wrap(c.getValue().getPhone()));
         colEmail.setCellValueFactory(c -> wrap(c.getValue().getEmail()));
         colFee.setCellValueFactory(c -> {
@@ -168,84 +284,145 @@ public class DoctorManagementController {
             return wrap(fee == null ? "—" : formatVnd(fee));
         });
 
+        styleStatusColumn(colStatus);
+
         tblDoctors.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
-    private void initDepartmentCombo() {
-        var deps = departmentService.findAll();
-        cbDepartmentForm.setItems(FXCollections.observableArrayList(deps));
-        cbDepartmentForm.setConverter(new StringConverter<>() {
-            @Override public String toString(DepartmentDTO d) { return d == null ? "" : d.getName(); }
-            @Override public DepartmentDTO fromString(String s) { return null; }
+    private void initDepartmentCombos() {
+        var deps = FXCollections.observableArrayList(departmentService.findAll());
+
+        // combo trong form (panel phải)
+        cbDepartmentForm.setItems(deps);
+        setupComboBox(
+                cbDepartmentForm,
+                d -> d == null ? "" : d.getName(),
+                "Chọn khoa"
+        );
+
+        // combo filter (thanh trên)
+        cbDepartment.setItems(deps);
+        setupComboBox(
+                cbDepartment,
+                d -> d == null ? "" : d.getName(),
+                null
+        );
+        cbDepartment.setButtonCell(deptPlaceholderCell());
+    }
+
+    /** init các combobox enum (Gender / DoctorStatus) */
+    private void initEnumCombos() {
+        // Gender (form)
+        cbGender.getItems().setAll(Gender.values());
+        setupComboBox(
+                cbGender,
+                ValidationUtils::genderVi,
+                "Chọn giới tính"
+        );
+
+        // DoctorStatus (form)
+        doctorStatus.getItems().setAll(DoctorStatus.values());
+        setupComboBox(
+                doctorStatus,
+                ValidationUtils::statusVi,
+                "Chọn trạng thái"
+        );
+
+        // DoctorStatus (filter)
+        cbActive.setItems(FXCollections.observableArrayList(DoctorStatus.values()));
+        setupComboBox(
+                cbActive,
+                ValidationUtils::statusVi,
+                null
+        );
+        cbActive.setButtonCell(statusPlaceholderCell());
+    }
+
+    /**
+     * Generic setup cho ComboBox<T>
+     */
+    private <T> void setupComboBox(
+            ComboBox<T> combo,
+            java.util.function.Function<T,String> toText,
+            String promptText
+    ) {
+        combo.setCellFactory(list -> new ListCell<>() {
+            @Override protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : toText.apply(item));
+            }
         });
-        cbDepartmentForm.setCellFactory(list -> new ListCell<>() {
+
+        combo.setButtonCell(new ListCell<>() {
+            @Override protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : toText.apply(item));
+            }
+        });
+
+        combo.setConverter(new StringConverter<>() {
+            @Override public String toString(T item) {
+                return (item == null) ? "" : toText.apply(item);
+            }
+            @Override public T fromString(String s) { return null; }
+        });
+
+        if (promptText != null) {
+            combo.setPromptText(promptText);
+        }
+    }
+
+    private ListCell<DepartmentDTO> deptPlaceholderCell() {
+        return new ListCell<>() {
             @Override protected void updateItem(DepartmentDTO d, boolean empty) {
                 super.updateItem(d, empty);
-                setText(empty || d == null ? "" : d.getName());
+                setText((empty || d == null) ? "Khoa" : d.getName());
             }
-        });
-        cbDepartmentForm.setPromptText("Chọn khoa");
+        };
     }
 
-    private void initDoctorStatus() {
-        doctorStatus.getItems().setAll(DoctorStatus.values());
-        doctorStatus.setCellFactory(list -> new ListCell<>() {
+    private ListCell<DoctorStatus> statusPlaceholderCell() {
+        return new ListCell<>() {
             @Override protected void updateItem(DoctorStatus st, boolean empty) {
                 super.updateItem(st, empty);
-                setText(empty || st == null ? "" : statusVi(st));
+                setText((empty || st == null) ? "Trạng thái" : statusVi(st));
             }
-        });
-        doctorStatus.setButtonCell(new ListCell<>() {
-            @Override protected void updateItem(DoctorStatus st, boolean empty) {
-                super.updateItem(st, empty);
-                setText(empty || st == null ? "" : statusVi(st));
-            }
-        });
-        doctorStatus.setConverter(new StringConverter<>() {
-            @Override public String toString(DoctorStatus st) { return statusVi(st); }
-            @Override public DoctorStatus fromString(String s) { return null; }
-        });
-        doctorStatus.setPromptText("Chọn trạng thái");
+        };
     }
 
-    private void initGender() {
-        cbGender.getItems().setAll(Gender.values());
-        cbGender.setCellFactory(list -> new ListCell<>() {
-            @Override protected void updateItem(Gender g, boolean empty) {
-                super.updateItem(g, empty);
-                setText(empty || g == null ? "" : genderVi(g));
+    // ============================================================
+    //  SPLITPANE / DETAIL PANE
+    // ============================================================
+    private boolean isDetailPaneShowing() {
+        return split.getItems().contains(detailPane);
+    }
+
+    private void showDetailPane() {
+        if (!isDetailPaneShowing()) {
+            if (detailPaneIndex >= 0 && detailPaneIndex <= split.getItems().size()) {
+                split.getItems().add(detailPaneIndex, detailPane);
+            } else {
+                split.getItems().add(detailPane);
             }
-        });
-        cbGender.setButtonCell(new ListCell<>() {
-            @Override protected void updateItem(Gender g, boolean empty) {
-                super.updateItem(g, empty);
-                setText(empty || g == null ? "" : genderVi(g));
-            }
-        });
-        cbGender.setConverter(new StringConverter<>() {
-            @Override public String toString(Gender g) { return genderVi(g); }
-            @Override public Gender fromString(String s) { return null; }
-        });
-        cbGender.setPromptText("Chọn giới tính");
+        }
+        Platform.runLater(() -> split.setDividerPositions(0.75));
     }
 
-    private void refreshTable() {
-        var list = doctorService.findAll();
-        tblDoctors.setItems(FXCollections.observableArrayList(list));
+    private void hideDetailPane() {
+        split.getItems().remove(detailPane);
+
+        currentMode = FormMode.NONE;
+        selectedDoctorId = null;
+
+        btnEdit.setDisable(true);
+        btnSave.setDisable(false);
+
+        Platform.runLater(() -> split.setDividerPositions(1.0));
     }
 
-    private void holdPosition()
-    {
-        javafx.application.Platform.runLater(() -> {
-            split.setDividerPositions(0.75);
-            // Mỗi lần SplitPane đổi kích thước → set lại tỉ lệ
-            split.widthProperty().addListener((obs, ov, nv) -> split.setDividerPositions(0.75));
-            split.heightProperty().addListener((obs, ov, nv) -> split.setDividerPositions(0.75));
-        });
-    }
-
-
-    //===== Helpers =====
+    // ============================================================
+    //  FORM BUILD / VALIDATE
+    // ============================================================
     private void fillFormFrom(DoctorDTO d) {
         if (d == null) return;
         txtFullName.setText(d.getFullName());
@@ -260,14 +437,30 @@ public class DoctorManagementController {
         selectDepartmentById(d.getDepartmentId());
     }
 
+    /** Dùng khi chuyển sang CREATE hoặc sau khi lưu xong */
+    private void clearForm() {
+        txtFullName.clear();
+        cbGender.getSelectionModel().clearSelection();
+        dpDob.setValue(null);
+        txtPhone.clear();
+        txtEmail.clear();
+        txtFee.clear();
+        txtAddress.clear();
+        txtNotes.clear();
+        doctorStatus.getSelectionModel().clearSelection();
+        cbDepartmentForm.getSelectionModel().clearSelection();
+    }
+
     private DoctorDTO buildDtoFromForm() {
         Double fee;
-        try { fee = ValidationUtils.parseFee(txtFee.getText()); }
-        catch (NumberFormatException ex) {
+        try {
+            fee = ValidationUtils.parseFee(txtFee.getText());
+        } catch (NumberFormatException ex) {
             throw new IllegalArgumentException("Phí khám không hợp lệ (phải là số ≥ 0).");
         }
 
         DepartmentDTO dep = cbDepartmentForm.getValue();
+
         DoctorDTO dto = new DoctorDTO();
         dto.setFullName(trimOrNull(txtFullName.getText()));
         dto.setGender(cbGender.getValue());
@@ -291,86 +484,96 @@ public class DoctorManagementController {
         DepartmentDTO dep = cbDepartmentForm.getValue();
         DoctorStatus status = doctorStatus.getValue();
 
-        if (isBlank(fullName)) return "Vui lòng nhập Họ tên.";
-        if (gender == null)    return "Vui lòng chọn Giới tính.";
-        if (status == null)    return "Vui lòng chọn Trạng thái.";
-        if (!isValidDob(dob))  return "Ngày sinh không hợp lệ.";
-        if (isBlank(phone))    return "Vui lòng nhập SĐT.";
-        if (!isValidPhone(phone)) return "SĐT không hợp lệ (10–11 chữ số).";
+        if (isBlank(fullName))                     return "Vui lòng nhập Họ tên.";
+        if (gender == null)                        return "Vui lòng chọn Giới tính.";
+        if (status == null)                        return "Vui lòng chọn Trạng thái.";
+        if (!isValidDob(dob))                      return "Ngày sinh không hợp lệ.";
+        if (isBlank(phone))                        return "Vui lòng nhập SĐT.";
+        if (!isValidPhone(phone))                  return "SĐT không hợp lệ (10–11 chữ số).";
         if (email != null && !isValidEmail(email)) return "Email không hợp lệ.";
-        if (dep == null)       return "Vui lòng chọn Khoa.";
+        if (dep == null)                           return "Vui lòng chọn Khoa.";
+
         return null;
     }
 
     private void selectDepartmentById(Integer id) {
-        if (id == null) { cbDepartmentForm.getSelectionModel().clearSelection(); return; }
+        if (id == null) {
+            cbDepartmentForm.getSelectionModel().clearSelection();
+            return;
+        }
         for (DepartmentDTO dep : cbDepartmentForm.getItems()) {
-            if (id.equals(dep.getId())) { cbDepartmentForm.setValue(dep); break; }
+            if (id.equals(dep.getId())) {
+                cbDepartmentForm.setValue(dep);
+                break;
+            }
         }
     }
 
-    private static javafx.beans.property.ReadOnlyStringWrapper wrap(String s) {
-        return new javafx.beans.property.ReadOnlyStringWrapper(s == null ? "" : s);
+    private static ReadOnlyStringWrapper wrap(String s) {
+        return new ReadOnlyStringWrapper(s == null ? "" : s);
     }
 
-    private static String formatVnd(double v) {
-        return String.format("%,.0f đ", v).replace(',', '.');
+    // ============================================================
+    //  TABLE CELL STYLE (STATUS)
+    // ============================================================
+    private void styleStatusColumn(TableColumn<DoctorDTO, String> colStatus) {
+        colStatus.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String text, boolean empty) {
+                super.updateItem(text, empty);
+                if (empty || text == null || text.isBlank()) {
+                    setText(null);
+                    setStyle("");
+                    return;
+                }
+                setText(text);
+                setStyle(switch (text) {
+                    case "Hoạt động"       -> "-fx-text-fill:#1a7f37; -fx-font-weight:bold;";
+                    case "Ngưng hoạt động" -> "-fx-text-fill:#b42318; -fx-font-weight:bold;";
+                    case "Chờ duyệt"       -> "-fx-text-fill:#b78103; -fx-font-weight:bold;";
+                    case "Đình chỉ"        -> "-fx-text-fill:#8a2be2; -fx-font-weight:bold;";
+                    case "Tạm nghỉ"        -> "-fx-text-fill:#555; -fx-font-weight:bold;";
+                    default                -> "";
+                });
+            }
+        });
     }
 
-    private static String codePrefixFromDepartmentName(String name) {
-        if (name == null) return "KH";
-        return switch (name.trim()) {
-            case "Khoa Tim Mạch" -> "TM";
-            case "Khoa Da Liễu" -> "DL";
-            case "Khoa Thần Kinh" -> "TK";
-            case "Khoa Nội Tổng Quát" -> "NTQ";
-            case "Khoa Nhi" -> "NHI";
-            case "Khoa Sản" -> "SAN";
-            case "Khoa Phụ Khoa" -> "PK";
-            case "Khoa Mắt" -> "MAT";
-            case "Khoa Nha Khoa" -> "RHM";
-            case "Khoa Tai Mũi Họng" -> "TMH";
-            case "Khoa Tâm Thần" -> "TT";
-            default -> "KH";
-        };
+    // ============================================================
+    //  ALERT HELPERS
+    // ============================================================
+    private void warn(String message){
+        showAlert(Alert.AlertType.WARNING,"Thiếu thông tin",message);
     }
 
-    private static String genderVi(Gender g) {
-        if (g == null) return "";
-        return switch (g) {
-            case MALE -> "Nam";
-            case FEMALE -> "Nữ";
-            case OTHER -> "Khác";
-        };
+    private void info(String message){
+        showAlert(Alert.AlertType.INFORMATION,"Thành công",message);
     }
 
-    private String statusVi(DoctorStatus st) {
-        return switch (st) {
-            case ACTIVE -> "Hoạt động";
-            case INACTIVE -> "Ngưng hoạt động";
-            case PENDING_APPROVAL -> "Chờ duyệt";
-            case SUSPENDED -> "Đình chỉ";
-            case ON_LEAVE -> "Tạm nghỉ";
-        };
-    }
-
-    private void clearForm() {
-        txtFullName.clear();
-        cbGender.getSelectionModel().clearSelection();
-        dpDob.setValue(null);
-        txtPhone.clear();
-        txtEmail.clear();
-        cbDepartmentForm.getSelectionModel().clearSelection();
-        txtFee.clear();
-        txtAddress.clear();
-        if (txtNotes != null) txtNotes.clear();
-    }
-
-    private void warn(String m){ new Alert(Alert.AlertType.WARNING, m, ButtonType.OK).showAndWait(); }
-    private void info(String m){ new Alert(Alert.AlertType.INFORMATION, m, ButtonType.OK).showAndWait(); }
     private void showSystemError(Throwable ex){
-        new Alert(Alert.AlertType.ERROR,
-                "Đã xảy ra lỗi. Vui lòng thử lại.\nChi tiết (dev): " + ex.getMessage(),
-                ButtonType.OK).showAndWait();
+        showAlert(
+                Alert.AlertType.ERROR,
+                "Lỗi hệ thống",
+                "Đã xảy ra lỗi không mong muốn.\n\nVui lòng thử lại.\n\nChi tiết kỹ thuật: " + ex.getMessage()
+        );
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String body){
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(body);
+        styleDialog(alert);
+        alert.showAndWait();
+    }
+
+    private void styleDialog(Alert alert){
+        DialogPane pane = alert.getDialogPane();
+        pane.setStyle(
+            "-fx-font-size:13px;" +
+            "-fx-background-color:linear-gradient(#ffffff,#f4f7ff);" +
+            "-fx-background-radius:10;" +
+            "-fx-padding:16;"
+        );
     }
 }

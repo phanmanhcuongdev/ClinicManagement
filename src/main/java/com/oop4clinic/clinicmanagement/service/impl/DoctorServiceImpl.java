@@ -8,6 +8,7 @@ import com.oop4clinic.clinicmanagement.dao.jpa.EntityManagerProvider;
 import com.oop4clinic.clinicmanagement.model.dto.DoctorDTO;
 import com.oop4clinic.clinicmanagement.model.entity.Department;
 import com.oop4clinic.clinicmanagement.model.entity.Doctor;
+import com.oop4clinic.clinicmanagement.model.enums.DoctorStatus;
 import com.oop4clinic.clinicmanagement.model.mapper.DoctorMapper;
 import com.oop4clinic.clinicmanagement.service.DoctorService;
 import jakarta.persistence.*;
@@ -154,4 +155,79 @@ public class DoctorServiceImpl implements DoctorService {
 
     }
 
+    @Override
+    public List<DoctorDTO> searchDoctors(String keyword,
+                                         Integer departmentId,
+                                         DoctorStatus status) {
+
+        EntityManager em = EntityManagerProvider.em();
+        try {
+            // 1. Lấy all từ repo (sau này bạn có thể thay bằng query có WHERE)
+            var allEntities = doctorRepo.findAll(em);
+
+            // 2. Map sang DTO trước cho dễ làm việc với field đã flatten (departmentName,...)
+            List<DoctorDTO> allDtos = allEntities.stream()
+                    .map(DoctorMapper::toDTO)
+                    .toList();
+
+            // 3. Lọc theo tiêu chí
+            String kw = normalize(keyword);
+
+            List<DoctorDTO> filtered = allDtos.stream()
+                    .filter(d -> {
+                        // keyword match: fullName / phone / email (contains, ignorecase)
+                        if (kw != null) {
+                            String fn = normalize(d.getFullName());
+                            String ph = normalize(d.getPhone());
+                            String eml = normalize(d.getEmail());
+
+                            boolean hit =
+                                    (fn != null && fn.contains(kw)) ||
+                                    (ph != null && ph.contains(kw)) ||
+                                    (eml != null && eml.contains(kw));
+
+                            if (!hit) return false;
+                        }
+
+                        // department filter
+                        if (departmentId != null) {
+                            if (d.getDepartmentId() == null ||
+                                !d.getDepartmentId().equals(departmentId)) {
+                                return false;
+                            }
+                        }
+
+                        // status filter
+                        if (status != null) {
+                            if (d.getDoctorStatus() != status) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    })
+                    // 4. sort theo tên A→Z không phân biệt hoa/thường
+                    .sorted(Comparator.comparing(
+                            d -> safeLower(d.getFullName())
+                    ))
+                    .toList();
+
+            // 5. trả về list đã lọc
+            return new ArrayList<>(filtered);
+
+        } finally {
+            em.close();
+        }
+    }
+
+    // Helper nhỏ để tránh null handling lặp lại
+    private static String normalize(String s) {
+        if (s == null) return null;
+        String t = s.trim();
+        return t.isEmpty() ? null : t.toLowerCase();
+    }
+
+    private static String safeLower(String s) {
+        return s == null ? "" : s.toLowerCase();
+    }
 }

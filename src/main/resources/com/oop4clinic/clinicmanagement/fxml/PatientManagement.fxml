@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.PatientManagementController">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.PatientManagementController">
 
     <!-- ========== TOP: CRUD + FILTER ========== -->
     <top>
@@ -55,7 +55,7 @@
     <center>
         <VBox spacing="8">
             <children>
-                <TableView fx:id="tblPatients" onMouseClicked="#onPatientTableClicked" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tblPatients" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colFullName" prefWidth="220" text="Họ và tên" />
                         <TableColumn fx:id="colDob" prefWidth="130" text="Ngày sinh" />

@@ -8,6 +8,7 @@ module com.oop4clinic.clinicmanagement {
     requires javafx.base;
 
 
+
     exports com.oop4clinic.clinicmanagement;
 
     opens com.oop4clinic.clinicmanagement to javafx.fxml;
