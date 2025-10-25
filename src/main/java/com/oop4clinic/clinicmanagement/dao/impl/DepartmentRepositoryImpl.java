@@ -31,4 +31,14 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
         }
         return em.merge(dept);
     }
+
+    @Override
+    public void deleteById(EntityManager em,Integer id)
+    {
+        Department found = em.find(Department.class,id);
+        if(found!=null)
+        {
+            em.remove(found);
+        }
+    }
 }

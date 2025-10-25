@@ -1,5 +1,7 @@
 package com.oop4clinic.clinicmanagement.model.dto;
 
+import java.util.List;
+
 public class DepartmentDTO {
     public Integer getId() {
         return id;
@@ -37,6 +39,16 @@ public class DepartmentDTO {
     private String name;
     private Double baseFee;
     private String description;
+
+    public List<String> getDoctorNames() {
+        return doctorNames;
+    }
+
+    public void setDoctorNames(List<String> doctorNames) {
+        this.doctorNames = doctorNames;
+    }
+
+    private List<String> doctorNames;
 
 
 }

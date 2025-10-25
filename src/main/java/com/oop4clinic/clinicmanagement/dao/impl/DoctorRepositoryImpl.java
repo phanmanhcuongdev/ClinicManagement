@@ -94,5 +94,24 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         return em.merge(managed);
     }
 
+    @Override
+    public long countAll(EntityManager em) {
+        return em.createQuery(
+                "select count(d) from Doctor d",
+                Long.class
+        ).getSingleResult();
+    }
+
+    @Override
+    public long countByStatus(EntityManager em,
+                              com.oop4clinic.clinicmanagement.model.enums.DoctorStatus status) {
+
+        return em.createQuery(
+                "select count(d) from Doctor d where d.status = :st",
+                Long.class
+        )
+        .setParameter("st", status)
+        .getSingleResult();
+    }
 
 }

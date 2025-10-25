@@ -9,4 +9,6 @@ public interface PatientRepository {
     Patient create(EntityManager em, Patient e);
     List<Patient> findAll(EntityManager em);
     Patient update(EntityManager em,Patient e);
+    long countAll(EntityManager em);
+    List<Patient> findNewest(EntityManager em, int limit);
 }

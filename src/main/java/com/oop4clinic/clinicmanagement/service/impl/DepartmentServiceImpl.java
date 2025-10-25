@@ -24,9 +24,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         try {
             var list = deptRepo.findAll(em);
 
-            return list.stream()
-                       .map(DepartmentMapper::toDTO)
-                       .toList();
+            return DepartmentMapper.toDtoList(list);
         } finally {
             em.close();
         }
@@ -52,7 +50,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             deptRepo.create(em,entity);
 
             tx.commit();
-            return DepartmentMapper.toDTO(entity);
+            return DepartmentMapper.toDto(entity);
         }
         catch(RuntimeException ex)
         {
@@ -64,4 +62,48 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
 
     }
+
+    @Override
+    public void deleteById(Integer id)
+    {
+        if(id==null)
+        {
+            throw new IllegalArgumentException("ID rỗng, không thể xóa");
+        }
+
+        EntityManager em = EntityManagerProvider.em();
+        EntityTransaction tx = em.getTransaction();
+        try
+        {
+            tx.begin();
+
+            Department found = em.find(Department.class, id);
+            if (found == null) {
+                throw new IllegalArgumentException("Khoa không tồn tại (id=" + id + ")");
+            }
+
+            // rule business: không cho xoá nếu còn bác sĩ thuộc khoa đó
+            if (found.getDoctors() != null && !found.getDoctors().isEmpty()) {
+                throw new IllegalStateException("Không thể xoá khoa còn bác sĩ đang thuộc khoa.");
+            }
+
+            deptRepo.deleteById(em, id);
+
+            tx.commit();
+
+        }catch (RuntimeException ex)
+        {
+            if(tx.isActive()) tx.rollback();
+            throw ex;
+        }finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public DepartmentDTO update(Integer id,DepartmentDTO dto)
+    {
+        return new DepartmentDTO();
+    }
+
 }

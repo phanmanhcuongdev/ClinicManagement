@@ -19,175 +19,199 @@
 
 <BorderPane fx:id="root" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.MenuAdminController">
 
-  <!-- SIDEBAR (giữ màu & kiểu gốc) -->
-  <left>
-    <VBox fillWidth="true" prefWidth="240.0" spacing="10.0" style="-fx-background-color:#e0fffa; -fx-padding: 16;">
-      <HBox alignment="CENTER" spacing="8">
-        <Label style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#99c2ff" text="OOP4" textFill="#1e80c7">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font></Label>
-      </HBox>
+    <!-- ================= SIDEBAR ================= -->
+    <left>
+        <VBox fillWidth="true" prefWidth="240.0" spacing="10.0" style="-fx-background-color:#e0fffa; -fx-padding:16;">
+            <!-- Logo / brand -->
+            <HBox alignment="CENTER" spacing="8">
+                <Label style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#1e80c7;" text="OOP4">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+            </HBox>
 
-      <!-- Item: Bệnh nhân -->
-      <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
-        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-          <image><Image url="@../../../../image/benhnhan.jpg" /></image>
-        </ImageView>
-        <Hyperlink focusTraversable="false" onAction="#openPatients" style="-fx-font-size:18; -fx-font-weight:bold;" text="Bệnh nhân" textFill="#1e80c7" visited="false" />
-      </HBox>
-
-      <!-- Item: Bác sĩ -->
-      <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
-        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-          <image><Image url="@../../../../image/bacsi.jpg" /></image>
-        </ImageView>
-        <Hyperlink fx:id="linkDoctors" focusTraversable="false" onAction="#openDoctors" style="-fx-font-size:18; -fx-font-weight:bold;" text="Bác sĩ" textFill="#1e80c7" visited="false" />
-      </HBox>
-
-      <!-- Item: Lịch hẹn -->
-      <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
-        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-          <image><Image url="@../../../../image/lich.jpg" /></image>
-        </ImageView>
-        <Hyperlink focusTraversable="false" style="-fx-font-size:18; -fx-font-weight:bold;" text="Lịch hẹn" textFill="#1e80c7" visited="false" />
-      </HBox>
-
-      <!-- Item: Hồ sơ -->
-      <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
-        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-          <image><Image url="@../../../../image/hoso.jpg" /></image>
-        </ImageView>
-        <Hyperlink focusTraversable="false" style="-fx-font-size:18; -fx-font-weight:bold;" text="Hồ sơ" textFill="#1e80c7" visited="false" />
-      </HBox>
-
-      <!-- Item: Hóa đơn -->
-      <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
-        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-          <image><Image url="@../../../../image/hoadon.jpg" /></image>
-        </ImageView>
-        <Hyperlink focusTraversable="false" style="-fx-font-size:18; -fx-font-weight:bold;" text="Hóa đơn" textFill="#1e80c7" visited="false" />
-      </HBox>
-    </VBox>
-  </left>
-
-  <!-- HEADER -->
-  <top>
-    <HBox spacing="12.0" style="-fx-background-color:white; -fx-padding:12;">
-      <Label style="-fx-font-size:18; -fx-font-weight:bold; -fx-font-style:italic;" text="Xin chào, admin!" />
-      <Region HBox.hgrow="ALWAYS" />
-    </HBox>
-  </top>
-
-  <!-- CONTENT -->
-  <center>
-    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
-      <content>
-        <VBox fillWidth="true" maxWidth="Infinity" spacing="20.0" style="-fx-padding: 20;">
-
-          <!-- Hàng 4 thẻ info -->
-          <HBox maxWidth="Infinity" spacing="20.0">
-            <!-- 1 -->
-            <VBox alignment="CENTER" prefWidth="220.0" spacing="10.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding:10;">
-              <HBox alignment="CENTER" spacing="10">
-                <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
-                  <image><Image url="@../../../../image/benhnhan.jpg" /></image>
+            <!-- Dashboard -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding:12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/hoso.jpg" /></image>
                 </ImageView>
-                <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Bệnh nhân" />
-              </HBox>
-              <HBox spacing="8.0">
-                <Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Label" />
-                <Label text="Label" />
-              </HBox>
-            </VBox>
-            <!-- 2 -->
-            <VBox alignment="CENTER" prefWidth="220.0" spacing="10.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding:10;">
-              <HBox alignment="CENTER" spacing="10">
-                <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
-                  <image><Image url="@../../../../image/benhnhan.jpg" /></image>
+                <Hyperlink focusTraversable="false" onAction="#openDashboard" style="-fx-font-size:18; -fx-font-weight:bold;" text="Dashboard" textFill="#1e80c7" visited="false" />
+            </HBox>
+
+            <!-- Bệnh nhân -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding:12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/benhnhan.jpg" /></image>
                 </ImageView>
-                <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Bệnh nhân" />
-              </HBox>
-              <HBox spacing="8.0"><Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Label" /><Label text="Label" /></HBox>
-            </VBox>
-            <!-- 3 -->
-            <VBox alignment="CENTER" prefWidth="220.0" spacing="10.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding:10;">
-              <HBox alignment="CENTER" spacing="10">
-                <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
-                  <image><Image url="@../../../../image/benhnhan.jpg" /></image>
+                <Hyperlink focusTraversable="false" onAction="#openPatients" style="-fx-font-size:18; -fx-font-weight:bold;" text="Bệnh nhân" textFill="#1e80c7" visited="false" />
+            </HBox>
+
+            <!-- Bác sĩ -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding:12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/bacsi.jpg" /></image>
                 </ImageView>
-                <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Bệnh nhân" />
-              </HBox>
-              <HBox spacing="8.0"><Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Label" /><Label text="Label" /></HBox>
-            </VBox>
-            <!-- 4 -->
-            <VBox alignment="CENTER" prefWidth="220.0" spacing="10.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding:10;">
-              <HBox alignment="CENTER" spacing="10">
-                <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
-                  <image><Image url="@../../../../image/benhnhan.jpg" /></image>
+                <Hyperlink fx:id="linkDoctors" focusTraversable="false" onAction="#openDoctors" style="-fx-font-size:18; -fx-font-weight:bold;" text="Bác sĩ" textFill="#1e80c7" visited="false" />
+            </HBox>
+
+            <!-- Lịch hẹn -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding:12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/lich.jpg" /></image>
                 </ImageView>
-                <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Bệnh nhân" />
-              </HBox>
-              <HBox spacing="8.0"><Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Label" /><Label text="Label" /></HBox>
-            </VBox>
+                <Hyperlink focusTraversable="false" onAction="#openAppointments" style="-fx-font-size:18; -fx-font-weight:bold;" text="Lịch hẹn" textFill="#1e80c7" visited="false" />
+            </HBox>
 
-            <Region HBox.hgrow="ALWAYS" />
-          </HBox>
+            <!-- Hồ sơ -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding:12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/hoso.jpg" /></image>
+                </ImageView>
+                <Hyperlink focusTraversable="false" onAction="#openRecords" style="-fx-font-size:18; -fx-font-weight:bold;" text="Hồ sơ" textFill="#1e80c7" visited="false" />
+            </HBox>
 
-          <!-- Hai cột: trái (chart + table) / phải (lịch + thu chi) -->
-          <HBox maxWidth="Infinity" spacing="20.0">
-
-            <!-- CỘT TRÁI -->
-            <VBox maxWidth="Infinity" spacing="20.0" HBox.hgrow="ALWAYS">
-              <!-- Panel Chart -->
-              <VBox maxWidth="Infinity" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
-                <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Số người khám trong tuần" />
-                <BarChart animated="false" legendVisible="false">
-                  <xAxis><CategoryAxis /></xAxis>
-                  <yAxis><NumberAxis /></yAxis>
-                </BarChart>
-                <VBox.vgrow>ALWAYS</VBox.vgrow>
-              </VBox>
-
-              <!-- Panel Table -->
-              <VBox maxWidth="Infinity" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
-                <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Quản lý bệnh nhân" />
-                <TableView>
-                  <columns>
-                    <TableColumn text="ID" />
-                    <TableColumn text="Tên" />
-                    <TableColumn text="Column X" />
-                    <TableColumn text="Column X" />
-                  </columns>
-                </TableView>
-                <VBox.vgrow>ALWAYS</VBox.vgrow>
-              </VBox>
-            </VBox>
-
-            <!-- CỘT PHẢI -->
-            <VBox maxWidth="420.0" prefWidth="420.0" spacing="20.0">
-              <!-- Lịch hẹn -->
-              <VBox style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
-                <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Lịch hẹn sắp tới" />
-                <VBox spacing="10.0">
-                  <HBox spacing="10.0"><Label text="Label" /><Label text="Label" /></HBox>
-                  <HBox spacing="10.0"><Label text="Label" /><Label text="Label" /></HBox>
-                  <HBox spacing="10.0"><Label text="Label" /><Label text="Label" /></HBox>
-                  <HBox spacing="10.0"><Label text="Label" /><Label text="Label" /></HBox>
-                </VBox>
-              </VBox>
-
-              <!-- Thu chi -->
-              <VBox style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
-                <Label style="-fx-text-fill:#0088ff; -fx-font-size:18; -fx-font-weight:900;" text="Thu chi" />
-                <Line endX="380" opacity="0.4" startX="0" stroke="#101517" />
-              </VBox>
-            </VBox>
-
-          </HBox>
+            <!-- Hóa đơn -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding:12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/hoadon.jpg" /></image>
+                </ImageView>
+                <Hyperlink focusTraversable="false" onAction="#openInvoices" style="-fx-font-size:18; -fx-font-weight:bold;" text="Hóa đơn" textFill="#1e80c7" visited="false" />
+            </HBox>
+         <HBox alignment="CENTER_LEFT" layoutX="26.0" layoutY="444.0" spacing="10.0" style="-fx-padding:12 20 12 20;">
+            <children>
+               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../../image/khoa.png" />
+                  </image>
+               </ImageView>
+               <Hyperlink focusTraversable="false" onAction="#openDepartments" style="-fx-font-size:18; -fx-font-weight:bold;" text="Khoa" textFill="#1e80c7" visited="false" />
+            </children>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" layoutX="26.0" layoutY="518.0" spacing="10.0" style="-fx-padding:12 20 12 20;">
+            <children>
+               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../../image/settings.png" />
+                  </image>
+               </ImageView>
+               <Hyperlink focusTraversable="false" onAction="#openSettings" style="-fx-font-size:18; -fx-font-weight:bold;" text="Cài đặt" textFill="#1e80c7" visited="false" />
+            </children>
+         </HBox>
         </VBox>
-      </content>
-    </ScrollPane>
-  </center>
+    </left>
+
+    <!-- ================= HEADER ================= -->
+    <top>
+        <HBox spacing="12.0" style="-fx-background-color:white; -fx-padding:12;">
+            <Label style="-fx-font-size:18; -fx-font-weight:bold; -fx-font-style:italic;" text="Xin chào, admin!" />
+            <Region HBox.hgrow="ALWAYS" />
+            <!-- chỗ để sau này thêm avatar / logout -->
+        </HBox>
+    </top>
+
+    <!-- ================= MAIN CENTER ================= -->
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+            <content>
+                <VBox fillWidth="true" maxWidth="Infinity" spacing="20.0" style="-fx-padding:20;">
+
+                    <!-- ===== ROW KPI ===== -->
+                    <HBox maxWidth="Infinity" spacing="20.0">
+
+                        <!-- Tổng bệnh nhân -->
+                        <VBox alignment="CENTER" prefWidth="220.0" spacing="8.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding:12;">
+                            <Label style="-fx-text-fill:#1e80c7; -fx-font-size:16; -fx-font-weight:bold;" text="Bệnh nhân" />
+                            <Label fx:id="lblTotalPatients" style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#1e80c7;" text="0" />
+                            <Label fx:id="lblPatientsDelta" style="-fx-font-size:12; -fx-text-fill:#1e80c7;" text="+0 hôm nay" />
+                        </VBox>
+
+                        <!-- Tổng bác sĩ -->
+                        <VBox alignment="CENTER" prefWidth="220.0" spacing="8.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding:12;">
+                            <Label style="-fx-text-fill:#1e80c7; -fx-font-size:16; -fx-font-weight:bold;" text="Bác sĩ" />
+                            <Label fx:id="lblTotalDoctors" style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#1e80c7;" text="0" />
+                            <Label fx:id="lblDoctorsActive" style="-fx-font-size:12; -fx-text-fill:#1e80c7;" text="0 đang làm việc" />
+                        </VBox>
+
+                        <!-- Lịch hẹn hôm nay -->
+                        <VBox alignment="CENTER" prefWidth="220.0" spacing="8.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding:12;">
+                            <Label style="-fx-text-fill:#1e80c7; -fx-font-size:16; -fx-font-weight:bold;" text="Lịch hẹn hôm nay" />
+                            <Label fx:id="lblAppointmentsToday" style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#1e80c7;" text="0" />
+                            <Label fx:id="lblNextAppointmentTime" style="-fx-font-size:12; -fx-text-fill:#1e80c7;" text="Hẹn sớm nhất: --:--" />
+                        </VBox>
+
+                        <!-- Doanh thu hôm nay -->
+                        <VBox alignment="CENTER" prefWidth="220.0" spacing="8.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding:12;">
+                            <Label style="-fx-text-fill:#1e80c7; -fx-font-size:16; -fx-font-weight:bold;" text="Doanh thu hôm nay" />
+                            <Label fx:id="lblRevenueToday" style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#1e80c7;" text="0 đ" />
+                            <Label fx:id="lblRevenueTrend" style="-fx-font-size:12; -fx-text-fill:#1e80c7;" text="+0% vs hôm qua" />
+                        </VBox>
+
+                        <Region HBox.hgrow="ALWAYS" />
+                    </HBox>
+
+                    <!-- ===== ROW CHART + RIGHT SIDE ===== -->
+                    <HBox maxWidth="Infinity" spacing="20.0">
+
+                        <!-- CỘT TRÁI -->
+                        <VBox maxWidth="Infinity" spacing="20.0" HBox.hgrow="ALWAYS">
+
+                            <!-- Biểu đồ lượt khám -->
+                            <VBox maxWidth="Infinity" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
+                                <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Số lượt khám theo ngày" />
+                                <BarChart fx:id="chartVisits" animated="false" legendVisible="false">
+                                    <xAxis><CategoryAxis fx:id="chartVisitsXAxis" /></xAxis>
+                                    <yAxis><NumberAxis fx:id="chartVisitsYAxis" /></yAxis>
+                                </BarChart>
+                                <VBox.vgrow>ALWAYS</VBox.vgrow>
+                            </VBox>
+
+                            <!-- Bệnh nhân mới -->
+                            <VBox maxWidth="Infinity" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
+                                <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Bệnh nhân mới" />
+                                <TableView fx:id="tblRecentPatients">
+                                    <columns>
+                                        <TableColumn fx:id="colPatientId" prefWidth="60" text="ID" />
+                                        <TableColumn fx:id="colPatientName" prefWidth="160" text="Họ tên" />
+                                        <TableColumn fx:id="colPatientDob" prefWidth="100" text="Ngày sinh" />
+                                        <TableColumn fx:id="colPatientPhone" prefWidth="120" text="SĐT" />
+                                    </columns>
+                                </TableView>
+                                <VBox.vgrow>ALWAYS</VBox.vgrow>
+                            </VBox>
+                        </VBox>
+
+                        <!-- CỘT PHẢI -->
+                        <VBox maxWidth="420.0" prefWidth="420.0" spacing="20.0">
+
+                            <!-- Lịch hẹn sắp tới -->
+                            <VBox style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
+                                <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Lịch hẹn sắp tới" />
+                                <VBox fx:id="upcomingAppointmentsBox" spacing="10.0" style="-fx-padding:8;">
+                                    <!-- controller add các HBox từng lịch -->
+                                </VBox>
+                            </VBox>
+
+                            <!-- Thu chi -->
+                            <VBox style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;">
+                                <Label style="-fx-text-fill:#0088ff; -fx-font-size:18; -fx-font-weight:900;" text="Thu chi" />
+                                <Line endX="380" opacity="0.4" startX="0" stroke="#101517" />
+                                <VBox spacing="6" style="-fx-padding:8 0 0 0;">
+                                    <HBox spacing="8">
+                                        <Label style="-fx-font-weight:bold; -fx-text-fill:#1e80c7;" text="Doanh thu tuần này:" />
+                                        <Label fx:id="lblRevenueWeek" text="0 đ" />
+                                    </HBox>
+                                    <HBox spacing="8">
+                                        <Label style="-fx-font-weight:bold; -fx-text-fill:#1e80c7;" text="Doanh thu tháng:" />
+                                        <Label fx:id="lblRevenueMonth" text="0 đ" />
+                                    </HBox>
+                                </VBox>
+                            </VBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
 
 </BorderPane>

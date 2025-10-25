@@ -12,4 +12,7 @@ public interface DoctorRepository {
     boolean existsByPhone(EntityManager em,String phone);
     Doctor findById(EntityManager em, int id);
     Doctor update(EntityManager em,Doctor doctor);
+    long countAll(EntityManager em);
+    long countByStatus(EntityManager em,
+                       com.oop4clinic.clinicmanagement.model.enums.DoctorStatus status);
 }

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600" prefWidth="1000" style="-fx-background-color: #f5f8ff;" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.DepartmentManagementController">
+
+    <!-- HEADER -->
+    <top>
+        <HBox spacing="12" style="-fx-padding:16; -fx-background-color:white; -fx-border-color:#dce3ff; -fx-border-width:0 0 1 0;">
+            <Label style="-fx-font-size:20; -fx-font-weight:bold; -fx-text-fill:#1e80c7;" text="Quản lý khoa">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Label>
+            <Label fx:id="lblStatus" style="-fx-text-fill:#666; -fx-font-size:12;" text="" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button onAction="#onReload" style="-fx-background-radius:8; -fx-background-color:#1e80c7; -fx-text-fill:white;" text="Tải lại" />
+        </HBox>
+    </top>
+
+    <!-- CONTENT -->
+    <center>
+        <SplitPane dividerPositions="0.45">
+            <items>
+
+                <!-- LEFT: TABLE KHOA + ACTIONS -->
+                <VBox spacing="10" style="-fx-padding:16;">
+                    <!-- thanh công cụ -->
+                    <HBox spacing="10">
+                        <Button onAction="#onAddNew" style="-fx-background-radius:8; -fx-background-color:#1e80c7; -fx-text-fill:white;" text="Thêm khoa mới" />
+                        <Button fx:id="btnSave" onAction="#onSave" style="-fx-background-radius:8; -fx-background-color:#2e7d32; -fx-text-fill:white;" text="Lưu thay đổi" />
+                        <Button fx:id="btnDelete" onAction="#onDelete" style="-fx-background-radius:8; -fx-background-color:#b42318; -fx-text-fill:white;" text="Xoá khoa" />
+                    </HBox>
+
+                    <!-- danh sách khoa -->
+                    <TableView fx:id="tblDepartments" prefHeight="500.0" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colDeptId" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="colDeptName" prefWidth="180" text="Tên khoa" />
+                            <TableColumn fx:id="colDeptBaseFee" prefWidth="100" text="Phí khám" />
+                        </columns>
+                    </TableView>
+
+                    <Label fx:id="lblDeptCount" style="-fx-font-size:12; -fx-text-fill:#555;" text="0 khoa" />
+                </VBox>
+
+                <!-- RIGHT: FORM CHI TIẾT -->
+                <VBox spacing="12" style="-fx-padding:16;">
+                    <Label style="-fx-font-size:16; -fx-font-weight:bold; -fx-text-fill:#1e80c7;" text="Thông tin khoa" />
+
+                    <GridPane hgap="10" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="30" />
+                            <ColumnConstraints percentWidth="70" />
+                        </columnConstraints>
+
+                        <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="txtId" editable="false" style="-fx-opacity:0.6;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Tên khoa:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtName" promptText="VD: Khoa Tim Mạch" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Phí khám mặc định:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="txtBaseFee" promptText="VD: 350000" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label text="Mô tả:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextArea fx:id="txtDescription" prefRowCount="3" promptText="Ghi chú về chuyên môn, dịch vụ, trang thiết bị..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+                    </GridPane>
+
+                    <Separator />
+
+                    <Label style="-fx-font-size:14; -fx-font-weight:bold; -fx-text-fill:#1e80c7;" text="Bác sĩ thuộc khoa này" />
+
+                    <ListView fx:id="lstDoctorsInDept" prefHeight="180.0" style="-fx-background-radius:10; -fx-background-color:white; -fx-border-color:#d0d7ff; -fx-border-radius:10;" />
+
+                    <Label style="-fx-font-size:11; -fx-text-fill:#777; -fx-font-style:italic;" text="(Danh sách chỉ xem, thay đổi ở màn 'Quản lý bác sĩ')" />
+
+                    <Region VBox.vgrow="ALWAYS" />
+                </VBox>
+
+            </items>
+        </SplitPane>
+    </center>
+
+</BorderPane>
