@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="547.0" prefWidth="494.0" spacing="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.EditMedicalRecordController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <Label text="Chỉnh Sửa Hồ Sơ Bệnh Án">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+        <VBox.margin>
+            <Insets bottom="10.0" />
+        </VBox.margin>
+    </Label>
+    <GridPane hgap="10.0" vgap="10.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" minWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+        <children>
+            <Label text="Bệnh nhân:" GridPane.halignment="RIGHT" />
+            <Label fx:id="patientNameLabel" text="[Tên Bệnh Nhân]" GridPane.columnIndex="1" />
+            <Label text="Bác sĩ:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <Label fx:id="doctorNameLabel" text="[Tên Bác Sĩ]" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Ngày tạo:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label fx:id="createdAtLabel" text="[Ngày Tạo]" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Triệu chứng:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+            <TextArea fx:id="symptomsTextArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Chẩn đoán:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+            <TextArea fx:id="diagnosisTextArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="Đơn thuốc:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP" />
+            <TextArea fx:id="prescriptionTextArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Ghi chú thêm:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP" />
+            <TextArea fx:id="notesTextArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        </children>
+    </GridPane>
+    <ButtonBar prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveAction" style="-fx-base: #2ecc71;" text="Lưu Thay Đổi" />
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancelAction" text="Hủy" />
+        </buttons>
+        <VBox.margin>
+            <Insets top="10.0" />
+        </VBox.margin>
+    </ButtonBar>
+</VBox>

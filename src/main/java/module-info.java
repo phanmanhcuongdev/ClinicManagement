@@ -7,8 +7,13 @@ module com.oop4clinic.clinicmanagement {
     requires java.desktop;
 
 
-    opens com.oop4clinic.clinicmanagement to javafx.fxml;
     exports com.oop4clinic.clinicmanagement;
 
+    opens com.oop4clinic.clinicmanagement to javafx.fxml;
+
     opens com.oop4clinic.clinicmanagement.model.entity to org.hibernate.orm.core;
+
+    opens com.oop4clinic.clinicmanagement.controller to javafx.fxml,javafx.base;
+
+    opens com.oop4clinic.clinicmanagement.model.dto to javafx.base;
 }

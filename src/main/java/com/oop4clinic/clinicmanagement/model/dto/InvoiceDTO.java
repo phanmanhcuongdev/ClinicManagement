@@ -1,4 +1,4 @@
-package com.oop4clinic.clinicmanagement.dto;
+package com.oop4clinic.clinicmanagement.model.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

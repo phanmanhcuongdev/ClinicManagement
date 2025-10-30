@@ -1,86 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <Pane prefHeight="540.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
+<BorderPane fx:id="root" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.MenuAdminController">
+
+    <!-- SIDEBAR (giữ màu & kiểu gốc) -->
+    <left>
+        <VBox fillWidth="true" prefWidth="240.0" spacing="10.0" style="-fx-background-color:#e0fffa; -fx-padding: 16;">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#99c2ff" text="OOP4" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
+                <children>
+                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../../../../image/dashboard.png" />
+                        </image>
+                    </ImageView>
+                    <Hyperlink focusTraversable="false" onAction="#openDashBoard" style="-fx-font-size:18; -fx-font-weight:bold;" text="DashBoard" textFill="#1e80c7" visited="false" />
+                </children>
+            </HBox>
+
+            <!-- Item: Bệnh nhân -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/benhnhan.jpg" /></image>
+                </ImageView>
+                <Hyperlink focusTraversable="false" style="-fx-font-size:18; -fx-font-weight:bold;" text="Bệnh nhân" textFill="#1e80c7" visited="false" />
+            </HBox>
+
+            <!-- Item: Bác sĩ -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/bacsi.jpg" /></image>
+                </ImageView>
+                <Hyperlink focusTraversable="false" style="-fx-font-size:18; -fx-font-weight:bold;" text="Bác sĩ" textFill="#1e80c7" visited="false" />
+            </HBox>
+
+            <!-- Item: Lịch hẹn -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/lich.jpg" /></image>
+                </ImageView>
+                <Hyperlink focusTraversable="false" onAction="#openAppointments" style="-fx-font-size:18; -fx-font-weight:bold;" text="Lịch hẹn" textFill="#1e80c7" visited="false" />
+            </HBox>
+
+            <!-- Item: Hồ sơ -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/hoso.jpg" /></image>
+                </ImageView>
+                <Hyperlink focusTraversable="false" onAction="#openMedicalRecord" style="-fx-font-size:18; -fx-font-weight:bold;" text="Hồ sơ" textFill="#1e80c7" visited="false" />
+            </HBox>
+
+            <!-- Item: Hóa đơn -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image><Image url="@../../../../image/hoadon.jpg" /></image>
+                </ImageView>
+                <Hyperlink focusTraversable="false" onAction="#openInvoice" style="-fx-font-size:18; -fx-font-weight:bold;" text="Hóa đơn" textFill="#1e80c7" visited="false" />
+            </HBox>
+         <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding:12 20 12 20;">
             <children>
-                <Label layoutX="61.0" layoutY="41.0" text="OOP4" textFill="#1e7fc9e8">
-                    <font>
-                        <Font name="Tahoma Bold" size="25.0" />
-                    </font>
-                </Label>
-                <Hyperlink layoutX="72.0" layoutY="125.0" text="Bệnh nhân" textFill="#1e7fc9">
-                    <font>
-                        <Font name="Tahoma Bold" size="15.0" />
-                    </font>
-                </Hyperlink>
-                <Hyperlink layoutX="72.0" layoutY="192.0" text="Bác sĩ" textFill="#1e7fc9">
-                    <font>
-                        <Font name="Tahoma Bold" size="15.0" />
-                    </font>
-                </Hyperlink>
-                <Hyperlink layoutX="70.0" layoutY="265.0" text="Lịch hẹn" textFill="#1e7fc9">
-                    <font>
-                        <Font name="Tahoma Bold" size="15.0" />
-                    </font>
-                </Hyperlink>
-                <Hyperlink layoutX="70.0" layoutY="340.0" text="Hồ sơ " textFill="#1e7fc9">
-                    <font>
-                        <Font name="Tahoma Bold" size="15.0" />
-                    </font>
-                </Hyperlink>
-                <Hyperlink layoutX="70.0" layoutY="399.0" text="Hóa đơn" textFill="#1e7fc9">
-                    <font>
-                        <Font name="Tahoma Bold" size="15.0" />
-                    </font>
-                </Hyperlink>
-                <Button layoutX="57.0" layoutY="479.0" mnemonicParsing="false" style="-fx-background-color: #1e7fc9;" text="Đăng xuất" textFill="WHITE">
-                    <font>
-                        <Font name="System Bold" size="14.0" />
-                    </font>
-                </Button>
-                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true" style="-fx-image: #FFFFFF;">
-                    <image>
-                        <Image url="@../../../../image/benhnhan.jpg" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="60.0" fitWidth="50.0" layoutX="22.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../../image/bacsi.jpg" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="50.0" fitWidth="35.0" layoutX="27.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../../image/lich.jpg" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="31.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../../image/hoso.jpg" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="57.0" fitWidth="50.0" layoutX="20.0" layoutY="389.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../../image/hoadon.jpg" />
-                    </image>
-                </ImageView>
-                <Line endX="29.33333396911621" endY="32.16666793823242" layoutX="-5.0" layoutY="24.0" startX="57.4999885559082" startY="32.16666793823242" />
-                <Line endX="29.33333396911621" endY="32.16666793823242" layoutX="113.0" layoutY="24.0" startX="57.4999885559082" startY="32.16666793823242" />
+               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../../../ClinicManagement2/src/main/resources/image/khoa.png" />
+                  </image>
+               </ImageView>
+               <Hyperlink focusTraversable="false" onAction="#openDepartments" style="-fx-font-size:18; -fx-font-weight:bold;" text="Khoa" textFill="#1e80c7" visited="false" />
             </children>
-        </Pane>
-        <Label layoutX="446.0" layoutY="224.0" text="Xin chào Admin!" textFill="WHITE">
-            <font>
-                <Font name="Tahoma Bold" size="36.0" />
-            </font>
-        </Label>
-    </children>
-</Pane>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding:12 20 12 20;">
+            <children>
+               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../../../ClinicManagement2/src/main/resources/image/settings.png" />
+                  </image>
+               </ImageView>
+               <Hyperlink focusTraversable="false" onAction="#openSettings" style="-fx-font-size:18; -fx-font-weight:bold;" text="Cài đặt" textFill="#1e80c7" visited="false" />
+            </children>
+         </HBox>
+         <VBox alignment="CENTER" prefHeight="257.0" prefWidth="208.0" VBox.vgrow="ALWAYS">
+            <children>
+               <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">
+                  <children>
+                     <ImageView fitHeight="30.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../../../../image/logout.png" />
+                        </image>
+                     </ImageView>
+                     <Hyperlink focusTraversable="false" onAction="#handleExit" style="-fx-font-size:18; -fx-font-weight:bold;" text="Đăng xuất" textFill="#1e80c7" visited="false" />
+                  </children>
+               </HBox>
+            </children>
+         </VBox>
+        </VBox>
+    </left>
+
+    <!-- HEADER -->
+    <top>
+        <HBox spacing="12.0" style="-fx-background-color:white; -fx-padding:12;">
+            <Label style="-fx-font-size:18; -fx-font-weight:bold; -fx-font-style:italic;" text="Xin chào, admin!" />
+            <Region HBox.hgrow="ALWAYS" />
+        </HBox>
+    </top>
+
+</BorderPane>

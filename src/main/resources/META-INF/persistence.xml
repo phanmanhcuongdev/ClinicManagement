@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
-    <persistence-unit name="clinicPU">
+    <persistence-unit name="clinicDB">
         <class>com.oop4clinic.clinicmanagement.model.entity.Patient</class>
         <class>com.oop4clinic.clinicmanagement.model.entity.Doctor</class>
         <class>com.oop4clinic.clinicmanagement.model.entity.Invoice</class>
@@ -14,6 +14,8 @@
             <property name="hibernate.dialect" value="org.hibernate.community.dialect.SQLiteDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
+
+            <property name="hibernate.jdbc.time_zone" value="UTC"/>
         </properties>
     </persistence-unit>
 </persistence>

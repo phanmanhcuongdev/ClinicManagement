@@ -1,4 +1,4 @@
-package com.oop4clinic.clinicmanagement.dto;
+package com.oop4clinic.clinicmanagement.model.dto;
 
 import com.oop4clinic.clinicmanagement.model.enums.Gender;
 import com.oop4clinic.clinicmanagement.model.enums.Specialty;
