@@ -2,7 +2,7 @@ package com.oop4clinic.clinicmanagement.controller;
 
 import com.oop4clinic.clinicmanagement.MainApp;
 import com.oop4clinic.clinicmanagement.model.entity.User;
-import com.oop4clinic.clinicmanagement.services.AuthService;
+import com.oop4clinic.clinicmanagement.service.impl.AuthService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,9 +38,12 @@ public class RegisterController {
         AuthService authService = new AuthService();
 
         try {
-            User newUser = authService.register(phone, pass, confirmpass);
-
-            setLabelStatus(Color.GREEN, "Đăng ký thành công!");
+            if(authService.register(phone, pass, confirmpass)){
+                setLabelStatus(Color.GREEN, "Đăng ký thành công!");
+            }
+            else {
+                setLabelStatus(Color.RED, "Đăng ký thất bại!");
+            }
 
 //            FXMLLoader loader = new FXMLLoader(
 //                    MainApp.class.getResource("/com/oop4clinic/clinicmanagement/fxml/PatientDashboard.fxml")

@@ -6,7 +6,7 @@ module com.oop4clinic.clinicmanagement {
     requires java.sql;
     requires java.desktop;
     requires javafx.base;
-
+    requires javafx.graphics;
 
 
     exports com.oop4clinic.clinicmanagement;

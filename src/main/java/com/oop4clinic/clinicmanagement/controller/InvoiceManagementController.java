@@ -1,8 +1,9 @@
 package com.oop4clinic.clinicmanagement.controller;
 
+import com.oop4clinic.clinicmanagement.model.dto.InvoiceDTO;
 import com.oop4clinic.clinicmanagement.model.entity.Invoice;
 import com.oop4clinic.clinicmanagement.model.enums.InvoiceStatus;
-import com.oop4clinic.clinicmanagement.services.InvoiceService;
+import com.oop4clinic.clinicmanagement.service.impl.InvoiceServiceImpl;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -30,17 +31,17 @@ public class InvoiceManagementController implements Initializable {
     @FXML private TextField searchField;
     @FXML private Button addButton;
     @FXML private Button refreshButton;
-    @FXML private TableView<Invoice> invoiceTable;
-    @FXML private TableColumn<Invoice, Integer> invoiceIdCol;
-    @FXML private TableColumn<Invoice, String> patientNameCol;
-    @FXML private TableColumn<Invoice, String> doctorNameCol;
-    @FXML private TableColumn<Invoice, LocalDateTime> createdAtCol;
-    @FXML private TableColumn<Invoice, Double> totalAmountCol;
-    @FXML private TableColumn<Invoice, String> statusCol;
-    @FXML private TableColumn<Invoice,Void> actionCol;
+    @FXML private TableView<InvoiceDTO> invoiceTable;
+    @FXML private TableColumn<InvoiceDTO, Integer> invoiceIdCol;
+    @FXML private TableColumn<InvoiceDTO, String> patientNameCol;
+    @FXML private TableColumn<InvoiceDTO, String> doctorNameCol;
+    @FXML private TableColumn<InvoiceDTO, LocalDateTime> createdAtCol;
+    @FXML private TableColumn<InvoiceDTO, Double> totalAmountCol;
+    @FXML private TableColumn<InvoiceDTO, String> statusCol;
+    @FXML private TableColumn<InvoiceDTO ,Void> actionCol;
 
-    private ObservableList<Invoice> masterData = FXCollections.observableArrayList();
-    private InvoiceService invoiceService = new InvoiceService();
+    private ObservableList<InvoiceDTO> masterData = FXCollections.observableArrayList();
+    private InvoiceServiceImpl invoiceService = new InvoiceServiceImpl();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -56,9 +57,9 @@ public class InvoiceManagementController implements Initializable {
         );
 
         patientNameCol.setCellValueFactory(cellData -> {
-            Invoice invoice = cellData.getValue();
-            String patientName = (invoice != null && invoice.getPatient() != null)
-                    ? invoice.getPatient().getFullName() : "N/A";
+            InvoiceDTO invoiceDTO = cellData.getValue();
+            String patientName = (invoiceDTO != null && invoiceDTO.getPatientName() != null)
+                    ? invoiceDTO.getPatientName() : "N/A";
             return new SimpleStringProperty(patientName);
         });
 
@@ -66,7 +67,7 @@ public class InvoiceManagementController implements Initializable {
                 new SimpleObjectProperty<>(cellData.getValue().getCreatedAt())
         );
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
-        createdAtCol.setCellFactory(column -> new TableCell<Invoice, LocalDateTime>() {
+        createdAtCol.setCellFactory(column -> new TableCell<InvoiceDTO, LocalDateTime>() {
             @Override
             protected void updateItem(LocalDateTime item, boolean empty) {
                 super.updateItem(item, empty);
@@ -83,7 +84,7 @@ public class InvoiceManagementController implements Initializable {
         );
 
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-        totalAmountCol.setCellFactory(column -> new TableCell<Invoice, Double>() {
+        totalAmountCol.setCellFactory(column -> new TableCell<InvoiceDTO, Double>() {
             @Override
             protected void updateItem(Double item, boolean empty) {
                 super.updateItem(item, empty);
@@ -97,9 +98,9 @@ public class InvoiceManagementController implements Initializable {
 
         statusCol.setCellValueFactory(cellData ->
         {
-            Invoice invoice = cellData.getValue();
+            InvoiceDTO invoiceDTO = cellData.getValue();
             String text;
-            if (invoice.getStatus() == InvoiceStatus.PAID) {
+            if (invoiceDTO.getStatus() == InvoiceStatus.PAID) {
                 text = "Đã thanh toán";
             } else {
                 text = "Chưa thanh toán";
@@ -107,13 +108,13 @@ public class InvoiceManagementController implements Initializable {
             return new SimpleStringProperty(text);
         });
 
-        actionCol.setCellFactory(param -> new TableCell<Invoice, Void>() {
+        actionCol.setCellFactory(param -> new TableCell<InvoiceDTO, Void>() {
             private final Button payButton = new Button("Thanh Toán");
 
             { // Khối khởi tạo cho nút
                 payButton.setOnAction(event -> {
-                    Invoice invoice = getTableView().getItems().get(getIndex());
-                    handlePaymentAction(invoice);
+                    InvoiceDTO invoiceDTO = getTableView().getItems().get(getIndex());
+                    handlePaymentAction(invoiceDTO);
                 });
                 // payButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
             }
@@ -125,7 +126,7 @@ public class InvoiceManagementController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    Invoice invoice = getTableView().getItems().get(getIndex());
+                    InvoiceDTO invoice = getTableView().getItems().get(getIndex());
 
                     if (!"PAID".equalsIgnoreCase(invoice.getStatus().name())) { // Điều chỉnh "PAID" nếu cần
                         setGraphic(payButton);
@@ -141,7 +142,7 @@ public class InvoiceManagementController implements Initializable {
         invoiceTable.setPlaceholder(new Label("Không có hóa đơn nào."));
     }
 
-    private void handlePaymentAction(Invoice invoice) {
+    private void handlePaymentAction(InvoiceDTO invoiceDTO) {
 
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Xác nhận");
@@ -153,7 +154,7 @@ public class InvoiceManagementController implements Initializable {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             boolean success = false;
             try {
-                success = invoiceService.updateInvoiceStatus(invoice.getId(), InvoiceStatus.PAID);
+                success = invoiceService.updateInvoiceStatus(invoiceDTO.getId(), InvoiceStatus.PAID);
             } catch (Exception e) {
                 e.printStackTrace();
                 success = false;
@@ -165,17 +166,17 @@ public class InvoiceManagementController implements Initializable {
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Thành Công");
                 successAlert.setHeaderText(null);
-                successAlert.setContentText("Hóa đơn #" + invoice.getId() + " đã được đánh dấu thanh toán thành công.");
+                successAlert.setContentText("Hóa đơn #" + invoiceDTO.getId() + " đã được đánh dấu thanh toán thành công.");
                 successAlert.showAndWait();
             } else {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setTitle("Thất Bại");
                 errorAlert.setHeaderText(null);
-                errorAlert.setContentText("Không thể cập nhật trạng thái hóa đơn #" + invoice.getId() + ". Vui lòng thử lại.");
+                errorAlert.setContentText("Không thể cập nhật trạng thái hóa đơn #" + invoiceDTO.getId() + ". Vui lòng thử lại.");
                 errorAlert.showAndWait();
             }
         } else {
-            System.out.println("Payment cancelled for invoice ID: " + invoice.getId());
+            System.out.println("Payment cancelled for invoice ID: " + invoiceDTO.getId());
         }
     }
 
@@ -190,7 +191,7 @@ public class InvoiceManagementController implements Initializable {
     }
 
     private void setupSearchFilter() {
-        FilteredList<Invoice> filteredData = new FilteredList<>(masterData, p -> true);
+        FilteredList<InvoiceDTO> filteredData = new FilteredList<>(masterData, p -> true);
 
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(invoice -> {
@@ -201,12 +202,12 @@ public class InvoiceManagementController implements Initializable {
                 String keyword = newValue.toLowerCase();
 
                 return invoice.getId().toString().toLowerCase().contains(keyword)
-                        || invoice.getPatient().getFullName().toLowerCase().contains(keyword);
+                        || invoice.getPatientName().toLowerCase().contains(keyword);
             });
         });
 
 
-        SortedList<Invoice> sortedData = new SortedList<>(filteredData);
+        SortedList<InvoiceDTO> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(invoiceTable.comparatorProperty());
 
         invoiceTable.setItems(sortedData);
@@ -221,7 +222,7 @@ public class InvoiceManagementController implements Initializable {
 
     private void loadInvoiceData() {
 
-        List<Invoice> invoiceList = invoiceService.getAll();
+        List<InvoiceDTO> invoiceList = invoiceService.getAll();
 
         if (invoiceList != null) {
             masterData = FXCollections.observableArrayList(invoiceList);

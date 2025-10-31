@@ -1,7 +1,9 @@
 package com.oop4clinic.clinicmanagement.controller;
 
+import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
 import com.oop4clinic.clinicmanagement.model.entity.MedicalRecord;
-import com.oop4clinic.clinicmanagement.services.MedicalRecordService;
+import com.oop4clinic.clinicmanagement.model.mapper.MedicalRecordMapper;
+import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -29,21 +31,22 @@ import java.util.ResourceBundle;
 public class MedicalRecordManagementController implements Initializable {
 
     // ====== FXML Components ======
-    @FXML private TableView<MedicalRecord> recordTable;
-    @FXML private TableColumn<MedicalRecord, Integer> recordIdCol;
-    @FXML private TableColumn<MedicalRecord, String> patientNameCol;
-    @FXML private TableColumn<MedicalRecord, String> doctorNameCol;
-    @FXML private TableColumn<MedicalRecord, LocalDateTime> createdAtCol;
-    @FXML private TableColumn<MedicalRecord, String> diagnosisCol;
-    @FXML private TableColumn<MedicalRecord, String> symptomsCol;
-    @FXML private TableColumn<MedicalRecord, Void> editCol;
+    @FXML private TableView<MedicalRecordDTO> recordTable;
+    @FXML private TableColumn<MedicalRecordDTO, Integer> recordIdCol;
+    @FXML private TableColumn<MedicalRecordDTO, String> patientNameCol;
+    @FXML private TableColumn<MedicalRecordDTO, String> doctorNameCol;
+    @FXML private TableColumn<MedicalRecordDTO, LocalDateTime> createdAtCol;
+    @FXML private TableColumn<MedicalRecordDTO, String> diagnosisCol;
+    @FXML private TableColumn<MedicalRecordDTO, String> symptomsCol;
+    @FXML private TableColumn<MedicalRecordDTO, Void> editCol;
     @FXML private TextField searchField;
     @FXML private Button refreshButton;
 
     // ====== Data & Services ======
-    private final MedicalRecordService medicalRecordService = new MedicalRecordService();
-    private final ObservableList<MedicalRecord> masterRecordList = FXCollections.observableArrayList();
-    private FilteredList<MedicalRecord> filteredData;
+    private final MedicalRecordServiceImpl medicalRecordService = new MedicalRecordServiceImpl();
+    private final MedicalRecordMapper medicalRecordMapper = new MedicalRecordMapper();
+    private final ObservableList<MedicalRecordDTO> masterRecordList = FXCollections.observableArrayList();
+    private FilteredList<MedicalRecordDTO> filteredData;
 
     // ====== Initialize ======
     @Override
@@ -56,8 +59,8 @@ public class MedicalRecordManagementController implements Initializable {
     // ====== Table Setup ======
     private void setupTableColumns() {
         recordIdCol.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getId()));
-        patientNameCol.setCellValueFactory(cell -> new SimpleStringProperty(getPatientNameSafe(cell.getValue())));
-        doctorNameCol.setCellValueFactory(cell -> new SimpleStringProperty(getDoctorNameSafe(cell.getValue())));
+        patientNameCol.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getPatientName()));
+        doctorNameCol.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getDoctorName()));
         createdAtCol.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getCreatedAt()));
         diagnosisCol.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getDiagnosis()));
         symptomsCol.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getSymptoms()));
@@ -86,8 +89,8 @@ public class MedicalRecordManagementController implements Initializable {
 
             {
                 editButton.setOnAction(event -> {
-                    MedicalRecord record = getTableView().getItems().get(getIndex());
-                    handleEditAction(record);
+                    MedicalRecordDTO recordDTO = getTableView().getItems().get(getIndex());
+                    handleEditAction(recordDTO);
                 });
             }
 
@@ -110,7 +113,7 @@ public class MedicalRecordManagementController implements Initializable {
 
         searchField.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
 
-        SortedList<MedicalRecord> sortedData = new SortedList<>(filteredData);
+        SortedList<MedicalRecordDTO> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(recordTable.comparatorProperty());
 
         recordTable.setItems(sortedData);
@@ -123,8 +126,8 @@ public class MedicalRecordManagementController implements Initializable {
             if (searchText == null || searchText.isBlank()) return true;
 
             String keyword = searchText.toLowerCase().trim();
-            return getPatientNameSafe(record).toLowerCase().contains(keyword)
-                    || getDoctorNameSafe(record).toLowerCase().contains(keyword)
+            return containsIgnoreCase(record.getPatientName(), keyword)
+                    || containsIgnoreCase(record.getDoctorName(), keyword)
                     || containsIgnoreCase(record.getDiagnosis(), keyword)
                     || containsIgnoreCase(record.getSymptoms(), keyword)
                     || String.valueOf(record.getId()).contains(keyword);
@@ -137,8 +140,8 @@ public class MedicalRecordManagementController implements Initializable {
 
     // ====== Load Data ======
     private void loadMedicalRecords() {
-        List<MedicalRecord> records = medicalRecordService.getAll();
-        masterRecordList.setAll(records != null ? records : FXCollections.observableArrayList());
+        List<MedicalRecordDTO> recordDTOs = medicalRecordService.getAll();
+        masterRecordList.setAll(recordDTOs != null ? recordDTOs : FXCollections.observableArrayList());
     }
 
     @FXML
@@ -148,17 +151,18 @@ public class MedicalRecordManagementController implements Initializable {
     }
 
     // ====== Edit Dialog ======
-    private void handleEditAction(MedicalRecord record) {
+    private void handleEditAction(MedicalRecordDTO recordToEdit) {
         try {
+
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/EditRecordDialog.fxml"));
             Parent root = loader.load();
 
             EditMedicalRecordController editController = loader.getController();
-            editController.setMedicalRecordToEdit(record);
+            editController.setMedicalRecordToEdit(recordToEdit);
 
             Stage stage = new Stage();
-            stage.setTitle("Chỉnh Sửa Hồ Sơ Bệnh Án #" + record.getId());
+            stage.setTitle("Chỉnh Sửa Hồ Sơ Bệnh Án #" + recordToEdit.getId());
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(recordTable.getScene().getWindow());
@@ -173,18 +177,6 @@ public class MedicalRecordManagementController implements Initializable {
     }
 
     // ====== Helper Methods ======
-    private String getPatientNameSafe(MedicalRecord record) {
-        return (record != null && record.getPatient() != null)
-                ? record.getPatient().getFullName()
-                : "N/A";
-    }
-
-    private String getDoctorNameSafe(MedicalRecord record) {
-        return (record != null && record.getDoctor() != null)
-                ? record.getDoctor().getFullName()
-                : "N/A";
-    }
-
     private void showError(String message, Exception e) {
         e.printStackTrace();
         Alert alert = new Alert(Alert.AlertType.ERROR);

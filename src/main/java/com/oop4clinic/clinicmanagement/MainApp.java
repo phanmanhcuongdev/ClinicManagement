@@ -39,7 +39,7 @@ public class MainApp extends Application {
         // Chạy TRƯỚC khi JavaFX Application Thread hiển thị UI
         EntityManagerProvider.init();            // 🔥 khởi động EMF sớm
         // (nếu bạn đang seed ở đây)
-        //seedDepartmentsOnce();
+        seedDepartmentsOnce();
     }
 
     public static void seedDepartmentsOnce() {

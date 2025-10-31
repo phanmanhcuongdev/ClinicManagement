@@ -1,6 +1,6 @@
 package com.oop4clinic.clinicmanagement.controller;
 
-import com.oop4clinic.clinicmanagement.ValidationUtils;
+import com.oop4clinic.clinicmanagement.util.ValidationUtils;
 import com.oop4clinic.clinicmanagement.model.dto.DepartmentDTO;
 import com.oop4clinic.clinicmanagement.service.DepartmentService;
 import com.oop4clinic.clinicmanagement.service.impl.DepartmentServiceImpl;

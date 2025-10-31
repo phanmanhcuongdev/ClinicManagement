@@ -2,7 +2,7 @@ package com.oop4clinic.clinicmanagement.controller;
 
 import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.model.enums.UserRole;
-import com.oop4clinic.clinicmanagement.services.AuthService;
+import com.oop4clinic.clinicmanagement.service.impl.AuthService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

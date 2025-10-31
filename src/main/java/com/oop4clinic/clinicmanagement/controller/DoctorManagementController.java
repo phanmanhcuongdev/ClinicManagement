@@ -1,6 +1,6 @@
 package com.oop4clinic.clinicmanagement.controller;
 
-import com.oop4clinic.clinicmanagement.ValidationUtils;
+import com.oop4clinic.clinicmanagement.util.ValidationUtils;
 import com.oop4clinic.clinicmanagement.model.dto.DepartmentDTO;
 import com.oop4clinic.clinicmanagement.model.dto.DoctorDTO;
 import com.oop4clinic.clinicmanagement.model.enums.DoctorStatus;
@@ -18,9 +18,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
-import static com.oop4clinic.clinicmanagement.ValidationUtils.*;
+import static com.oop4clinic.clinicmanagement.util.ValidationUtils.*;
 
-public class DoctorManagementController {
+public class  DoctorManagementController {
 
     // ============================================================
     //  SERVICE

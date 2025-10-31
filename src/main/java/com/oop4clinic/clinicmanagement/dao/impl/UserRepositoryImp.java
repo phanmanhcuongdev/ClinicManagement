@@ -1,11 +1,14 @@
-package com.oop4clinic.clinicmanagement.dao;
+package com.oop4clinic.clinicmanagement.dao.impl;
 
+import com.oop4clinic.clinicmanagement.dao.UserRepository;
 import com.oop4clinic.clinicmanagement.model.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
-public class UserDAO {
+public class UserRepositoryImp implements UserRepository  {
+    @Override
     public User getUserbyUsername(EntityManager em, String username) {
         try {
             String hql =  "SELECT u FROM User u Where username = :username";
@@ -22,6 +25,7 @@ public class UserDAO {
         }
     }
 
+    @Override
     public String save(EntityManager em,User user) {
         EntityTransaction transaction = em.getTransaction();
 

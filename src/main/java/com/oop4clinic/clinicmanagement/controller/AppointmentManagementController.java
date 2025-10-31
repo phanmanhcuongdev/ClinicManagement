@@ -1,10 +1,8 @@
 package com.oop4clinic.clinicmanagement.controller;
 
-import com.oop4clinic.clinicmanagement.model.entity.Appointment;
-import com.oop4clinic.clinicmanagement.model.entity.Invoice;
+import com.oop4clinic.clinicmanagement.model.dto.AppointmentDTO;
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
-import com.oop4clinic.clinicmanagement.model.enums.InvoiceStatus;
-import com.oop4clinic.clinicmanagement.services.AppointmentService;
+import com.oop4clinic.clinicmanagement.service.impl.AppointmentServiceImpl;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -24,21 +22,21 @@ import java.util.ResourceBundle;
 
 public class AppointmentManagementController implements Initializable {
 
-    @FXML private TableView<Appointment> appointmentTable;
-    @FXML private TableColumn<Appointment, Integer> appointmentIdCol;
-    @FXML private TableColumn<Appointment, String> patientNameCol;
-    @FXML private TableColumn<Appointment, String> doctorNameCol;
-    @FXML private TableColumn<Appointment, String> departmentNameCol;
-    @FXML private TableColumn<Appointment, LocalDateTime> startTimeCol;
-    @FXML private TableColumn<Appointment, String > statusCol;
-    @FXML private TableColumn<Appointment, String> reasonCol;
+    @FXML private TableView<AppointmentDTO> appointmentTable;
+    @FXML private TableColumn<AppointmentDTO, Integer> appointmentIdCol;
+    @FXML private TableColumn<AppointmentDTO, String> patientNameCol;
+    @FXML private TableColumn<AppointmentDTO, String> doctorNameCol;
+    @FXML private TableColumn<AppointmentDTO, String> departmentNameCol;
+    @FXML private TableColumn<AppointmentDTO, LocalDateTime> startTimeCol;
+    @FXML private TableColumn<AppointmentDTO, String > statusCol;
+    @FXML private TableColumn<AppointmentDTO, String> reasonCol;
     @FXML private TextField searchField;
     @FXML private ComboBox<AppointmentStatus> statusFilterComboBox;
     @FXML private Button refreshButton;
 
-    private AppointmentService appointmentService = new AppointmentService();
-    private ObservableList<Appointment> masterData = FXCollections.observableArrayList();
-    private FilteredList<Appointment> filteredData; // Make FilteredList a field
+    private AppointmentServiceImpl appointmentService = new AppointmentServiceImpl();
+    private ObservableList<AppointmentDTO> masterData = FXCollections.observableArrayList();
+    private FilteredList<AppointmentDTO> filteredData; // Make FilteredList a field
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,7 +56,7 @@ public class AppointmentManagementController implements Initializable {
 
         statusCol.setCellValueFactory(cellData ->
         {
-            Appointment appointment = cellData.getValue();
+            AppointmentDTO appointment = cellData.getValue();
             String text;
             if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
                 text = "Đã hoàn thành";
@@ -106,7 +104,7 @@ public class AppointmentManagementController implements Initializable {
         // Listener for combo box selection
         statusFilterComboBox.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
 
-        SortedList<Appointment> sortedData = new SortedList<>(filteredData);
+        SortedList<AppointmentDTO> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(appointmentTable.comparatorProperty());
         appointmentTable.setItems(sortedData);
     }
@@ -136,7 +134,7 @@ public class AppointmentManagementController implements Initializable {
 
 
     private void loadAppointmentData() {
-        List<Appointment> appointmentList = appointmentService.getAll();
+        List<AppointmentDTO> appointmentList = appointmentService.getAll();
         masterData.clear();
         if (appointmentList != null) {
             masterData.addAll(appointmentList);
@@ -152,15 +150,15 @@ public class AppointmentManagementController implements Initializable {
     }
 
     // --- Helper methods ---
-    private String getPatientNameSafe(Appointment appointment) {
-        return (appointment != null && appointment.getPatient() != null) ? appointment.getPatient().getFullName() : "";
+    private String getPatientNameSafe(AppointmentDTO appointment) {
+        return (appointment != null && appointment.getPatientName() != null) ? appointment.getPatientName() : "";
     }
 
-    private String getDoctorNameSafe(Appointment appointment) {
-        return (appointment != null && appointment.getDoctor() != null) ? appointment.getDoctor().getFullName() : "";
+    private String getDoctorNameSafe(AppointmentDTO appointment) {
+        return (appointment != null && appointment.getDoctorName() != null) ? appointment.getDoctorName() : "";
     }
 
-    private String getDepartmentNameSafe(Appointment appointment) {
-        return (appointment != null && appointment.getDepartment() != null) ? appointment.getDepartment().getName() : "";
+    private String getDepartmentNameSafe(AppointmentDTO appointment) {
+        return (appointment != null && appointment.getDepartmentName() != null) ? appointment.getDepartmentName(): "";
     }
 }

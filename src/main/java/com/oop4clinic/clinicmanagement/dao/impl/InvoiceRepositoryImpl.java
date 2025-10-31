@@ -3,12 +3,28 @@ package com.oop4clinic.clinicmanagement.dao.impl;
 import com.oop4clinic.clinicmanagement.dao.InvoiceRepository;
 import com.oop4clinic.clinicmanagement.model.entity.Invoice;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class InvoiceRepositoryImpl implements InvoiceRepository {
 
+    @Override
+    public List<Invoice>  findAll(EntityManager em){
+        try{
+            String jpql = """
+                    SELECT i FROM Invoice i 
+                    JOIN FETCH i.patient 
+                    JOIN FETCH i.appointment                    
+                    """;
+            TypedQuery<Invoice> query = em.createQuery(jpql,Invoice.class);
+            return query.getResultList();
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
     @Override
     public Invoice save(EntityManager em, Invoice invoice) {
         if (invoice.getId() == null) {

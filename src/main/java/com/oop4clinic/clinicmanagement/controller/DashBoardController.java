@@ -1,8 +1,9 @@
 package com.oop4clinic.clinicmanagement.controller;
 
+import com.oop4clinic.clinicmanagement.model.dto.AppointmentDTO;
 import com.oop4clinic.clinicmanagement.model.entity.Appointment;
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
-import com.oop4clinic.clinicmanagement.services.DashBoardService;
+import com.oop4clinic.clinicmanagement.service.impl.DashBoardServiceImpl;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -29,14 +30,14 @@ public class DashBoardController implements  Initializable{
     @FXML private BarChart<String, Number> weeklyChart;
     @FXML private CategoryAxis dayAxis;
     @FXML private NumberAxis countAxis;
-    @FXML private TableView<Appointment> upcomingAppointmentsTable;
-    @FXML private TableColumn<Appointment, String> patientNameCol;
-    @FXML private TableColumn<Appointment, String> doctorNameCol;
-    @FXML private TableColumn<Appointment, LocalDateTime> startTimeCol;
-    @FXML private TableColumn<Appointment, AppointmentStatus> statusCol;
-    @FXML private TableColumn<Appointment, String> reasonCol;
+    @FXML private TableView<AppointmentDTO> upcomingAppointmentsTable;
+    @FXML private TableColumn<AppointmentDTO, String> patientNameCol;
+    @FXML private TableColumn<AppointmentDTO, String> doctorNameCol;
+    @FXML private TableColumn<AppointmentDTO, LocalDateTime> startTimeCol;
+    @FXML private TableColumn<AppointmentDTO, AppointmentStatus> statusCol;
+    @FXML private TableColumn<AppointmentDTO, String> reasonCol;
 
-    private DashBoardService dbService = new DashBoardService();
+    private DashBoardServiceImpl dbService = new DashBoardServiceImpl();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -59,21 +60,21 @@ public class DashBoardController implements  Initializable{
         setLabel(totalPendingAP, dbService.countPendingAP());
     }
 
-    private void setLabel(Label label, int value) {
-        Platform.runLater(() -> label.setText(Integer.toString(value)));
+    private void setLabel(Label label, long value) {
+        Platform.runLater(() -> label.setText(Long.toString(value)));
     }
 
     private void loadWeeklyStats() {
         LocalDateTime start = LocalDate.now().minusDays(6).atStartOfDay();
         LocalDateTime end = LocalDate.now().plusDays(1).atStartOfDay();
 
-        List<Appointment> list = dbService.getWeeklyAppointments(start, end);
-
+        List<AppointmentDTO> list = dbService.getWeeklyAppointments(start, end);
+        System.out.println(list.size()+"__________________________________________");
         Map<LocalDate, Integer> countMap = new LinkedHashMap<>();
         for (int i = 0; i < 7; i++) {
             countMap.put(start.plusDays(i).toLocalDate(), 0);
         }
-        for (Appointment a : list) {
+        for (AppointmentDTO a : list) {
             LocalDate d = a.getStartTime().toLocalDate();
             countMap.put(d, countMap.getOrDefault(d, 0) + 1);
         }
@@ -108,9 +109,9 @@ public class DashBoardController implements  Initializable{
     }
 
     private void loadUpcomingAppointments() {
-        List<Appointment> upcommingList = dbService.getUpcomingAppointments();
+        List<AppointmentDTO> upcommingList = dbService.getUpcomingAppointments();
 
-        ObservableList<Appointment> observableList;
+        ObservableList<AppointmentDTO> observableList;
         if (upcommingList != null) {
             observableList = FXCollections.observableArrayList(upcommingList);
         } else {
@@ -124,18 +125,18 @@ public class DashBoardController implements  Initializable{
 
     private void setupAppointmentTableColumns() {
         patientNameCol.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getPatient().getFullName())
+                new SimpleStringProperty(cellData.getValue().getPatientName())
         );
 
         doctorNameCol.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getDoctor().getFullName())
+                new SimpleStringProperty(cellData.getValue().getDoctorName())
         );
 
         startTimeCol.setCellValueFactory(cellData ->
                 new SimpleObjectProperty<>(cellData.getValue().getStartTime())
         );
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
-        startTimeCol.setCellFactory(column -> new TableCell<Appointment, LocalDateTime>() {
+        startTimeCol.setCellFactory(column -> new TableCell<AppointmentDTO, LocalDateTime>() {
             @Override
             protected void updateItem(LocalDateTime item, boolean empty) {
                 super.updateItem(item, empty);
@@ -156,6 +157,4 @@ public class DashBoardController implements  Initializable{
         );
 
     }
-
-
 }

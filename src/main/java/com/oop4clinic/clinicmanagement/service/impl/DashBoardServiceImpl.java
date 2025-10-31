@@ -1,26 +1,30 @@
-package com.oop4clinic.clinicmanagement.services;
+package com.oop4clinic.clinicmanagement.service.impl;
 
-import com.oop4clinic.clinicmanagement.dao.AppointmentDAO;
+import com.oop4clinic.clinicmanagement.dao.impl.AppointmentRepositoryImpl;
+import com.oop4clinic.clinicmanagement.dao.impl.DoctorRepositoryImpl;
+import com.oop4clinic.clinicmanagement.dao.impl.PatientRepositoryImpl;
+import com.oop4clinic.clinicmanagement.model.dto.AppointmentDTO;
 import com.oop4clinic.clinicmanagement.model.entity.Appointment;
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
+import com.oop4clinic.clinicmanagement.model.mapper.AppointmentMapper;
+import com.oop4clinic.clinicmanagement.service.DashBoradService;
 import com.oop4clinic.clinicmanagement.util.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.oop4clinic.clinicmanagement.util.ValidationUtils.*;
+public class DashBoardServiceImpl implements DashBoradService {
+    private AppointmentRepositoryImpl appointmentDAO = new AppointmentRepositoryImpl();
+    private AppointmentMapper mapper = new AppointmentMapper();
+    private DoctorRepositoryImpl doctorDAO = new DoctorRepositoryImpl();
+    private PatientRepositoryImpl patientDAO = new PatientRepositoryImpl();
 
-public class DashBoardService {
-    private AppointmentDAO appointmentDAO = new AppointmentDAO();
-
-    public int countPaitent(){
+    public long countPaitent(){
         EntityManager em = EntityManagerProvider.em();
         try{
-            return em.createQuery("Select count(p) from Patient p",Long.class)
-                    .getSingleResult().intValue();
+            return patientDAO.countAll(em);
         } catch (Exception e){
             e.printStackTrace();
             return 0;
@@ -29,11 +33,10 @@ public class DashBoardService {
         }
     }
 
-    public int countDoctor(){
+    public long countDoctor(){
         EntityManager em = EntityManagerProvider.em();
         try{
-            return em.createQuery("Select count(d) from Doctor d",Long.class)
-                    .getSingleResult().intValue();
+            return doctorDAO.countAll(em);
         } catch (Exception e){
             e.printStackTrace();
             return 0;
@@ -42,10 +45,10 @@ public class DashBoardService {
         }
     }
 
-    public int countCompletedAP(){
+    public long countCompletedAP(){
         EntityManager em = EntityManagerProvider.em();
         try{
-            return appointmentDAO.findAllbyStatus(em,AppointmentStatus.CONFIRMED).size();
+            return appointmentDAO.findAllbyStatus(em,AppointmentStatus.COMPLETED).size();
         } catch (Exception e){
             e.printStackTrace();
             return 0;
@@ -54,7 +57,7 @@ public class DashBoardService {
         }
     }
 
-    public int countPendingAP(){
+    public long countPendingAP(){
         EntityManager em = EntityManagerProvider.em();
         try{
             return appointmentDAO.findAllbyStatus(em,AppointmentStatus.PENDING).size();
@@ -66,7 +69,7 @@ public class DashBoardService {
         }
     }
 
-    public List<Appointment> getUpcomingAppointments() {
+    public List<AppointmentDTO> getUpcomingAppointments() {
         EntityManager em = EntityManagerProvider.em();
         try {
             List<Appointment> allApptConfirmed = appointmentDAO.findAllbyStatus(em,AppointmentStatus.CONFIRMED);
@@ -75,7 +78,7 @@ public class DashBoardService {
             List<Appointment> upcommingList = allApptConfirmed.stream()
                     .filter(a -> a.getStartTime().isAfter(now))
                     .collect(Collectors.toList());
-            return upcommingList;
+            return mapper.toDtoList(upcommingList);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -84,24 +87,12 @@ public class DashBoardService {
         }
     }
 
-    public List<Appointment> getWeeklyAppointments(LocalDateTime start, LocalDateTime end) {
+    public List<AppointmentDTO> getWeeklyAppointments(LocalDateTime start, LocalDateTime end) {
         EntityManager em = EntityManagerProvider.em();
         try {
-            Query query = em.createNativeQuery("""
-                SELECT * FROM appointments
-                WHERE status = ?1 
-                  AND datetime(start_time) BETWEEN datetime(?2) and datetime(?3) 
-                ORDER BY datetime(start_time) ASC
-            """, Appointment.class);
-            query.setParameter(1, AppointmentStatus.CONFIRMED.name());
-            query.setParameter(2, formatTime(start)); // Truyền chuỗi đã định dạng
-            query.setParameter(3, formatTime(end));
-            List<Appointment> list = query.getResultList();
-            return list;
+            return mapper.toDtoList(appointmentDAO.findByStartTimeRange(em,start,end));
         } finally {
             em.close();
         }
     }
-
-
 }

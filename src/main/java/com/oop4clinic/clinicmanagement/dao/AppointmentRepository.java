@@ -1,6 +1,7 @@
 package com.oop4clinic.clinicmanagement.dao;
 
 import com.oop4clinic.clinicmanagement.model.entity.Appointment;
+import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDateTime;
@@ -33,4 +34,6 @@ public interface AppointmentRepository {
     long countInRange(EntityManager em,
                       LocalDateTime from,
                       LocalDateTime to);
+    List<Appointment> findAllbyStatus(EntityManager em, AppointmentStatus status);
+    List<Appointment> findAll(EntityManager em);
 }

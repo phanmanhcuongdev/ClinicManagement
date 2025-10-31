@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface InvoiceRepository {
 
+    List<Invoice>  findAll(EntityManager em);
     Invoice save(EntityManager em, Invoice invoice);
 
     /**

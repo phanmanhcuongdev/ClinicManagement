@@ -1,20 +1,25 @@
-package com.oop4clinic.clinicmanagement.services;
+package com.oop4clinic.clinicmanagement.service.impl;
 
-import com.oop4clinic.clinicmanagement.dao.InvoiceDAO;
+import com.oop4clinic.clinicmanagement.mapper.InvoiceMapper;
+import com.oop4clinic.clinicmanagement.dao.impl.InvoiceRepositoryImpl;
+import com.oop4clinic.clinicmanagement.model.dto.InvoiceDTO;
 import com.oop4clinic.clinicmanagement.model.entity.Invoice;
 import com.oop4clinic.clinicmanagement.model.enums.InvoiceStatus;
+import com.oop4clinic.clinicmanagement.service.InvoiceService;
 import com.oop4clinic.clinicmanagement.util.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import java.util.List;
 
-public class InvoiceService {
-    private InvoiceDAO invoiceDAO = new InvoiceDAO();
+public class InvoiceServiceImpl implements InvoiceService {
+    private InvoiceRepositoryImpl invoiceDAO = new InvoiceRepositoryImpl();
+    private InvoiceMapper mapper = new InvoiceMapper();
 
-    public List<Invoice> getAll(){
+    @Override
+    public List<InvoiceDTO> getAll(){
         EntityManager em = EntityManagerProvider.em();
         try {
-            return invoiceDAO.findAll(em);
+            return mapper.toDtoList(invoiceDAO.findAll(em));
         } catch (Exception e){
             e.printStackTrace();
             return null;
@@ -23,6 +28,7 @@ public class InvoiceService {
         }
     }
 
+    @Override
     public boolean updateInvoiceStatus(int id,InvoiceStatus newStatus){
         EntityManager em = EntityManagerProvider.em();
         EntityTransaction tx = em.getTransaction();

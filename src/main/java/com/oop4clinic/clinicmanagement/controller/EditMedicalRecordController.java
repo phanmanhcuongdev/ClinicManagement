@@ -1,7 +1,8 @@
 package com.oop4clinic.clinicmanagement.controller;
 
+import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
 import com.oop4clinic.clinicmanagement.model.entity.MedicalRecord;
-import com.oop4clinic.clinicmanagement.services.MedicalRecordService; // Assume you have this service
+import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl; // Assume you have this service
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -24,10 +25,10 @@ public class EditMedicalRecordController {
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
 
-    private MedicalRecord currentRecord;
-    private MedicalRecordService medicalRecordService = new MedicalRecordService(); // Instance of your service
+    private MedicalRecordDTO currentRecord;
+    private MedicalRecordServiceImpl medicalRecordServiceImpl = new MedicalRecordServiceImpl(); // Instance of your service
 
-    public void setMedicalRecordToEdit(MedicalRecord record) {
+    public void setMedicalRecordToEdit(MedicalRecordDTO record) {
         this.currentRecord = record;
         populateFields();
     }
@@ -41,8 +42,8 @@ public class EditMedicalRecordController {
         }
 
         // Set non-editable labels
-        patientNameLabel.setText(currentRecord.getPatient() != null ? currentRecord.getPatient().getFullName() : "N/A");
-        doctorNameLabel.setText(currentRecord.getDoctor() != null ? currentRecord.getDoctor().getFullName() : "N/A");
+        patientNameLabel.setText(currentRecord.getPatientName() != null ? currentRecord.getPatientName() : "N/A");
+        doctorNameLabel.setText(currentRecord.getDoctorName() != null ? currentRecord.getDoctorName(): "N/A");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
         createdAtLabel.setText(currentRecord.getCreatedAt() != null ? currentRecord.getCreatedAt().format(formatter) : "N/A");
 
@@ -53,9 +54,7 @@ public class EditMedicalRecordController {
         notesTextArea.setText(currentRecord.getNotes());
     }
 
-    /**
-     * Handles the Save button action.
-     */
+
     @FXML
     void handleSaveAction(ActionEvent event) {
         if (currentRecord == null) {
@@ -83,7 +82,7 @@ public class EditMedicalRecordController {
         currentRecord.setNotes(updatedNotes);
 
         // 4. Call service to save changes
-        boolean success = medicalRecordService.updateMedicalRecord(currentRecord); // Create this method in service/DAO
+        boolean success = medicalRecordServiceImpl.updateMedicalRecord(currentRecord); // Create this method in service/DAO
 
         // 5. Provide feedback and close
         if (success) {
@@ -94,26 +93,20 @@ public class EditMedicalRecordController {
         }
     }
 
-    /**
-     * Handles the Cancel button action.
-     */
+
     @FXML
     void handleCancelAction(ActionEvent event) {
         closeDialog();
     }
 
-    /**
-     * Helper method to close the dialog window.
-     */
+
     private void closeDialog() {
         // Get the stage (window) associated with the cancel button and close it
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
-    /**
-     * Helper method to show alerts.
-     */
+
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

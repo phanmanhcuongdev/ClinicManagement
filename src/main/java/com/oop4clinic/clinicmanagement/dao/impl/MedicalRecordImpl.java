@@ -1,12 +1,14 @@
-package com.oop4clinic.clinicmanagement.dao;
+package com.oop4clinic.clinicmanagement.dao.impl;
 
+import com.oop4clinic.clinicmanagement.dao.MedicalRecordReopository;
 import com.oop4clinic.clinicmanagement.model.entity.MedicalRecord;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
 import java.util.List;
 
-public class MedicalRecordDAO {
+public class MedicalRecordImpl implements MedicalRecordReopository {
+    @Override
     public List<MedicalRecord> findAll(EntityManager em){
         String jpql = """
                 Select m from MedicalRecord m 
@@ -16,6 +18,7 @@ public class MedicalRecordDAO {
         return em.createQuery(jpql,MedicalRecord.class).getResultList();
     }
 
+    @Override
     public boolean update(EntityManager em,MedicalRecord record) {
         EntityTransaction tx = em.getTransaction();
         try {
@@ -28,5 +31,10 @@ public class MedicalRecordDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public MedicalRecord findById(EntityManager em, int id){
+        return em.find(MedicalRecord.class,id);
     }
 }
