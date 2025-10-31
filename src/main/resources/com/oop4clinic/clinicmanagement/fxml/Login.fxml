@@ -6,46 +6,77 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.LoginController">
+<StackPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.LoginController">
     <children>
-        <Pane layoutX="330.0" layoutY="120.0" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;">
+        <Pane maxHeight="380.0" maxWidth="445.0" prefHeight="380.0" prefWidth="445.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" StackPane.alignment="CENTER">
             <children>
-                <Label layoutX="116.0" layoutY="32.0" style="-fx-background-color: #FFFFFF;" text="OOP4" textAlignment="CENTER" textFill="#1e7fc9">
+                <Label layoutX="126.0" layoutY="80.0" text="Tên đăng nhập" />
+                <Label layoutX="126.0" layoutY="143.0" prefHeight="28.0" prefWidth="79.0" text="Mật khẩu" />
+                <HBox alignment="CENTER" focusTraversable="true" layoutY="233.0" prefHeight="36.0" prefWidth="445.0">
+                    <effect>
+                        <Glow />
+                    </effect>
+                    <children>
+                        <Label prefHeight="28.0" prefWidth="213.0" text="Bạn chưa có tài khoản ?" />
+                        <Hyperlink fx:id="registerLink" onAction="#handleRegister" prefHeight="36.0" prefWidth="86.0" text="Đăng ký" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutY="280.0" prefHeight="50.0" prefWidth="445.0">
+                    <children>
+                        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" style="-fx-background-color: #1e7fc9;" text="Đăng nhập" textAlignment="CENTER" textFill="WHITE">
+                            <font>
+                                <Font name="Tahoma Bold" size="14.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutY="160.0" prefHeight="42.0" prefWidth="445.0">
+                    <children>
+                        <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="200.0">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </PasswordField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutY="14.0" prefHeight="50.0" prefWidth="445.0">
+                    <children>
+                        <Label alignment="TOP_LEFT" style="-fx-background-color: #FFFFFF;" text="OOP4" textAlignment="CENTER" textFill="#1e7fc9">
+                            <font>
+                                <Font name="Tahoma Bold" size="24.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <Label fx:id="statusLabel" alignment="CENTER" layoutY="208.0" prefHeight="36.0" prefWidth="445.0">
                     <font>
-                        <Font name="Tahoma Bold" size="24.0" />
+                        <Font name="Segoe UI" size="18.0" />
                     </font>
                 </Label>
-                <TextField fx:id="usernameField" layoutX="50.0" layoutY="102.0" prefHeight="25.0" prefWidth="200.0">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </TextField>
-                <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="165.0" prefHeight="25.0" prefWidth="200.0">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </PasswordField>
-                <Button fx:id="loginButton" layoutX="102.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleLogin" style="-fx-background-color: #1e7fc9;" text="Đăng nhập" textAlignment="CENTER" textFill="WHITE">
-                    <font>
-                        <Font name="Tahoma Bold" size="14.0" />
-                    </font>
-                </Button>
-                <Label layoutX="47.0" layoutY="80.0" text="Tên đăng nhập" />
-                <Label layoutX="48.0" layoutY="145.0" text="Mật khẩu" />
-                <Hyperlink fx:id="registerLink" layoutX="187.0" layoutY="202.0" onAction="#handleRegister" text="Đăng ký" />
-                <Label layoutX="61.0" layoutY="205.0" text="Bạn chưa có tài khoản ?" />
+                <HBox alignment="CENTER" layoutY="101.0" prefHeight="42.0" prefWidth="445.0">
+                    <children>
+                        <TextField fx:id="usernameField" prefHeight="25.0" prefWidth="200.0">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
             </children>
-         <effect>
-            <DropShadow offsetX="3.0">
-               <color>
-                  <Color opacity="0.7690355777740479" />
-               </color>
-            </DropShadow>
-         </effect>
+            <effect>
+                <DropShadow offsetX="3.0">
+                    <color>
+                        <Color opacity="0.7690355777740479" />
+                    </color>
+                </DropShadow>
+            </effect>
         </Pane>
     </children>
-</Pane>
+</StackPane>
