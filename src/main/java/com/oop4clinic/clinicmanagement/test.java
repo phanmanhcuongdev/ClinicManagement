@@ -1,8 +1,8 @@
 package com.oop4clinic.clinicmanagement;
 
 import com.oop4clinic.clinicmanagement.dao.impl.DoctorRepositoryImpl;
+import com.oop4clinic.clinicmanagement.dao.jpa.EntityManagerProvider;
 import com.oop4clinic.clinicmanagement.model.entity.Doctor;
-import com.oop4clinic.clinicmanagement.util.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
 
 public class test {

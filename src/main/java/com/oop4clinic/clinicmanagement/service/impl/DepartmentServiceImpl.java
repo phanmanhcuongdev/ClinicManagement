@@ -101,9 +101,51 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DepartmentDTO update(Integer id,DepartmentDTO dto)
-    {
-        return new DepartmentDTO();
+    public DepartmentDTO update(Integer id, DepartmentDTO dto) {
+        if (id == null) {
+            throw new IllegalArgumentException("Thiếu ID khoa để cập nhật.");
+        }
+        if (dto == null) {
+            throw new IllegalArgumentException("Dữ liệu cập nhật rỗng.");
+        }
+        if (dto.getName() == null || dto.getName().isBlank()) {
+            throw new IllegalArgumentException("Tên khoa không được để trống.");
+        }
+
+        EntityManager em = EntityManagerProvider.em();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+
+            // 1. Tìm khoa hiện có
+            Department existing = em.find(Department.class, id);
+            if (existing == null) {
+                throw new IllegalArgumentException("Khoa không tồn tại (id=" + id + ")");
+            }
+
+            // 2. Áp giá trị mới từ dto vào entity đang quản lý
+            existing.setName(dto.getName());
+            existing.setBaseFee(dto.getBaseFee());
+            existing.setDescription(dto.getDescription());
+            // KHÔNG đụng existing.getDoctors() ở đây
+            // KHÔNG đụng existing.getAppointments() ở đây
+
+            // 3. Gọi repo update (nếu bạn muốn đồng nhất qua repo),
+            //    hoặc có thể bỏ qua repo và để JPA tự flush vì `existing` đang managed.
+            Department merged = deptRepo.update(em, existing);
+
+            tx.commit();
+
+            // 4. Trả DTO kết quả
+            return DepartmentMapper.toDto(merged);
+
+        } catch (RuntimeException ex) {
+            if (tx.isActive()) tx.rollback();
+            throw ex;
+        } finally {
+            em.close();
+        }
     }
 
 }

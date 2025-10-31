@@ -1,10 +1,10 @@
 package com.oop4clinic.clinicmanagement.service.impl;
+import com.oop4clinic.clinicmanagement.dao.jpa.EntityManagerProvider;
 import com.oop4clinic.clinicmanagement.model.mapper.MedicalRecordMapper;
 import com.oop4clinic.clinicmanagement.dao.impl.MedicalRecordImpl;
 import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
 import com.oop4clinic.clinicmanagement.model.entity.MedicalRecord;
 import com.oop4clinic.clinicmanagement.service.MedicalRecordService;
-import com.oop4clinic.clinicmanagement.util.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;

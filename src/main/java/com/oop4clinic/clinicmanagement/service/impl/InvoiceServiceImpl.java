@@ -1,12 +1,12 @@
 package com.oop4clinic.clinicmanagement.service.impl;
 
+import com.oop4clinic.clinicmanagement.dao.jpa.EntityManagerProvider;
 import com.oop4clinic.clinicmanagement.mapper.InvoiceMapper;
 import com.oop4clinic.clinicmanagement.dao.impl.InvoiceRepositoryImpl;
 import com.oop4clinic.clinicmanagement.model.dto.InvoiceDTO;
 import com.oop4clinic.clinicmanagement.model.entity.Invoice;
 import com.oop4clinic.clinicmanagement.model.enums.InvoiceStatus;
 import com.oop4clinic.clinicmanagement.service.InvoiceService;
-import com.oop4clinic.clinicmanagement.util.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import java.util.List;

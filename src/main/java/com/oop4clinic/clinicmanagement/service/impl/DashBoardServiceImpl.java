@@ -3,12 +3,12 @@ package com.oop4clinic.clinicmanagement.service.impl;
 import com.oop4clinic.clinicmanagement.dao.impl.AppointmentRepositoryImpl;
 import com.oop4clinic.clinicmanagement.dao.impl.DoctorRepositoryImpl;
 import com.oop4clinic.clinicmanagement.dao.impl.PatientRepositoryImpl;
+import com.oop4clinic.clinicmanagement.dao.jpa.EntityManagerProvider;
 import com.oop4clinic.clinicmanagement.model.dto.AppointmentDTO;
 import com.oop4clinic.clinicmanagement.model.entity.Appointment;
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
 import com.oop4clinic.clinicmanagement.model.mapper.AppointmentMapper;
 import com.oop4clinic.clinicmanagement.service.DashBoradService;
-import com.oop4clinic.clinicmanagement.util.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDateTime;

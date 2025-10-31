@@ -2,10 +2,10 @@
 package com.oop4clinic.clinicmanagement.service.impl;
 
 import com.oop4clinic.clinicmanagement.dao.impl.UserRepositoryImp;
+import com.oop4clinic.clinicmanagement.dao.jpa.EntityManagerProvider;
 import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.model.enums.UserRole;
 import com.oop4clinic.clinicmanagement.service.UserService;
-import com.oop4clinic.clinicmanagement.util.EntityManagerProvider;
 import jakarta.persistence.EntityManager;
 
 import static com.oop4clinic.clinicmanagement.util.ValidationUtils.*;

@@ -41,4 +41,24 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
             em.remove(found);
         }
     }
+
+    @Override
+    public Department update(EntityManager em, Department dept) {
+        if (dept.getId() == null) {
+            throw new IllegalArgumentException("Department ID cannot be null for update");
+        }
+
+        Department existing = em.find(Department.class, dept.getId());
+        if (existing == null) {
+            throw new IllegalArgumentException("Department not found with ID: " + dept.getId());
+        }
+
+        existing.setName(dept.getName());
+        existing.setBaseFee(dept.getBaseFee());
+        existing.setDescription(dept.getDescription());
+        // không set doctors/appointments ở đây để tránh cascade không mong muốn
+
+        return em.merge(existing);
+    }
+
 }

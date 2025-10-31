@@ -21,7 +21,7 @@ public class DepartmentManagementController {
     private Mode currentMode = Mode.NONE;
     private Integer currentDeptId = null;
 
-    // ================== HEADER STATUS ==================
+    // ================== HEADER / STATUS ==================
     @FXML private Label lblStatus;
     @FXML private Label lblDeptCount;
 
@@ -31,10 +31,13 @@ public class DepartmentManagementController {
     @FXML private TableColumn<DepartmentDTO, String>  colDeptName;
     @FXML private TableColumn<DepartmentDTO, String>  colDeptBaseFee;
 
+    @FXML private Button btnAddNew;
     @FXML private Button btnSave;
     @FXML private Button btnDelete;
+    @FXML private Button btnReload;
 
     // ================== FORM (RIGHT) ==================
+    @FXML private Label lblIdCaption;
     @FXML private TextField txtId;
     @FXML private TextField txtName;
     @FXML private TextField txtBaseFee;
@@ -49,8 +52,7 @@ public class DepartmentManagementController {
         initTableColumns();
         setupSelectionListener();
         loadAllDepartments();
-
-        enterNoneMode();
+        enterNoneMode(); // protect form by default
     }
 
     private void initTableColumns() {
@@ -59,9 +61,7 @@ public class DepartmentManagementController {
         );
 
         colDeptName.setCellValueFactory(cd ->
-                new SimpleStringProperty(
-                        safeStr(cd.getValue().getName())
-                )
+                new SimpleStringProperty(safeStr(cd.getValue().getName()))
         );
 
         colDeptBaseFee.setCellValueFactory(cd -> {
@@ -80,7 +80,7 @@ public class DepartmentManagementController {
                 .selectedItemProperty()
                 .addListener((obs, oldSel, newSel) -> {
                     if (newSel == null) return;
-                    showDepartment(newSel);
+                    showDepartment(newSel); // switch to EDIT mode
                 });
     }
 
@@ -95,7 +95,7 @@ public class DepartmentManagementController {
         lblDeptCount.setText(depts.size() + " khoa");
         lblStatus.setText("Đã tải danh sách khoa.");
 
-        // Sau khi reload, reset form về NONE
+        // Sau khi reload, quay về trạng thái NONE
         enterNoneMode();
     }
 
@@ -108,22 +108,21 @@ public class DepartmentManagementController {
         currentMode = Mode.EDIT;
         currentDeptId = dto.getId();
 
-        // Đổ form
+        // Đổ dữ liệu lên form
         txtId.setText(safeStr(dto.getId()));
         txtName.setText(safeStr(dto.getName()));
         txtBaseFee.setText(dto.getBaseFee() == null ? "" : String.valueOf(dto.getBaseFee()));
         txtDescription.setText(safeStr(dto.getDescription()));
 
-        // Danh sách bác sĩ (đã map sẵn trong DTO)
+        // Danh sách bác sĩ
         lstDoctorsInDept.getItems().clear();
         if (dto.getDoctorNames() != null) {
             lstDoctorsInDept.getItems().addAll(dto.getDoctorNames());
         }
 
-        btnSave.setDisable(false);
-        btnDelete.setDisable(false);
-
         lblStatus.setText("Đang chỉnh sửa khoa ID=" + dto.getId());
+
+        applyModeToForm();
     }
 
     // ========================================================
@@ -171,7 +170,7 @@ public class DepartmentManagementController {
             loadAllDepartments(); // reload table + reset form
 
         } catch (IllegalArgumentException dup) {
-            // ví dụ: trùng tên khoa
+            // ví dụ: duplicate name
             warn(dup.getMessage());
         } catch (RuntimeException ex) {
             error("Không thể lưu khoa:\n" + ex.getMessage());
@@ -185,7 +184,6 @@ public class DepartmentManagementController {
             return;
         }
 
-        // confirm
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Xác nhận xoá");
         confirm.setHeaderText("Bạn có chắc muốn xoá khoa này?");
@@ -212,11 +210,9 @@ public class DepartmentManagementController {
         currentDeptId = null;
 
         clearForm();
-
-        btnSave.setDisable(true);
-        btnDelete.setDisable(true);
-
         lblStatus.setText("Chưa chọn khoa.");
+
+        applyModeToForm();
     }
 
     private void enterCreateMode() {
@@ -224,11 +220,42 @@ public class DepartmentManagementController {
         currentDeptId = null;
 
         clearForm();
-
-        btnSave.setDisable(false);
-        btnDelete.setDisable(true);
-
         lblStatus.setText("Thêm khoa mới.");
+
+        applyModeToForm();
+    }
+
+    /**
+     * Đồng bộ UI (enable/disable field & button, ẩn/hiện ID)
+     * theo currentMode.
+     */
+    private void applyModeToForm() {
+        boolean canEditFields = (currentMode == Mode.CREATE || currentMode == Mode.EDIT);
+        boolean isEditMode    = (currentMode == Mode.EDIT);
+
+        // vùng nhập liệu chính
+        txtName.setDisable(!canEditFields);
+        txtBaseFee.setDisable(!canEditFields);
+        txtDescription.setDisable(!canEditFields);
+
+        // ID: luôn readonly, và chỉ hiện khi đang EDIT
+        txtId.setDisable(true);
+        txtId.setVisible(isEditMode);
+        lblIdCaption.setVisible(isEditMode);
+
+        // ListView bác sĩ luôn chỉ xem
+        lstDoctorsInDept.setDisable(true);
+
+        // Buttons
+        btnSave.setDisable(!canEditFields);
+        btnDelete.setDisable(!isEditMode);
+        // btnAddNew / btnReload luôn bật dùng được
+
+        // Tô nền khác để nhìn thấy "đang bị khoá"
+        String bg = canEditFields ? "white" : "#f0f2f8";
+        txtName.setStyle("-fx-background-color:" + bg + ";");
+        txtBaseFee.setStyle("-fx-background-color:" + bg + ";");
+        txtDescription.setStyle("-fx-background-color:" + bg + ";");
     }
 
     private void clearForm() {
@@ -262,7 +289,8 @@ public class DepartmentManagementController {
 
         dto.setDescription(ValidationUtils.trimOrNull(txtDescription.getText()));
 
-        // doctorNames không set ở đây vì form không chỉnh danh sách bác sĩ
+        // doctorNames không chỉnh ở đây
+
         return dto;
     }
 
