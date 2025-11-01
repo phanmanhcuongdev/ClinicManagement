@@ -9,14 +9,12 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml")
-                // getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MenuPatient.fxml")
-                // getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MenuAdmin.fxml")
-                // getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MenuDoctor.fxml")
+                getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Booking1.fxml")
         );
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Clinic OOP4");
+        stage.setMaximized(true);
         stage.show();
     }
 

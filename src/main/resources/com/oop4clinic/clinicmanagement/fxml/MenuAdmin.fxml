@@ -48,7 +48,7 @@
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Button>
-                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true" style="-fx-image: #FFFFFF;">
+                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../../image/benhnhan.jpg" />
                     </image>

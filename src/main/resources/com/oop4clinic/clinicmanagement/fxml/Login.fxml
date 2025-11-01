@@ -10,7 +10,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.LoginController">
+<Pane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.LoginPatientController">
     <children>
         <Pane layoutX="330.0" layoutY="120.0" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;">
             <children>
@@ -19,7 +19,7 @@
                         <Font name="Tahoma Bold" size="24.0" />
                     </font>
                 </Label>
-                <TextField fx:id="usernameField" layoutX="50.0" layoutY="102.0" prefHeight="25.0" prefWidth="200.0">
+                <TextField fx:id="usernameField" layoutX="50.0" layoutY="97.0" prefHeight="25.0" prefWidth="200.0">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -34,7 +34,7 @@
                         <Font name="Tahoma Bold" size="14.0" />
                     </font>
                 </Button>
-                <Label layoutX="47.0" layoutY="80.0" text="Tên đăng nhập" />
+                <Label layoutX="47.0" layoutY="75.0" text="Tên đăng nhập" />
                 <Label layoutX="48.0" layoutY="145.0" text="Mật khẩu" />
                 <Hyperlink fx:id="registerLink" layoutX="187.0" layoutY="202.0" onAction="#handleRegister" text="Đăng ký" />
                 <Label layoutX="61.0" layoutY="205.0" text="Bạn chưa có tài khoản ?" />

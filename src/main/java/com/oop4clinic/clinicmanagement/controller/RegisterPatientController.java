@@ -1,11 +1,11 @@
-package com.oop4clinic.clinicmanagement;
+package com.oop4clinic.clinicmanagement.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-public class RegisterController {
+public class RegisterPatientController {
 
     @FXML
     private TextField phoneField;
