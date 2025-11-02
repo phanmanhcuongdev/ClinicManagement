@@ -5,10 +5,11 @@ import com.oop4clinic.clinicmanagement.dao.jpa.EntityManagerProvider;
 import com.oop4clinic.clinicmanagement.model.entity.MedicalRecord;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class MedicalRecordImpl implements MedicalRecordReopository {
+public class MedicalRecordRepositoryImpl implements MedicalRecordReopository {
     @Override
     public List<MedicalRecord> findAll(EntityManager em){
         String jpql = """
@@ -35,10 +36,30 @@ public class MedicalRecordImpl implements MedicalRecordReopository {
     }
 
     @Override
-    public MedicalRecord findById(EntityManager em, int id){
-        return em.find(MedicalRecord.class,id);
-    }
+    public List<MedicalRecord> searchByPatientName(String keyword) {
+        EntityManager em = EntityManagerProvider.em();
+        try {
 
+            TypedQuery<MedicalRecord> query = em.createQuery(
+                    "SELECT m FROM MedicalRecord m JOIN FETCH m.patient p WHERE LOWER(p.fullName) LIKE LOWER(:kw)", // Sửa ở đây
+                    MedicalRecord.class
+            );
+            query.setParameter("kw", "%" + keyword + "%");
+            return query.getResultList();
+        } finally {
+
+            em.close();
+        }
+    }
+    @Override
+    public MedicalRecord findById(Integer id) {
+        EntityManager em = EntityManagerProvider.em();
+        try {
+            return em.find(MedicalRecord.class, id);
+        } finally {
+            em.close();
+        }
+    }
     @Override
     public MedicalRecord save(MedicalRecord record) {
         EntityManager em = EntityManagerProvider.em();
@@ -46,9 +67,9 @@ public class MedicalRecordImpl implements MedicalRecordReopository {
             em.getTransaction().begin();
 
             if (record.getId() == null || em.find(MedicalRecord.class, record.getId()) == null) {
-                em.persist(record); // tạo mới
+                em.persist(record);
             } else {
-                record = em.merge(record); // cập nhật
+                record = em.merge(record);
             }
 
             em.getTransaction().commit();

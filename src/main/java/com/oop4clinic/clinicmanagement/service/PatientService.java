@@ -13,4 +13,7 @@ public interface PatientService {
     PatientDTO update(PatientDTO dto);
     List<PatientDTO> findByFilter(PatientFilter filter);
     PageResult<PatientDTO> findByFilter(PatientFilter filter, PageRequest page);
+
+    List<PatientDTO> getAllPatients();
+    PatientDTO getPatient(int patientId);
 }

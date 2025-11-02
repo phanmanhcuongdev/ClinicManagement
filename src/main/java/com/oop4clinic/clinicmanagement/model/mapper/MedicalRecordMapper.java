@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class MedicalRecordMapper {
 
-    public MedicalRecordDTO toDto(MedicalRecord medicalRecord) {
+    public static MedicalRecordDTO toDto(MedicalRecord medicalRecord) {
         if (medicalRecord == null) {
             return null;
         }
@@ -42,7 +42,7 @@ public class MedicalRecordMapper {
             return null;
         }
         return medicalRecords.stream()
-                           .map(this::toDto)
+                           .map(MedicalRecordMapper::toDto)
                            .collect(Collectors.toList());
     }
 

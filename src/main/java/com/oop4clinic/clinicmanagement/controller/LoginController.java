@@ -51,7 +51,8 @@ public class LoginController {
                 url =  "/com/oop4clinic/clinicmanagement/fxml/MenuAdmin.fxml";
             }
 
-            loadSence(url);
+            loadSence(url, user);
+
 
         } catch (Exception e) {
             setLabelStatus(Color.RED, e.getMessage());
@@ -63,10 +64,14 @@ public class LoginController {
         statusLabel.setText(message);
     }
     
-    private void loadSence(String url) throws IOException {
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource(url)
-        );
+    private void loadSence(String url, User loggedInUser) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
+        Object controller = loader.getController();
+
+        if (controller instanceof MedicalProfessionController medicalCtrl) {
+            medicalCtrl.setLoggedInDoctor(loggedInUser);
+        }
+
         Parent root = loader.load();
         Stage stage = (Stage) ((Node) usernameField).getScene().getWindow();
         stage.setScene(new Scene(root));

@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.oop4clinic.clinicmanagement.controller.AddMedicalRecordDialogController"
+            prefWidth="520" prefHeight="420"
+            style="-fx-background-color: #87CEEB; -fx-padding: 20;">
 
-</AnchorPane>
+
+    <top>
+        <Label text="HỒ SƠ BỆNH ÁN"
+               BorderPane.alignment="CENTER"
+               style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #12476f;"/>
+    </top>
+
+
+    <center>
+        <VBox spacing="12" alignment="CENTER" style="-fx-padding: 20;">
+            <TextField fx:id="patientNameField" promptText="Tên bệnh nhân"
+                       style="-fx-background-radius: 8; -fx-padding: 8;" prefWidth="300"/>
+            <TextField fx:id="symptomsField" promptText="Triệu chứng"
+                       style="-fx-background-radius: 8; -fx-padding: 8;" prefWidth="300"/>
+            <TextField fx:id="diagnosisField" promptText="Chẩn đoán"
+                       style="-fx-background-radius: 8; -fx-padding: 8;" prefWidth="300"/>
+            <TextField fx:id="prescriptionField" promptText="Đơn thuốc"
+                       style="-fx-background-radius: 8; -fx-padding: 8;" prefWidth="300"/>
+            <TextArea fx:id="notesField" promptText="Ghi chú" prefRowCount="3"
+                      style="-fx-background-radius: 8; -fx-padding: 8;" prefWidth="300"/>
+        </VBox>
+    </center>
+
+
+    <bottom>
+        <VBox spacing="10" alignment="CENTER">
+            <CheckBox fx:id="completeCheckBox" text="Hoàn tất phiên khám này"
+                      style="-fx-font-size: 13; -fx-text-fill: #08364c;" />
+            <HBox spacing="15" alignment="CENTER">
+                <Button text="💾 Lưu hồ sơ" onAction="#handleSaveAction"
+                        style="-fx-background-color: #1e80c9; -fx-text-fill: white;
+                               -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16;"/>
+                <Button text="✖ Hủy" onAction="#handleCancel"
+                        style="-fx-background-color: #cccccc; -fx-text-fill: #333;
+                               -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16;"/>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>

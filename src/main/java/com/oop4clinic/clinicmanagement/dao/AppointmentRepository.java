@@ -36,4 +36,5 @@ public interface AppointmentRepository {
                       LocalDateTime to);
     List<Appointment> findAllbyStatus(EntityManager em, AppointmentStatus status);
     List<Appointment> findAll(EntityManager em);
+    List<Appointment> findAllByDoctorId(EntityManager em, int doctorId);
 }
