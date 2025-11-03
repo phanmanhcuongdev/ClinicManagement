@@ -8,6 +8,8 @@ import jakarta.persistence.EntityTransaction;
 import java.util.List;
 
 public class MedicalRecordImpl implements MedicalRecordReopository {
+
+    // BỔ SUNG PHƯƠNG THỨC NÀY ĐỂ TRIỂN KHAI HOÀN CHỈNH INTERFACE
     @Override
     public List<MedicalRecord> findAll(EntityManager em){
         String jpql = """
@@ -16,6 +18,20 @@ public class MedicalRecordImpl implements MedicalRecordReopository {
                 JOIN FETCH m.patient
                 """;
         return em.createQuery(jpql,MedicalRecord.class).getResultList();
+    }
+
+    // Phương thức đã được thêm vào trước đó để lọc theo người dùng đăng nhập
+    @Override
+    public List<MedicalRecord> findByPatientId(EntityManager em, int patientId) {
+        String jpql = """
+                SELECT m FROM MedicalRecord m 
+                JOIN FETCH m.doctor 
+                JOIN FETCH m.patient
+                WHERE m.patient.id = :patientId
+                """;
+        return em.createQuery(jpql, MedicalRecord.class)
+                .setParameter("patientId", patientId)
+                .getResultList();
     }
 
     @Override

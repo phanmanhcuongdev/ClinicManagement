@@ -13,4 +13,7 @@ public interface PatientService {
     PatientDTO update(PatientDTO dto);
     List<PatientDTO> findByFilter(PatientFilter filter);
     PageResult<PatientDTO> findByFilter(PatientFilter filter, PageRequest page);
+
+    // ✅ Thêm mới: tìm bệnh nhân theo số điện thoại
+    PatientDTO findByPhone(String phone);
 }

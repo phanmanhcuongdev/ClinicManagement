@@ -2,7 +2,10 @@ package com.oop4clinic.clinicmanagement.model.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
+
 import java.time.LocalDateTime;
 
 

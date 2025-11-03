@@ -15,6 +15,7 @@ public interface InvoiceRepository {
      * Lấy tất cả invoice trong khoảng thời gian [from, to],
      * sort theo createdAt tăng dần.
      */
+
     List<Invoice> findByCreatedAtBetween(EntityManager em,
                                          LocalDateTime from,
                                          LocalDateTime to);
@@ -26,4 +27,6 @@ public interface InvoiceRepository {
     double sumByCreatedAtBetween(EntityManager em,
                                  LocalDateTime from,
                                  LocalDateTime to);
+
+    List<Invoice> findByPatientId(EntityManager em, int patientId);
 }

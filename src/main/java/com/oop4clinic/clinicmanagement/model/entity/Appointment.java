@@ -51,8 +51,6 @@ public class Appointment {
     @Column
     private String reason;
 
-
-
     @Column
     private LocalDate appointment_date;
 

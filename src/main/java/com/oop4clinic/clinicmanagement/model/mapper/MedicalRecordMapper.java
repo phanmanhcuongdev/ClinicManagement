@@ -32,6 +32,12 @@ public class MedicalRecordMapper {
         if (medicalRecord.getDoctor() != null) {
             dto.setDoctorId(medicalRecord.getDoctor().getId());
             dto.setDoctorName(medicalRecord.getDoctor().getFullName());
+
+            // BỔ SUNG: Ánh xạ Department Name
+            // Giả định Doctor Entity có phương thức getDepartment() và Department Entity có getName()
+            if (medicalRecord.getDoctor().getDepartment() != null) {
+                dto.setDepartmentName(medicalRecord.getDoctor().getDepartment().getName());
+            }
         }
 
         return dto;
@@ -42,8 +48,8 @@ public class MedicalRecordMapper {
             return null;
         }
         return medicalRecords.stream()
-                           .map(this::toDto)
-                           .collect(Collectors.toList());
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
     public MedicalRecord toEntity(MedicalRecordDTO dto) {

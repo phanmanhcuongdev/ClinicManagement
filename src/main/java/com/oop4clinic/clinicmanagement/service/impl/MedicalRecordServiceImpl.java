@@ -17,6 +17,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     public List<MedicalRecordDTO> getAll(){
         EntityManager em = EntityManagerProvider.em();
         try{
+            // Sử dụng medicalRecordImpl.findAll(em) từ file gốc
             return mapper.toDtoList(medicalRecordImpl.findAll(em));
         } catch (Exception e){
             e.printStackTrace();
@@ -29,9 +30,17 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     @Override
     public boolean updateMedicalRecord(MedicalRecordDTO record) {
         EntityManager em = EntityManagerProvider.em();
-        MedicalRecordImpl medicalRecordImpl = new MedicalRecordImpl();
-        MedicalRecordMapper mapper = new MedicalRecordMapper();
+        // Khai báo lại impl và mapper là không cần thiết vì đã có ở trên
+        // MedicalRecordImpl medicalRecordImpl = new MedicalRecordImpl();
+        // MedicalRecordMapper mapper = new MedicalRecordMapper();
+
         MedicalRecord recordEntity = medicalRecordImpl.findById(em,record.getId());
+
+        if (recordEntity == null) {
+            em.close();
+            return false;
+        }
+
         mapper.updateEntityFromDto(record, recordEntity);
 
         try{
@@ -42,6 +51,37 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         } finally {
             em.close();
         }
+    }
 
+    // THÊM: Phương thức lấy hồ sơ theo ID bệnh nhân (phục vụ lọc dữ liệu)
+    @Override
+    public List<MedicalRecordDTO> getByPatientId(int patientId){
+        EntityManager em = EntityManagerProvider.em();
+        try{
+            // Gọi phương thức DAO mới
+            return mapper.toDtoList(medicalRecordImpl.findByPatientId(em, patientId));
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }finally {
+            em.close();
+        }
+    }
+
+    // THÊM: Phương thức lấy chi tiết hồ sơ theo ID (phục vụ xem chi tiết)
+    @Override
+    public MedicalRecordDTO getById(int id) {
+        EntityManager em = EntityManagerProvider.em();
+        try {
+            // Lấy Entity từ DAO
+            MedicalRecord entity = medicalRecordImpl.findById(em, id);
+            // Chuyển Entity sang DTO
+            return mapper.toDto(entity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            em.close();
+        }
     }
 }

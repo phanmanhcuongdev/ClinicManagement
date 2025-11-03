@@ -11,10 +11,13 @@
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlite:clinic.db"/>
+
             <property name="hibernate.dialect" value="org.hibernate.community.dialect.SQLiteDialect"/>
+
+            <property name="hibernate.type.preferred_sql_type_for_temporal" value="TEXT"/>
+
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
-
             <property name="hibernate.jdbc.time_zone" value="UTC"/>
         </properties>
     </persistence-unit>

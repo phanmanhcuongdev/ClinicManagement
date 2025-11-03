@@ -28,6 +28,20 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
     }
 
+    @Override // <--- Thêm triển khai này
+    public List<InvoiceDTO> getInvoicesByPatientId(int patientId) {
+        EntityManager em = EntityManagerProvider.em();
+        try {
+            List<Invoice> invoices = invoiceDAO.findByPatientId(em, patientId);
+            return mapper.toDtoList(invoices);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
     @Override
     public boolean updateInvoiceStatus(int id,InvoiceStatus newStatus){
         EntityManager em = EntityManagerProvider.em();

@@ -14,6 +14,15 @@ public class MedicalRecordDTO {
     private String prescription;
     private String notes;
     private LocalDateTime createdAt;
+    private String departmentName;
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
 
     public Integer getId() {
         return id;

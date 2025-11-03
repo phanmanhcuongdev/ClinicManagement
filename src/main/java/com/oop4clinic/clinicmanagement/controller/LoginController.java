@@ -2,18 +2,25 @@ package com.oop4clinic.clinicmanagement.controller;
 
 import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.model.enums.UserRole;
+import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
+import com.oop4clinic.clinicmanagement.service.PatientService;
+import com.oop4clinic.clinicmanagement.service.impl.PatientServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.AuthService;
+import com.oop4clinic.clinicmanagement.util.SessionManager;
+import com.oop4clinic.clinicmanagement.util.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+// Xóa import Label, thêm import Hyperlink
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class LoginController {
@@ -24,55 +31,75 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
+    // Đã XÓA: @FXML private Label statusLabel;
+
+    // ĐÃ THÊM: Liên kết tới Hyperlink từ FXML
     @FXML
-    private Label statusLabel;
+    private Hyperlink registerLink;
 
     @FXML
     private void handleLogin(ActionEvent event) {
-        String username  = usernameField.getText();
+        String username = usernameField.getText();
         String pass = passwordField.getText();
 
         AuthService authService = new AuthService();
 
         try {
             User user = authService.login(username, pass);
-            
+
+            // Tạm thời vô hiệu hóa link để hiển thị trạng thái
+            registerLink.setDisable(true);
             setLabelStatus(Color.GREEN, "Đăng nhập thành công!");
+
             String url = "";
-            if (user.getRole().equals(UserRole.PATIENT)){
-                url =  "/com/oop4clinic/clinicmanagement/fxml/MenuPatient.fxml";
+
+            if (user.getRole().equals(UserRole.PATIENT)) {
+                // --- Tìm Patient theo số điện thoại ---
+                PatientService patientService = new PatientServiceImpl();
+                PatientDTO patient = patientService.findByPhone(user.getUsername());
+
+                if (patient != null) {
+                    // --- Lưu session ---
+                    SessionManager.login(patient.getId(), patient.getPhone());
+                    System.out.println("Đăng nhập thành công: ID bệnh nhân = " + patient.getId());
+                } else {
+                    System.err.println("Không tìm thấy bệnh nhân với số điện thoại: " + user.getUsername());
+                }
+                UserSession.setCurrentUser(user);
+                url = "/com/oop4clinic/clinicmanagement/fxml/Booking1.fxml";
             }
 
-            if (user.getRole().equals(UserRole.DOCTOR)){
-                url =  "/com/oop4clinic/clinicmanagement/fxml/MenuDoctor.fxml";
+            if (user.getRole().equals(UserRole.DOCTOR)) {
+                url = "/com/oop4clinic/clinicmanagement/fxml/MenuDoctor.fxml";
             }
 
-            if (user.getRole().equals(UserRole.ADMIN)){
-                url =  "/com/oop4clinic/clinicmanagement/fxml/MenuAdmin.fxml";
+            if (user.getRole().equals(UserRole.ADMIN)) {
+                url = "/com/oop4clinic/clinicmanagement/fxml/MenuAdmin.fxml";
             }
 
-            loadSence(url);
+            loadScene(url);
 
         } catch (Exception e) {
+            // Hiển thị lỗi trên link
             setLabelStatus(Color.RED, e.getMessage());
         }
     }
 
     private void setLabelStatus(Color color, String message) {
-        statusLabel.setTextFill(color);
-        statusLabel.setText(message);
+        // Phương thức này giờ sẽ cập nhật 'registerLink'
+        // thay vì 'statusLabel'
+        registerLink.setTextFill(color);
+        registerLink.setText(message);
     }
-    
-    private void loadSence(String url) throws IOException {
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource(url)
-        );
+
+    private void loadScene(String url) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
         Parent root = loader.load();
         Stage stage = (Stage) ((Node) usernameField).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
     }
-    
+
     @FXML
     private void handleRegister(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(

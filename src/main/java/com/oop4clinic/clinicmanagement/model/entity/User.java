@@ -3,6 +3,9 @@ package com.oop4clinic.clinicmanagement.model.entity;
 import com.oop4clinic.clinicmanagement.model.enums.UserRole;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.time.LocalDateTime;
 
 

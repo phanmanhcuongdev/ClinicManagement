@@ -10,121 +10,93 @@ import com.oop4clinic.clinicmanagement.service.PatientService;
 import com.oop4clinic.clinicmanagement.service.query.PageRequest;
 import com.oop4clinic.clinicmanagement.service.query.PageResult;
 import com.oop4clinic.clinicmanagement.service.query.PatientFilter;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import javafx.fxml.FXML;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepo = new PatientRepositoryImpl();
 
     @Override
-    public PatientDTO create(PatientDTO dto)
-    {
+    public PatientDTO create(PatientDTO dto) {
         EntityManager em = EntityManagerProvider.em();
         EntityTransaction tx = em.getTransaction();
-        try
-        {
+        try {
             tx.begin();
-
             Patient entity = PatientMapper.toEntity(dto);
-            Patient saved = patientRepo.create(em,entity);
-
+            Patient saved = patientRepo.create(em, entity);
             tx.commit();
-
-            return PatientMapper.toDto(entity);
-        }catch(RuntimeException ex)
-        {
-            if(tx.isActive()) tx.rollback();
+            return PatientMapper.toDto(saved);
+        } catch (RuntimeException ex) {
+            if (tx.isActive()) tx.rollback();
             throw ex;
-        }finally {
+        } finally {
             em.close();
         }
     }
 
-    @FXML
-    public List<PatientDTO> findAll()
-    {
-        EntityManager em = EntityManagerProvider.em();
-        try
-        {
-            var list = PatientMapper.toDtoList(patientRepo.findAll(em)) ;
-
-            list.sort(
-                    Comparator.comparing(
-                            p -> {
-                                String name = p.getFullName();
-                                return name==null ? "" : name.toLowerCase();
-                            }
-                    )
-            );
-
-            return list;
-
-        }catch (RuntimeException ex)
-        {
-            throw ex;
-        }
-        finally {
-            em.close();
-        }
-    }
-
-    @FXML
-    public PatientDTO update(PatientDTO dto)
-    {
-        EntityManager em = EntityManagerProvider.em();
-        EntityTransaction tx = em.getTransaction();
-        try
-        {
-            tx.begin();
-
-            Patient entity = PatientMapper.toEntity(dto);
-
-            Patient updated = patientRepo.update(em,entity);
-
-            tx.commit();
-
-            return PatientMapper.toDto(updated);
-
-        }catch (RuntimeException ex)
-        {
-            if(tx.isActive()) tx.rollback();
-            throw ex;
-        }finally {
-            em.close();
-        }
-    }
     @Override
-    public List<PatientDTO> findByFilter(PatientFilter f)
-    {
+    public List<PatientDTO> findAll() {
+        EntityManager em = EntityManagerProvider.em();
+        try {
+            var list = PatientMapper.toDtoList(patientRepo.findAll(em));
+            list.sort(Comparator.comparing(p -> {
+                String name = p.getFullName();
+                return name == null ? "" : name.toLowerCase();
+            }));
+            return list;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public PatientDTO update(PatientDTO dto) {
+        EntityManager em = EntityManagerProvider.em();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            Patient entity = PatientMapper.toEntity(dto);
+            Patient updated = patientRepo.update(em, entity);
+            tx.commit();
+            return PatientMapper.toDto(updated);
+        } catch (RuntimeException ex) {
+            if (tx.isActive()) tx.rollback();
+            throw ex;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<PatientDTO> findByFilter(PatientFilter f) {
         var all = findAll();
         String kw = f.getKeyword() == null ? "" : f.getKeyword().trim().toLowerCase();
 
         return all.stream()
-            .filter(p -> kw.isEmpty()
-                || (p.getFullName() != null && p.getFullName().toLowerCase().contains(kw))
-                || (p.getPhone() != null && p.getPhone().toLowerCase().contains(kw))
-                || (p.getEmail() != null && p.getEmail().toLowerCase().contains(kw))
-                || (p.getInsuranceCode() != null && p.getInsuranceCode().toLowerCase().contains(kw))
-                || (p.getAddress() != null && p.getAddress().toLowerCase().contains(kw))
-            )
-            .filter(p -> f.getGender() == null || p.getGender() == f.getGender())
-            .filter(p -> f.getDobFrom() == null || (p.getDateOfBirth() != null && !p.getDateOfBirth().isBefore(f.getDobFrom())))
-            .filter(p -> f.getDobTo() == null || (p.getDateOfBirth() != null && !p.getDateOfBirth().isAfter(f.getDobTo())))
-            .toList();
+                .filter(p -> kw.isEmpty()
+                        || (p.getFullName() != null && p.getFullName().toLowerCase().contains(kw))
+                        || (p.getPhone() != null && p.getPhone().toLowerCase().contains(kw))
+                        || (p.getEmail() != null && p.getEmail().toLowerCase().contains(kw))
+                        || (p.getInsuranceCode() != null && p.getInsuranceCode().toLowerCase().contains(kw))
+                        || (p.getAddress() != null && p.getAddress().toLowerCase().contains(kw)))
+                .filter(p -> f.getGender() == null || p.getGender() == f.getGender())
+                .filter(p -> f.getDobFrom() == null || (p.getDateOfBirth() != null && !p.getDateOfBirth().isBefore(f.getDobFrom())))
+                .filter(p -> f.getDobTo() == null || (p.getDateOfBirth() != null && !p.getDateOfBirth().isAfter(f.getDobTo())))
+                .toList();
     }
 
     @Override
     public PageResult<PatientDTO> findByFilter(PatientFilter filter, PageRequest pr) {
-        var filtered = findByFilter(filter); // tái dùng bước Pha 1
+        var filtered = findByFilter(filter);
         int from = Math.max(0, pr.getPage() * pr.getSize());
         int to = Math.min(filtered.size(), from + pr.getSize());
-        var pageList = from >= filtered.size() ? java.util.List.<PatientDTO>of()
-                                               : filtered.subList(from, to);
+        var pageList = from >= filtered.size()
+                ? List.<PatientDTO>of()
+                : filtered.subList(from, to);
 
         int totalPages = (int) Math.ceil((double) filtered.size() / pr.getSize());
         PageResult<PatientDTO> rs = new PageResult<>();
@@ -136,5 +108,15 @@ public class PatientServiceImpl implements PatientService {
         return rs;
     }
 
-
+    // ✅ Mới thêm: tìm bệnh nhân theo số điện thoại
+    @Override
+    public PatientDTO findByPhone(String phone) {
+        EntityManager em = EntityManagerProvider.em();
+        try {
+            Optional<Patient> optional = patientRepo.findByPhone(em, phone);
+            return optional.map(PatientMapper::toDto).orElse(null);
+        } finally {
+            em.close();
+        }
+    }
 }

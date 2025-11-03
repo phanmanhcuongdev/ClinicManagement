@@ -3,52 +3,70 @@ package com.oop4clinic.clinicmanagement.dao.impl;
 import com.oop4clinic.clinicmanagement.dao.PatientRepository;
 import com.oop4clinic.clinicmanagement.model.entity.Patient;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PatientRepositoryImpl implements PatientRepository {
+
     @Override
-    public Patient create(EntityManager em,Patient patient)
-    {
-        if(patient.getId() == null)
-        {
-            em.persist(patient);
-            return patient;
+    public Optional<Patient> findById(EntityManager em, int id) {
+        try {
+            Patient p = em.find(Patient.class, id);
+            return Optional.ofNullable(p);
+        } catch (NoResultException e) {
+            return Optional.empty();
         }
-        return em.merge(patient);
     }
+
     @Override
-    public List<Patient> findAll(EntityManager em)
-    {
-        return em.createQuery(
-                "select p from Patient p",Patient.class
-        ).getResultList();
+    public Patient create(EntityManager em, Patient p) {
+        if (p.getId() == null) {
+            em.persist(p);
+            return p;
+        }
+        return em.merge(p);
     }
+
     @Override
-    public Patient update(EntityManager em,Patient patient)
-    {
-        if (patient.getId() == null) {
+    public List<Patient> findAll(EntityManager em) {
+        return em.createQuery("SELECT p FROM Patient p", Patient.class)
+                .getResultList();
+    }
+
+    @Override
+    public Patient update(EntityManager em, Patient p) {
+        if (p.getId() == null) {
             throw new IllegalArgumentException("Không thể cập nhật bệnh nhân khi ID null.");
         }
-        // merge sẽ trả về instance managed đã cập nhật
-        return em.merge(patient);
+        return em.merge(p);
     }
+
     @Override
     public long countAll(EntityManager em) {
-        return em.createQuery(
-                "select count(p) from Patient p",
-                Long.class
-        ).getSingleResult();
+        return em.createQuery("SELECT COUNT(p) FROM Patient p", Long.class)
+                .getSingleResult();
     }
+
     @Override
     public List<Patient> findNewest(EntityManager em, int limit) {
-        // Nếu sau này bạn có createdAt thì ORDER BY createdAt desc.
-        // Hiện tại ta sort theo id desc vì id tăng dần.
-        return em.createQuery(
-                "select p from Patient p order by p.id desc",
-                Patient.class
-        )
-        .setMaxResults(limit)
-        .getResultList();
+        return em.createQuery("SELECT p FROM Patient p ORDER BY p.id DESC", Patient.class)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    // ✅ MỚI THÊM: Tìm bệnh nhân theo số điện thoại (đăng nhập)
+    @Override
+    public Optional<Patient> findByPhone(EntityManager em, String phone) {
+        try {
+            Patient p = em.createQuery(
+                            "SELECT p FROM Patient p WHERE p.phone = :phone", Patient.class)
+                    .setParameter("phone", phone)
+                    .getSingleResult();
+            return Optional.of(p);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 }

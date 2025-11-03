@@ -4,6 +4,8 @@ package com.oop4clinic.clinicmanagement.model.entity;
 import com.oop4clinic.clinicmanagement.model.enums.DoctorStatus;
 import com.oop4clinic.clinicmanagement.model.enums.Gender;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;

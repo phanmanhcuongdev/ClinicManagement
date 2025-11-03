@@ -26,6 +26,28 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         }
     }
     @Override
+    public List<Invoice> findByPatientId(EntityManager em,
+                                         int patientId) {
+        try {
+            String jpql = """
+                    SELECT i FROM Invoice i
+                    JOIN FETCH i.patient p
+                    JOIN FETCH i.appointment a
+                    JOIN FETCH a.doctor d  
+                    WHERE p.id = :patientId
+                    ORDER BY i.createdAt DESC
+                    """;
+            TypedQuery<Invoice> query = em.createQuery(jpql, Invoice.class);
+            query.setParameter("patientId", patientId);
+            return query.getResultList();
+        } catch (Exception e) {
+            // Rất quan trọng: In lỗi để debug nếu có lỗi JPQL/Hibernate
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public Invoice save(EntityManager em, Invoice invoice) {
         if (invoice.getId() == null) {
             em.persist(invoice);

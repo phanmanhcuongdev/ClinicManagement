@@ -9,4 +9,6 @@ public interface MedicalRecordReopository {
     List<MedicalRecord> findAll(EntityManager em);
     boolean update(EntityManager em,MedicalRecord record);
     MedicalRecord findById(EntityManager em,int id);
+
+    List<MedicalRecord> findByPatientId(EntityManager em, int patientId);
 }
