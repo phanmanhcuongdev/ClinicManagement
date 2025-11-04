@@ -1,8 +1,12 @@
 package com.oop4clinic.clinicmanagement.controller;
 
 import com.oop4clinic.clinicmanagement.MainApp;
+import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
 import com.oop4clinic.clinicmanagement.model.entity.User;
+import com.oop4clinic.clinicmanagement.service.PatientService;
 import com.oop4clinic.clinicmanagement.service.impl.AuthService;
+import com.oop4clinic.clinicmanagement.service.impl.PatientServiceImpl;
+import com.oop4clinic.clinicmanagement.util.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,6 +43,13 @@ public class RegisterController {
 
         try {
             if(authService.register(phone, pass, confirmpass)){
+                PatientDTO newPatient = new PatientDTO();
+                PatientService patientService = new PatientServiceImpl();
+                newPatient.setPhone(phone);
+                newPatient.setFullName("Bệnh nhân mới");
+                patientService.create(newPatient);
+
+                UserSession.setCurrentPatient(newPatient);
                 setLabelStatus(Color.GREEN, "Đăng ký thành công!");
             }
             else {

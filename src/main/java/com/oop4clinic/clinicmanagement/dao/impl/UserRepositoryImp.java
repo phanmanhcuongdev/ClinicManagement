@@ -7,23 +7,31 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
+import java.util.List;
+
 public class UserRepositoryImp implements UserRepository  {
     @Override
     public User getUserbyUsername(EntityManager em, String username) {
         try {
-            String hql =  "SELECT u FROM User u Where username = :username";
-            TypedQuery<User> query =  em.createQuery(hql,User.class);
+            String hql = "SELECT u FROM User u WHERE username = :username";
+            TypedQuery<User> query = em.createQuery(hql, User.class);
+            query.setParameter("username", username);
 
-            query.setParameter("username",username);
-
-            User userCur =  query.getSingleResult();
-            if(userCur != null) System.out.println(userCur.getCreatedAt());
-            return userCur;
+            List<User> results = query.getResultList(); // 👈 thay vì getSingleResult()
+            if (!results.isEmpty()) {
+                User userCur = results.get(0);
+                System.out.println("✅ Found user: " + userCur.getCreatedAt());
+                return userCur;
+            } else {
+                System.out.println("⚠ No user found for username: " + username);
+                return null;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
 
     @Override
     public String save(EntityManager em,User user) {

@@ -17,4 +17,5 @@ public interface AppointmentService {
     List<AppointmentDTO> searchAppointmentsByPatient(Integer patientId, String doctorName, AppointmentStatus status, LocalDate date);
 
     void createAppointment(CreateAppointmentDTO dto);
+
 }

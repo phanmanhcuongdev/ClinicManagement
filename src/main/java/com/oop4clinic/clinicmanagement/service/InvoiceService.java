@@ -9,4 +9,5 @@ public interface InvoiceService {
     List<InvoiceDTO> getAll();
     List<InvoiceDTO> getInvoicesByPatientId(int patientId);
     boolean updateInvoiceStatus(int id, InvoiceStatus newStatus);
+
 }

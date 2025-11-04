@@ -4,7 +4,6 @@ import com.oop4clinic.clinicmanagement.model.dto.InvoiceDTO;
 import com.oop4clinic.clinicmanagement.model.enums.InvoiceStatus;
 import com.oop4clinic.clinicmanagement.service.InvoiceService;
 import com.oop4clinic.clinicmanagement.service.impl.InvoiceServiceImpl;
-import com.oop4clinic.clinicmanagement.util.SessionManager;
 import com.oop4clinic.clinicmanagement.util.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,8 +29,6 @@ import java.util.ResourceBundle;
 public class InvoicePatientController implements Initializable {
     @FXML private MenuItem infoPatient, recordPatient, billPatient, appointmentPatient, logoutPatient;
     @FXML private Button homeButton;
-
-    // Sử dụng InvoiceDTO làm kiểu dữ liệu cho TableView và các Column
     @FXML private TableView<InvoiceDTO> billTable;
     @FXML private TableColumn<InvoiceDTO, Integer> orderNumberColumn;
     @FXML private TableColumn<InvoiceDTO, String> descriptionColumn; // Ánh xạ tới 'details'
@@ -51,8 +48,6 @@ public class InvoicePatientController implements Initializable {
     }
 
     private void setupTableColumns() {
-
-        // Cột Nội dung thanh toán
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("details"));
         descriptionColumn.setCellFactory(tc -> new TableCell<InvoiceDTO, String>() {
             private final Text text = new Text();
@@ -77,16 +72,10 @@ public class InvoicePatientController implements Initializable {
             }
         });
 
-        // Cột Thành tiền
         amountDueColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
-
-        // Cột Đã thanh toán (Giả định bằng Total)
         amountPaidColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
-
-        // Cột Trạng thái
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Cột STT (Tự đánh số thủ công trong CellFactory)
         orderNumberColumn.setCellValueFactory(cellData -> null);
         orderNumberColumn.setCellFactory(col -> new TableCell<InvoiceDTO, Integer>() {
             @Override
@@ -103,7 +92,6 @@ public class InvoicePatientController implements Initializable {
     }
 
     private void customizeColumns() {
-        // Xử lý cột Trạng thái (InvoiceStatus)
         statusColumn.setCellFactory(column -> new TableCell<InvoiceDTO, InvoiceStatus>() {
             @Override
             protected void updateItem(InvoiceStatus item, boolean empty) {
@@ -113,7 +101,6 @@ public class InvoicePatientController implements Initializable {
                     setStyle("");
                 } else {
                     String statusDisplay;
-                    // Kiểm tra trực tiếp đối tượng Enum InvoiceStatus
                     if (item == InvoiceStatus.PAID) {
                         statusDisplay = "Đã thanh toán đủ";
                         setStyle("-fx-text-fill: #28a745; -fx-font-weight: bold; -fx-alignment: center;");
@@ -148,19 +135,20 @@ public class InvoicePatientController implements Initializable {
 
     private void loadData() {
         invoiceList.clear();
-
-        int currentPatientId = SessionManager.getLoggedPatientId();
-
+        var currentPatient = UserSession.getCurrentPatient();
+        if (currentPatient == null) {
+            System.err.println("⚠ Không tìm thấy bệnh nhân trong session, không thể tải hóa đơn!");
+            return;
+        }
+        int currentPatientId = currentPatient.getId();
         List<InvoiceDTO> invoicesFromService = invoiceService.getInvoicesByPatientId(currentPatientId);
-
         if (invoicesFromService != null) {
             invoiceList.addAll(invoicesFromService);
         } else {
-            System.err.println("Lỗi: Không tải được dữ liệu hóa đơn. Kiểm tra console để biết thêm chi tiết.");
+            System.err.println("Không tải được dữ liệu hóa đơn. Kiểm tra console để biết thêm chi tiết.");
         }
     }
 
-    // chuyen trang
     @FXML void handleInfo(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/InfoPatient.fxml"));
         Scene scene = homeButton.getScene();
@@ -182,7 +170,7 @@ public class InvoicePatientController implements Initializable {
         scene.setRoot(root);
     }
     @FXML void handleLogout(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Logout.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml"));
         UserSession.clear();
         Scene scene = homeButton.getScene();
         scene.setRoot(root);

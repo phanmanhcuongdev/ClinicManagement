@@ -1,6 +1,5 @@
 package com.oop4clinic.clinicmanagement.controller;
 
-// ----- Imports mới cho Service và DTO -----
 import com.oop4clinic.clinicmanagement.model.dto.CreateAppointmentDTO;
 import com.oop4clinic.clinicmanagement.model.dto.DepartmentDTO;
 import com.oop4clinic.clinicmanagement.model.dto.DoctorDTO;
@@ -14,7 +13,7 @@ import com.oop4clinic.clinicmanagement.service.impl.AppointmentServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.DepartmentServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.DoctorServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.DoctorScheduleServiceImpl;
-// ----- Imports JavaFX/Time -----
+import com.oop4clinic.clinicmanagement.util.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,10 +23,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.Cursor;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -36,11 +33,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Booking2Controller {
+
     @FXML private Button homeButton;
     @FXML private MenuButton userMenuButton;
     @FXML private MenuItem infoPatient;
@@ -48,47 +45,37 @@ public class Booking2Controller {
     @FXML private MenuItem billPatient;
     @FXML private MenuItem appointmentPatient;
     @FXML private MenuItem logoutPatient;
-
     @FXML private Button book1;
     @FXML private Button book2;
-
     @FXML private TextField symptom;
     @FXML private TextField department;
     @FXML private DatePicker date;
-
     @FXML private Button saveButton;
     @FXML private VBox departmentVBox;
 
-    // ===== THAY THẾ DAO BẰNG SERVICE =====
     private final DepartmentService departmentService = new DepartmentServiceImpl();
     private final DoctorService doctorService = new DoctorServiceImpl();
     private final DoctorScheduleService scheduleService = new DoctorScheduleServiceImpl();
     private final AppointmentService appointmentService = new AppointmentServiceImpl();
 
-
-    // định dạng ngày (Dùng để parse và format)
     private final DateTimeFormatter dbDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DateTimeFormatter dbTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private final DateTimeFormatter displayDayMonthFormatter = DateTimeFormatter.ofPattern("dd/MM");
     private final Locale vietnameseLocale = new Locale("vi", "VN");
 
-    // ===== THAY ĐỔI MODEL SANG DTO =====
     private DoctorDTO selectedDoctorForBooking = null;
     private DoctorScheduleDTO selectedScheduleForBooking = null;
     private DepartmentDTO selectedDepartmentForBooking = null;
 
-    @FXML
-    public void initialize() {
+    @FXML public void initialize() {
         // Cần cập nhật danh sách khoa khi thay đổi tìm kiếm hoặc thay đổi ngày
         department.textProperty().addListener((obs, oldText, newText) -> updateDepartmentVBox());
         date.valueProperty().addListener((obs, oldDate, newDate) -> updateDepartmentVBox());
-        // Hiển thị danh sách khoa ngay khi khởi tạo (không cần chọn ngày)
         updateDepartmentVBox();
     }
 
     // lưu lịch hẹn
-    @FXML
-    void saveTime(ActionEvent event) {
+    @FXML void saveTime(ActionEvent event) {
         String patientSymptom = symptom.getText();
 
         if (patientSymptom == null || patientSymptom.isBlank()) {
@@ -113,14 +100,16 @@ public class Booking2Controller {
                 selectedScheduleForBooking.getWorkDate(),
                 selectedScheduleForBooking.getWorkTime()
         ));
-
         Optional<ButtonType> result = confirmAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // ===== LOGIC LƯU ĐÃ THAY ĐỔI =====
+                Integer currentPatientId = UserSession.getCurrentId();
 
-                int currentPatientId = 1; // <--- !!! THAY THẾ BẰNG ID BỆNH NHÂN THỰC TẾ
+                if (currentPatientId == null) {
+                    showAlert(Alert.AlertType.ERROR, "Lỗi đăng nhập", "Không tìm thấy thông tin bệnh nhân đăng nhập!");
+                    return;
+                }
 
                 CreateAppointmentDTO newAppointment = new CreateAppointmentDTO();
                 newAppointment.setPatientId(currentPatientId);
@@ -155,7 +144,7 @@ public class Booking2Controller {
         }
     }
 
-    // hiển thị danh sách khoa (CHỈ LỌC THEO TÊN, KHÔNG LỌC THEO NGÀY)
+    // hiển thị danh sách khoa
     private void updateDepartmentVBox() {
         departmentVBox.getChildren().clear();
 
@@ -183,7 +172,7 @@ public class Booking2Controller {
         }
     }
 
-    // tạo card khoa (ĐÃ THÊM LOGIC MỞ RỘNG VÀ LẤY LỊCH TRỐNG)
+    // giao diện card
     private VBox createDepartmentCard(DepartmentDTO dept) {
         VBox card = new VBox();
         card.setStyle("""
@@ -211,7 +200,6 @@ public class Booking2Controller {
         scheduleContainer.setVisible(false);
         scheduleContainer.setManaged(false);
 
-        // LOGIC XỬ LÝ KHI CLICK VÀO TÊN KHOA
         headerBox.setOnMouseClicked(event -> {
             boolean isVisible = scheduleContainer.isVisible();
             scheduleContainer.setVisible(!isVisible);
@@ -307,12 +295,9 @@ public class Booking2Controller {
             timeButton.setToggleGroup(timeToggleGroup);
             timeButton.getStyleClass().add("time-slot-button");
 
-            // 4. Khi click vào giờ: Gán Schedule và Doctor (chọn ngẫu nhiên bác sĩ đầu tiên có lịch trống)
             timeButton.setOnAction(ev -> {
-                // Chọn DoctorScheduleDTO đầu tiên có sẵn ở giờ này
                 DoctorScheduleDTO chosenSlot = slotsAtThisTime.get(0);
 
-                // Lấy thông tin Bác sĩ (cần thiết cho saveTime)
                 try {
                     // Dùng findById của DoctorService (đã có)
                     DoctorDTO doctor = doctorService.findById(chosenSlot.getDoctorId());
@@ -330,7 +315,7 @@ public class Booking2Controller {
         }
     }
 
-    // Các hàm chuyển scene (Giữ nguyên)
+
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
