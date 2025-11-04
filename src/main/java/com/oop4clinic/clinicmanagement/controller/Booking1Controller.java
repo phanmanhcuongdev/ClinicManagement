@@ -280,6 +280,7 @@ public class Booking1Controller {
         }
     }
 
+    //tbao
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

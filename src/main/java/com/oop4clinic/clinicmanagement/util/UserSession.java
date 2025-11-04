@@ -2,7 +2,7 @@ package com.oop4clinic.clinicmanagement.util;
 
 import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
 import com.oop4clinic.clinicmanagement.model.entity.User;
-
+// tbao
 // quản lý thông tin người dùng đăng nhập
 public class UserSession {
     private static User currentUser;

@@ -48,7 +48,7 @@ public class RegisterController {
                 newPatient.setPhone(phone);
                 newPatient.setFullName("Bệnh nhân mới");
                 patientService.create(newPatient);
-
+                // thong bao
                 UserSession.setCurrentPatient(newPatient);
                 setLabelStatus(Color.GREEN, "Đăng ký thành công!");
             }

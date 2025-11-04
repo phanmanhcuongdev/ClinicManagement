@@ -24,14 +24,7 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
     private final AppointmentRepository appointmentRepo  = new AppointmentRepositoryImpl();
     private final InvoiceRepository invoiceRepo          = new InvoiceRepositoryImpl();
 
-    /**
-     * TODO: cập nhật cho đúng util của bạn để lấy EntityManager.
-     * Ví dụ:
-     *
-     * private EntityManager getEntityManager() {
-     *     return JpaUtil.getEntityManager();
-     * }
-     */
+
     private EntityManager getEntityManager() {
         return null; // <-- CHỈ TẠM, bạn phải thay
     }

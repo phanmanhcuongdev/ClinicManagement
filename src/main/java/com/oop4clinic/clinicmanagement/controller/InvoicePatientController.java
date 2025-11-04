@@ -71,7 +71,7 @@ public class InvoicePatientController implements Initializable {
                 }
             }
         });
-
+        // tbao
         amountDueColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
         amountPaidColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));

@@ -60,7 +60,7 @@ public class InfoPatientController implements Initializable {
                 genderToggleGroup.selectToggle(genderPatient2);
             }
         } else {
-            System.err.println("⚠ Không có bệnh nhân trong phiên đăng nhập!");
+            System.err.println("⚠ Không có bệnh nhân!");
         }
     }
 

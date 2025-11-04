@@ -29,7 +29,7 @@ public class Patient {
     @Column(nullable = true)
     private String fullName;
 
-
+    // tbao
     @Enumerated(EnumType.STRING)
     @Column(nullable = true, length = 10)
     private Gender gender;

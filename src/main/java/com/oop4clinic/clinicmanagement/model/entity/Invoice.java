@@ -31,7 +31,7 @@ public class Invoice {
         foreignKey = @ForeignKey(name = "fk_invoice_patient"))
     private Patient patient;
 
-
+    // tbao
     @Column(nullable = false)
     private Double total;
 
