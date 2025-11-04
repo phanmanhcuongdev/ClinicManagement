@@ -149,7 +149,7 @@ public class InvoicePatientController implements Initializable {
     private void loadData() {
         invoiceList.clear();
 
-        int currentPatientId = SessionManager.getLoggedPatientId();
+        int currentPatientId = SessionManager.getLoggedUser();
 
         List<InvoiceDTO> invoicesFromService = invoiceService.getInvoicesByPatientId(currentPatientId);
 

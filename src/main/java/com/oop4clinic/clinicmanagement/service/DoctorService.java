@@ -12,5 +12,5 @@ public interface DoctorService {
     DoctorDTO findById(int id);
     DoctorDTO update(DoctorDTO dto);
     List<DoctorDTO> searchDoctors(String keyword, Integer departmentId, DoctorStatus status);
-
+    DoctorDTO findByPhone(String phonenumber);
 }

@@ -15,4 +15,5 @@ public interface DoctorRepository {
     long countAll(EntityManager em);
     long countByStatus(EntityManager em,
                        com.oop4clinic.clinicmanagement.model.enums.DoctorStatus status);
+    Doctor findByPhone(EntityManager em,String phone);
 }

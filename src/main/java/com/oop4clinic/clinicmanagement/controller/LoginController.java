@@ -1,9 +1,11 @@
 package com.oop4clinic.clinicmanagement.controller;
 
+import com.oop4clinic.clinicmanagement.model.dto.DoctorDTO;
 import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.model.enums.UserRole;
 import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
 import com.oop4clinic.clinicmanagement.service.PatientService;
+import com.oop4clinic.clinicmanagement.service.impl.DoctorServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.PatientServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.AuthService;
 import com.oop4clinic.clinicmanagement.util.SessionManager;
@@ -70,6 +72,15 @@ public class LoginController {
             }
 
             if (user.getRole().equals(UserRole.DOCTOR)) {
+                DoctorServiceImpl doctorService = new DoctorServiceImpl();
+                DoctorDTO doctor = doctorService.findByPhone(user.getUsername());
+
+                if(doctor != null){
+                    SessionManager.login(doctor.getId(), doctor.getPhone());
+                    System.out.println("Đăng nhập thành công: ID bác sĩ = " + doctor.getId());
+                } else {
+                    System.err.println("Không tìm thấy bác sĩ với số điện thoại: " + user.getUsername());
+                }
                 url = "/com/oop4clinic/clinicmanagement/fxml/MenuDoctor.fxml";
             }
 

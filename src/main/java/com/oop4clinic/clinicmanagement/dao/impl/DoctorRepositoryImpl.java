@@ -114,4 +114,17 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         .getSingleResult();
     }
 
+    @Override
+    public Doctor findByPhone(EntityManager em, String phone) {
+        try {
+            return em.createQuery(
+                            "SELECT d FROM Doctor d WHERE d.phone = :phone", Doctor.class
+                    )
+                    .setParameter("phone", phone)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 }

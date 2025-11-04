@@ -41,7 +41,7 @@ public class MedicalRecordPatientController implements Initializable {
 
     // GIẢ ĐỊNH: ID của bệnh nhân đang đăng nhập
     // BẠN CẦN THAY THẾ NÀY BẰNG CƠ CHẾ LẤY ID THỰC TẾ (ví dụ: từ Session/Login Context)
-    private static final int CURRENT_PATIENT_ID = SessionManager.getLoggedPatientId();;
+    private static final int CURRENT_PATIENT_ID = SessionManager.getLoggedUser();;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

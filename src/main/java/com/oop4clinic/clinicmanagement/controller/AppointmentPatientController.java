@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AppointmentPatientController {
     @FXML private TextField namePatient;
@@ -42,7 +41,7 @@ public class AppointmentPatientController {
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
 
-    private static int currentPatientId = SessionManager.getLoggedPatientId();;
+    private static int currentPatientId = SessionManager.getLoggedUser();;
     public static void setCurrentPatientId(int id) {
         currentPatientId = id;
     }
