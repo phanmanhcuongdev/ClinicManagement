@@ -220,6 +220,22 @@ public class DoctorServiceImpl implements DoctorService {
         }
     }
 
+    @Override
+    public DoctorDTO findByPhone(String phonenumber)
+    {
+        EntityManager em = EntityManagerProvider.em();
+        try
+        {
+            var doctor = doctorRepo.findByPhone(em,phonenumber);
+            return DoctorMapper.toDTO(doctor);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     // Helper nhỏ để tránh null handling lặp lại
     private static String normalize(String s) {
         if (s == null) return null;
