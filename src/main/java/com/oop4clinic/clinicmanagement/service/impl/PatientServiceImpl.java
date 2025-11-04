@@ -38,7 +38,7 @@ public class PatientServiceImpl implements PatientService {
             em.close();
         }
     }
-
+// tbao
     @Override
     public List<PatientDTO> findAll() {
         EntityManager em = EntityManagerProvider.em();

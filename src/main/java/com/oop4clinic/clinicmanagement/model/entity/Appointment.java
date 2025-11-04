@@ -57,7 +57,7 @@ public class Appointment {
     @OneToOne(mappedBy = "appointment", fetch = FetchType.LAZY)
     private Invoice invoice;
 
-
+    //tbao
     @OneToOne(mappedBy = "appointment", fetch = FetchType.LAZY)
     private MedicalRecord medicalRecord;
 

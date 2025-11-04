@@ -1,5 +1,6 @@
 package com.oop4clinic.clinicmanagement.service.impl;
 
+import com.oop4clinic.clinicmanagement.dao.InvoiceRepository;
 import com.oop4clinic.clinicmanagement.dao.jpa.EntityManagerProvider;
 import com.oop4clinic.clinicmanagement.mapper.InvoiceMapper;
 import com.oop4clinic.clinicmanagement.dao.impl.InvoiceRepositoryImpl;
@@ -9,12 +10,15 @@ import com.oop4clinic.clinicmanagement.model.enums.InvoiceStatus;
 import com.oop4clinic.clinicmanagement.service.InvoiceService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+
 import java.util.List;
 
 public class InvoiceServiceImpl implements InvoiceService {
     private InvoiceRepositoryImpl invoiceDAO = new InvoiceRepositoryImpl();
     private InvoiceMapper mapper = new InvoiceMapper();
+    private final InvoiceRepository invoiceRepo = new InvoiceRepositoryImpl();
 
+    // tbao
     @Override
     public List<InvoiceDTO> getAll(){
         EntityManager em = EntityManagerProvider.em();

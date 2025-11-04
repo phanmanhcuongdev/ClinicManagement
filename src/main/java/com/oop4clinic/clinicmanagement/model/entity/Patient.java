@@ -26,16 +26,16 @@ public class Patient {
     private Integer id; // PK int
 
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String fullName;
 
-
+    // tbao
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+    @Column(nullable = true, length = 10)
     private Gender gender;
 
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate dateOfBirth;
 
 

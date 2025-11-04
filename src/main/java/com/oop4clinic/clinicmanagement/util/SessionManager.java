@@ -1,17 +1,16 @@
 package com.oop4clinic.clinicmanagement.util;
 
-public final class SessionManager {
-    private SessionManager(){}
-    private static Integer loggedUser;
+public class SessionManager {
+    private static Integer loggedPatientId;
     private static String loggedPhoneNumber;
 
-    public static void login(Integer curId, String phoneNumber) {
-        loggedUser = curId;
+    public static void login(Integer patientId, String phoneNumber) {
+        loggedPatientId = patientId;
         loggedPhoneNumber = phoneNumber;
     }
 
-    public static int getLoggedUser() {
-        return loggedUser;
+    public static Integer getLoggedPatientId() {
+        return loggedPatientId;
     }
 
     public static String getLoggedPhoneNumber() {
@@ -19,11 +18,11 @@ public final class SessionManager {
     }
 
     public static boolean isLoggedIn() {
-        return loggedUser != null;
+        return loggedPatientId != null;
     }
 
     public static void logout() {
-        loggedUser = null;
+        loggedPatientId = null;
         loggedPhoneNumber = null;
     }
 }
