@@ -10,19 +10,11 @@ import jakarta.persistence.TypedQuery;
 public class UserRepositoryImp implements UserRepository  {
     @Override
     public User getUserbyUsername(EntityManager em, String username) {
-        try {
-            String hql =  "SELECT u FROM User u Where username = :username";
-            TypedQuery<User> query =  em.createQuery(hql,User.class);
+        String hql =  "SELECT u FROM User u Where username = :username";
+        TypedQuery<User> query =  em.createQuery(hql,User.class);
+        query.setParameter("username",username);
 
-            query.setParameter("username",username);
-
-            User userCur =  query.getSingleResult();
-            if(userCur != null) System.out.println(userCur.getCreatedAt());
-            return userCur;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return query.getResultStream().findFirst().orElse(null);
     }
 
 //    @Override
@@ -45,9 +37,15 @@ public class UserRepositoryImp implements UserRepository  {
 //        }
 //        return null;
 //    }
-@Override
-public void save(EntityManager em, User user) {
-    em.persist(user);
-}
+    @Override
+    public void save(EntityManager em, User user) {
+        em.persist(user);
+    }
+
+    @Override
+    public void update(EntityManager em,User existing)
+    {
+        em.merge(existing);
+    }
 
 }

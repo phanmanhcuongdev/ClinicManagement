@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.admin.DoctorManagementController">
+<BorderPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.admin.DoctorManagementController">
 
     <!-- Thanh tiêu đề + tìm kiếm / hành động nhanh -->
     <top>
@@ -97,6 +97,9 @@
                     <Label text="Khoa:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                     <ComboBox fx:id="cbDepartmentForm" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
+                    <Label text="Trạng thái" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <ComboBox fx:id="doctorStatus" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
                     <Label text="Phí khám:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
                     <TextField fx:id="txtFee" promptText="VD: 350000" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
@@ -105,8 +108,7 @@
 
                     <Label text="Ghi chú:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
                     <TextArea fx:id="txtNotes" prefRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                    <Label text="Trạng thái" GridPane.rowIndex="6" />
-                    <ComboBox fx:id="doctorStatus" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
                     <rowConstraints>
                         <RowConstraints />
                         <RowConstraints />
@@ -121,14 +123,10 @@
                     </rowConstraints>
                 </GridPane>
 
-                <VBox spacing="6.0" style="-fx-background-color: rgba(30,128,199,0.06); -fx-padding:10; -fx-background-radius:8;">
-                    <Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Lịch làm việc (tuỳ chọn)" />
-                    <HBox spacing="8">
-                        <TextField fx:id="txtWorkShift" promptText="Ví dụ: T2–T6 08:00–17:00; T7 08:00–12:00" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="btnEditSchedule" text="Sửa lịch" />
-                    </HBox>
-                </VBox>
-
+                <!-- Nút Tạo tài khoản - căn giữa -->
+                <HBox alignment="CENTER" style="-fx-padding: 12 0 0 0;">
+                    <Button fx:id="btnCreateAccount" onAction="#onCreateDoctorAccount" style="-fx-background-color: linear-gradient(to right, #1e80c7, #409eff);                                    -fx-text-fill: white;                                    -fx-font-weight: bold;                                    -fx-padding: 8 18;                                    -fx-background-radius: 20;                                    -fx-cursor: hand;" text="Tạo tài khoản" />
+                </HBox>
             </VBox>
         </SplitPane>
     </center>

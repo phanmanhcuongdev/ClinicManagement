@@ -1,5 +1,7 @@
 package com.oop4clinic.clinicmanagement.controller.admin;
 
+import com.oop4clinic.clinicmanagement.service.UserService;
+import com.oop4clinic.clinicmanagement.service.impl.AuthService;
 import com.oop4clinic.clinicmanagement.util.ValidationUtils;
 import com.oop4clinic.clinicmanagement.model.dto.DepartmentDTO;
 import com.oop4clinic.clinicmanagement.model.dto.DoctorDTO;
@@ -12,6 +14,7 @@ import com.oop4clinic.clinicmanagement.service.impl.DoctorServiceImpl;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -27,6 +30,7 @@ public class  DoctorManagementController {
     // ============================================================
     private final DepartmentService departmentService = new DepartmentServiceImpl();
     private final DoctorService doctorService = new DoctorServiceImpl();
+    private final UserService authService = new AuthService();
 
     // ============================================================
     //  FXML - FORM CHI TIẾT
@@ -44,6 +48,7 @@ public class  DoctorManagementController {
     @FXML private Button btnEdit;
     @FXML private Button btnSave;
     @FXML private Button btnDeactivate; // chưa dùng nhưng vẫn để vì FXML có
+    @FXML private Button btnCreateAccount;
 
     // ============================================================
     //  FXML - DANH SÁCH / LỌC
@@ -190,12 +195,33 @@ public class  DoctorManagementController {
 
         try {
             DoctorDTO saved = doctorService.create(dto);
+
+            authService.createOrResetDoctorAccount(saved.getId());
+
             info("Đã thêm bác sĩ: " + saved.getFullName());
             afterSaveOrUpdate();
         } catch (IllegalArgumentException dup) {
             warn(dup.getMessage());
         } catch (RuntimeException e) {
             showSystemError(e);
+        }catch (Exception ex){
+            showSystemError(ex);
+        }
+    }
+
+    @FXML
+    private void onCreateDoctorAccount() {
+
+        if(selectedDoctorId == null || currentMode!=FormMode.EDIT) return;
+
+        try
+        {
+            authService.createOrResetDoctorAccount(selectedDoctorId);
+            info("Mật khẩu bác sĩ đặt thành công");
+        }
+        catch (Exception ex)
+        {
+            warn(ex.getMessage());
         }
     }
 

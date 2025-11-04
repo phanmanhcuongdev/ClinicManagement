@@ -119,4 +119,15 @@ public final class ValidationUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return T.format(formatter);
     }
+
+    public static String formatDobAsPassword(LocalDate dob) {
+        if (dob == null) return "00000000"; // fallback nếu chưa có ngày sinh
+        return String.format("%02d%02d%04d",
+                dob.getDayOfMonth(),
+                dob.getMonthValue(),
+                dob.getYear());
+    }
+
+
+
 }
