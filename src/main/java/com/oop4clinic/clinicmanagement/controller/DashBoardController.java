@@ -46,7 +46,7 @@ public class DashBoardController implements  Initializable{
         setupAppointmentTableColumns();
         loadUpcomingAppointments();
         Platform.runLater(() -> {
-            mainScrollPane.setVvalue(0.0); // 0.0 là trên cùng, 1.0 là dưới cùng
+            mainScrollPane.setVvalue(0.0);
         });
 
 
