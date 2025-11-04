@@ -1,10 +1,9 @@
-package com.oop4clinic.clinicmanagement.controller;
+package com.oop4clinic.clinicmanagement.controller.doctor;
 
 import com.oop4clinic.clinicmanagement.model.dto.AppointmentDTO;
 import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
 import com.oop4clinic.clinicmanagement.model.dto.PatientAppointmentInfoDto;
 import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
-import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
 import com.oop4clinic.clinicmanagement.service.AppointmentService;
 import com.oop4clinic.clinicmanagement.service.MedicalRecordService;

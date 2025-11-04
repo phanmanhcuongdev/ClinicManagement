@@ -1,4 +1,4 @@
-package com.oop4clinic.clinicmanagement.controller;
+package com.oop4clinic.clinicmanagement.controller.admin;
 
 import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
 import com.oop4clinic.clinicmanagement.model.enums.Gender;

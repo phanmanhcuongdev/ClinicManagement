@@ -23,4 +23,7 @@ module com.oop4clinic.clinicmanagement {
     opens com.oop4clinic.clinicmanagement.model.dto to javafx.base;
 
     opens com.oop4clinic.clinicmanagement.util to org.hibernate.orm.core;
+    opens com.oop4clinic.clinicmanagement.controller.admin to javafx.base, javafx.fxml;
+    opens com.oop4clinic.clinicmanagement.controller.doctor to javafx.base, javafx.fxml;
+    opens com.oop4clinic.clinicmanagement.controller.patient to javafx.base, javafx.fxml;
 }

@@ -1,4 +1,4 @@
-package com.oop4clinic.clinicmanagement.controller;
+package com.oop4clinic.clinicmanagement.controller.doctor;
 
 import com.oop4clinic.clinicmanagement.model.dto.PatientAppointmentInfoDto;
 import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;

@@ -1,7 +1,6 @@
-package com.oop4clinic.clinicmanagement.controller;
+package com.oop4clinic.clinicmanagement.controller.admin;
 
 import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
-import com.oop4clinic.clinicmanagement.model.entity.MedicalRecord;
 import com.oop4clinic.clinicmanagement.model.mapper.MedicalRecordMapper;
 import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl;
 import javafx.beans.property.SimpleObjectProperty;

@@ -1,7 +1,6 @@
-package com.oop4clinic.clinicmanagement.controller;
+package com.oop4clinic.clinicmanagement.controller.admin;
 
 import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
-import com.oop4clinic.clinicmanagement.model.entity.MedicalRecord;
 import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl; // Assume you have this service
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

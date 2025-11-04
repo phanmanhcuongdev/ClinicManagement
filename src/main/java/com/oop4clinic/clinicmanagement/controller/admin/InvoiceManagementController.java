@@ -1,7 +1,6 @@
-package com.oop4clinic.clinicmanagement.controller;
+package com.oop4clinic.clinicmanagement.controller.admin;
 
 import com.oop4clinic.clinicmanagement.model.dto.InvoiceDTO;
-import com.oop4clinic.clinicmanagement.model.entity.Invoice;
 import com.oop4clinic.clinicmanagement.model.enums.InvoiceStatus;
 import com.oop4clinic.clinicmanagement.service.impl.InvoiceServiceImpl;
 import javafx.beans.property.SimpleDoubleProperty;

@@ -1,4 +1,4 @@
-package com.oop4clinic.clinicmanagement.controller;
+package com.oop4clinic.clinicmanagement.controller.admin;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

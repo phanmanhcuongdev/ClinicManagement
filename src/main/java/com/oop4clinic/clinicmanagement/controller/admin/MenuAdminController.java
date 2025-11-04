@@ -1,8 +1,6 @@
-package com.oop4clinic.clinicmanagement.controller;
+package com.oop4clinic.clinicmanagement.controller.admin;
 
 import com.oop4clinic.clinicmanagement.MainApp;
-import com.oop4clinic.clinicmanagement.service.AdminDashboardService;
-import com.oop4clinic.clinicmanagement.service.impl.AdminDashboardServiceImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

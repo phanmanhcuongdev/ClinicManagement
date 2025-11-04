@@ -1,7 +1,6 @@
-package com.oop4clinic.clinicmanagement.controller;
+package com.oop4clinic.clinicmanagement.controller.patient;
 
 import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
-import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.service.MedicalRecordService;
 import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl;
 import com.oop4clinic.clinicmanagement.util.UserSession;

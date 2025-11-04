@@ -1,22 +1,17 @@
-package com.oop4clinic.clinicmanagement.controller;
+package com.oop4clinic.clinicmanagement.controller.doctor;
 
 import com.oop4clinic.clinicmanagement.model.dto.AppointmentDTO;
 import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
-import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
 import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
 import com.oop4clinic.clinicmanagement.service.AppointmentService;
 import com.oop4clinic.clinicmanagement.service.MedicalRecordService;
-import com.oop4clinic.clinicmanagement.service.PatientService;
 import com.oop4clinic.clinicmanagement.service.impl.AppointmentServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl;
-import com.oop4clinic.clinicmanagement.service.impl.PatientServiceImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
-import java.time.LocalDateTime;
-import java.util.List;
 import javafx.scene.control.CheckBox;
 public class AddMedicalRecordDialogController {
     @FXML private TextField patientNameField;
