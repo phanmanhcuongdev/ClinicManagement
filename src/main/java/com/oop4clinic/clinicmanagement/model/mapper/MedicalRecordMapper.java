@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class MedicalRecordMapper {
 
-    public MedicalRecordDTO toDto(MedicalRecord medicalRecord) {
+    public static MedicalRecordDTO toDto(MedicalRecord medicalRecord) {
         if (medicalRecord == null) {
             return null;
         }
@@ -32,12 +32,6 @@ public class MedicalRecordMapper {
         if (medicalRecord.getDoctor() != null) {
             dto.setDoctorId(medicalRecord.getDoctor().getId());
             dto.setDoctorName(medicalRecord.getDoctor().getFullName());
-
-            // BỔ SUNG: Ánh xạ Department Name
-            // Giả định Doctor Entity có phương thức getDepartment() và Department Entity có getName()
-            if (medicalRecord.getDoctor().getDepartment() != null) {
-                dto.setDepartmentName(medicalRecord.getDoctor().getDepartment().getName());
-            }
         }
 
         return dto;
@@ -48,7 +42,7 @@ public class MedicalRecordMapper {
             return null;
         }
         return medicalRecords.stream()
-                .map(this::toDto)
+                .map(MedicalRecordMapper::toDto)
                 .collect(Collectors.toList());
     }
 

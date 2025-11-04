@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class AppointmentMapper {
 
-    public AppointmentDTO toDto(Appointment appointment) {
+    public static AppointmentDTO toDto(Appointment appointment) {
         if (appointment == null) {
             return null;
         }
@@ -21,6 +21,8 @@ public class AppointmentMapper {
         if (appointment.getPatient() != null) {
             dto.setPatientId(appointment.getPatient().getId());
             dto.setPatientName(appointment.getPatient().getFullName());
+            dto.setPatient(PatientMapper.toDto(appointment.getPatient()));
+
         }
 
         if (appointment.getDoctor() != null) {
@@ -36,12 +38,12 @@ public class AppointmentMapper {
         return dto;
     }
 
-    public List<AppointmentDTO> toDtoList(List<Appointment> appointments) {
+    public static List<AppointmentDTO> toDtoList(List<Appointment> appointments) {
         if (appointments == null) {
             return null;
         }
         return appointments.stream()
-                           .map(this::toDto)
-                           .collect(Collectors.toList());
+                .map(AppointmentMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

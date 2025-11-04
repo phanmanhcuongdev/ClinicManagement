@@ -1,9 +1,9 @@
 package com.oop4clinic.clinicmanagement.controller;
 
 import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
+import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.service.MedicalRecordService;
 import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl;
-import com.oop4clinic.clinicmanagement.util.SessionManager;
 import com.oop4clinic.clinicmanagement.util.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,7 +41,6 @@ public class MedicalRecordPatientController implements Initializable {
 
     // GIẢ ĐỊNH: ID của bệnh nhân đang đăng nhập
     // BẠN CẦN THAY THẾ NÀY BẰNG CƠ CHẾ LẤY ID THỰC TẾ (ví dụ: từ Session/Login Context)
-    private static final int CURRENT_PATIENT_ID = SessionManager.getLoggedUser();;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -136,18 +135,34 @@ public class MedicalRecordPatientController implements Initializable {
     }
 
     private void loadMedicalRecords() {
-        // THAY ĐỔI LỚN NHẤT: Gọi phương thức getByPatientId thay vì getAll
-        // Phương thức này chỉ trả về hồ sơ của bệnh nhân có ID là CURRENT_PATIENT_ID
-        List<MedicalRecordDTO> recordsList = medicalRecordService.getByPatientId(CURRENT_PATIENT_ID);
+        try {
+            var currentPatient = UserSession.getCurrentPatient();
 
-        if (recordsList != null) {
-            ObservableList<MedicalRecordDTO> observableRecords = FXCollections.observableArrayList(recordsList);
-            medicalRecordTable.setItems(observableRecords);
-        } else {
+            if (currentPatient == null) {
+                System.err.println("⚠ Không tìm thấy bệnh nhân trong session, không thể tải ho sơ!");
+                return;
+            }
+
+            int patientId = currentPatient.getId(); // ✅ Lấy đúng ID bệnh nhân
+
+
+            List<MedicalRecordDTO> recordsList = medicalRecordService.getByPatientId(patientId);
+
+            if (recordsList != null && !recordsList.isEmpty()) {
+                ObservableList<MedicalRecordDTO> observableRecords = FXCollections.observableArrayList(recordsList);
+                medicalRecordTable.setItems(observableRecords);
+            } else {
+                medicalRecordTable.setItems(FXCollections.emptyObservableList());
+                System.err.println("Không có hồ sơ bệnh án nào được tìm thấy cho bệnh nhân ID: " + patientId);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
             medicalRecordTable.setItems(FXCollections.emptyObservableList());
             System.err.println("Lỗi: Không thể tải danh sách hồ sơ bệnh án.");
         }
     }
+
 
     // --- Xử lý chuyển trang ---
     @FXML void handleInfo(ActionEvent event) throws IOException {
@@ -171,7 +186,7 @@ public class MedicalRecordPatientController implements Initializable {
         scene.setRoot(root);
     }
     @FXML void handleLogout(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Logout.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml"));
         UserSession.clear();
         Scene scene = homeButton.getScene();
         scene.setRoot(root);

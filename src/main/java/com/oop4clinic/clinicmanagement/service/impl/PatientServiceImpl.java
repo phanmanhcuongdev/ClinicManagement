@@ -16,6 +16,7 @@ import jakarta.persistence.EntityTransaction;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepo = new PatientRepositoryImpl();
@@ -119,4 +120,46 @@ public class PatientServiceImpl implements PatientService {
             em.close();
         }
     }
+
+    @Override
+    public List<PatientDTO> getAllPatients() {
+        EntityManager em = EntityManagerProvider.em();
+        try {
+            List<Patient> entities = patientRepo.findAll(em);
+
+            return entities.stream()
+                    .map(this::convertToPatientDTO)
+                    .collect(Collectors.toList());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public PatientDTO getPatient(int patientId) {
+        EntityManager em = EntityManagerProvider.em();
+        try {
+            Patient patient = em.find(Patient.class, patientId);
+
+            if (patient == null) {
+
+                return null;
+            }
+
+            return convertToPatientDTO(patient);
+        } finally {
+            em.close();
+        }
+    }
+    private PatientDTO convertToPatientDTO(Patient patient) {
+        PatientDTO dto = new PatientDTO();
+        dto.setId(patient.getId());
+        dto.setFullName(patient.getFullName());
+        dto.setGender(patient.getGender());
+        dto.setDateOfBirth(patient.getDateOfBirth());
+        dto.setPhone(patient.getPhone());
+
+        return dto;
+    }
+
 }

@@ -2,13 +2,23 @@ package com.oop4clinic.clinicmanagement;
 
 import com.oop4clinic.clinicmanagement.dao.jpa.EntityManagerProvider;
 import com.oop4clinic.clinicmanagement.model.dto.DepartmentDTO;
+import com.oop4clinic.clinicmanagement.model.entity.Appointment;
+import com.oop4clinic.clinicmanagement.model.entity.Department;
+import com.oop4clinic.clinicmanagement.model.entity.Doctor;
+import com.oop4clinic.clinicmanagement.model.entity.Patient;
+import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
+import com.oop4clinic.clinicmanagement.model.enums.DoctorStatus;
+import com.oop4clinic.clinicmanagement.model.enums.Gender;
 import com.oop4clinic.clinicmanagement.service.DepartmentService;
 import com.oop4clinic.clinicmanagement.service.impl.DepartmentServiceImpl;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -38,10 +48,15 @@ public class MainApp extends Application {
     public void init() throws Exception {
         EntityManagerProvider.init();
 
+
     }
     public static void main(String[] args) {
         launch(args);
     }
+
+
+
+
 
 }
 

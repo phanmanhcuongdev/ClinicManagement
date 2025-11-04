@@ -77,6 +77,19 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         return query.getResultList();
     }
 
+    @Override
+    public List<Appointment> findAllByDoctorId(EntityManager em, int doctorId) {
+        String jpql = """
+                SELECT a FROM Appointment a 
+                JOIN FETCH a.patient        
+                WHERE a.doctor.id = :doctorId   
+                ORDER BY a.startTime DESC    
+            """;
+        TypedQuery<Appointment> query = em.createQuery(jpql, Appointment.class);
+        query.setParameter("doctorId", doctorId);
+        return query.getResultList();
+    }
+
     // tim kiem gio trong cua bac si
     @Override
     public List<Appointment> findByStartTimeRange(EntityManager em, LocalDateTime from, LocalDateTime to) {

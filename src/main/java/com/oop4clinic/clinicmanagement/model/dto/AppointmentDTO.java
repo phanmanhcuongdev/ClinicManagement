@@ -15,11 +15,13 @@ public class AppointmentDTO {
     private LocalDateTime startTime;
     private AppointmentStatus status;
     private String reason;
+    private PatientDTO patient;
 
     public Integer getId() {
         return id;
     }
-
+    public void setPatient(PatientDTO patient) { this.patient = patient; }
+    public PatientDTO getPatient() { return patient; }
     public void setId(Integer id) {
         this.id = id;
     }

@@ -25,24 +25,29 @@ public class UserRepositoryImp implements UserRepository  {
         }
     }
 
-    @Override
-    public String save(EntityManager em,User user) {
-        EntityTransaction transaction = em.getTransaction();
+//    @Override
+//    public String save(EntityManager em,User user) {
+//        EntityTransaction transaction = em.getTransaction();
+//
+//        try {
+//            transaction.begin();
+//
+//            em.persist(user);
+//
+//            transaction.commit();
+//
+//        } catch (Exception e) {
+//            if (transaction.isActive()) {
+//                transaction.rollback();
+//            }
+//            e.printStackTrace();
+//            return e.getMessage();
+//        }
+//        return null;
+//    }
+@Override
+public void save(EntityManager em, User user) {
+    em.persist(user);
+}
 
-        try {
-            transaction.begin();
-
-            em.persist(user);
-
-            transaction.commit();
-
-        } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-            return e.getMessage();
-        }
-        return null;
-    }
 }

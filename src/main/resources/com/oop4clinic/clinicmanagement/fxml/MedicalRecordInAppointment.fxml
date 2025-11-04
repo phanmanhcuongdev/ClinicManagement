@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="medicalRecordContentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.MedicalRecordInfoController">
+    <children>
+        <Pane prefHeight="540.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
+            <children>
+                <Label layoutX="61.0" layoutY="41.0" text="OOP4" textFill="#1e7fc9e8">
+                    <font>
+                        <Font name="Tahoma Bold" size="25.0" />
+                    </font>
+                </Label>
+                <Hyperlink fx:id="patientInfor" layoutX="72.0" layoutY="125.0" onAction="#handleShowPatientInfo" text="Bệnh nhân" textFill="#1e7fc9">
+                    <font>
+                        <Font name="Tahoma Bold" size="15.0" />
+                    </font>
+                </Hyperlink>
+                <Hyperlink fx:id="mainContentPane" layoutX="75.0" layoutY="210.0" onAction="#handleShowAppointments" text="Lịch hẹn" textFill="#1e7fc9">
+                    <font>
+                        <Font name="Tahoma Bold" size="15.0" />
+                    </font>
+                </Hyperlink>
+                <Hyperlink fx:id="MedicalRecordInfo" layoutX="72.0" layoutY="285.0" onAction="#handleShowMedicalRecordInfo" text="Hồ sơ " textFill="#1e7fc9">
+                    <font>
+                        <Font name="Tahoma Bold" size="15.0" />
+                    </font>
+                </Hyperlink>
+                <Button layoutX="57.0" layoutY="479.0" mnemonicParsing="false" style="-fx-background-color: #1e7fc9;" text="Đăng xuất" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../../image/benhnhan.jpg" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="50.0" fitWidth="35.0" layoutX="31.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../../image/lich.jpg" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="35.0" fitWidth="40.0" layoutX="33.0" layoutY="283.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../../image/hoso.jpg" />
+                    </image>
+                </ImageView>
+                <Line endX="29.33333396911621" endY="32.16666793823242" layoutX="-5.0" layoutY="24.0" startX="57.4999885559082" startY="32.16666793823242" />
+                <Line endX="29.33333396911621" endY="32.16666793823242" layoutX="113.0" layoutY="24.0" startX="57.4999885559082" startY="32.16666793823242" />
+            </children>
+        </Pane>
+        <ImageView fitHeight="34.0" fitWidth="35.0" layoutX="265.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../../../image/benhnhan.jpg" />
+            </image>
+        </ImageView>
+        <Label layoutX="319.0" layoutY="10.0" prefHeight="70.0" prefWidth="357.0" text="Danh sách hồ sơ bệnh Án" textAlignment="CENTER">
+            <font>
+                <Font name="Tahoma Bold" size="25.0" />
+            </font>
+        </Label>
+        <TableView fx:id="medicalRecordsTable" layoutX="258.0" layoutY="158.0" prefHeight="346.0" prefWidth="655.0">
+            <columns>
+                <TableColumn fx:id="colRecordId" prefWidth="70.0" text="Mã HS" />
+                <TableColumn fx:id="colRecordPatientName" prefWidth="180.0" text="Tên Bệnh Nhân" />
+                <TableColumn fx:id="colRecordSymptoms" prefWidth="150.0" text="Triệu chứng" />
+                <TableColumn fx:id="colRecordDiagnosis" prefWidth="150.0" text="Chẩn đoán" />
+                <TableColumn fx:id="colRecordPrescription" prefWidth="200.0" text="Đơn thuốc" />
+                <TableColumn fx:id="colRecordNotes" prefWidth="150.0" text="Ghi chú" />
+                <TableColumn fx:id="colRecordDate" prefWidth="100.0" text="Ngày tạo" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+        <TextField fx:id="searchField" layoutX="505.0" layoutY="111.0" prefHeight="25.0" prefWidth="165.0" promptText="Tìm theo tên bệnh nhân..." />
+        <Button fx:id="searchButton" layoutX="682.0" layoutY="111.0" mnemonicParsing="false" onAction="#handleSearchMedicalRecord" prefHeight="25.0" prefWidth="99.0" text="Search" />
+        <Button fx:id="deleteButton" layoutX="806.0" layoutY="113.0" mnemonicParsing="false" onAction="#handleDeleteMedicalRecord" prefHeight="25.0" prefWidth="99.0" text="Delete " />
+    </children>
+</Pane>

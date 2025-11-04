@@ -69,6 +69,7 @@ public class LoginController {
                 }
                 UserSession.setCurrentUser(user);
                 url = "/com/oop4clinic/clinicmanagement/fxml/Booking1.fxml";
+
             }
 
             if (user.getRole().equals(UserRole.DOCTOR)) {

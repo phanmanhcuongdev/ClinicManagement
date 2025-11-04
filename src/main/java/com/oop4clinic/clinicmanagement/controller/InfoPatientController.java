@@ -1,8 +1,6 @@
 package com.oop4clinic.clinicmanagement.controller;
 
 import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
-import com.oop4clinic.clinicmanagement.model.entity.Patient;
-import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.model.enums.Gender;
 import com.oop4clinic.clinicmanagement.service.PatientService;
 import com.oop4clinic.clinicmanagement.service.impl.PatientServiceImpl;
@@ -25,21 +23,14 @@ public class InfoPatientController implements Initializable {
 
     @FXML private TextField namePatient;
     @FXML private DatePicker birthdayPatient;
-    @FXML private TextField idPatient; // CCCD
-    @FXML private RadioButton genderPatient1; // Nam
-    @FXML private RadioButton genderPatient2; // Nữ
+    @FXML private TextField idPatient;
+    @FXML private RadioButton genderPatient1;
+    @FXML private RadioButton genderPatient2;
     @FXML private TextField phonePatient;
     @FXML private TextField addressPatient;
     @FXML private TextField emailPatient;
     @FXML private TextField insurrancePatient;
     @FXML private Button saveButton;
-
-    @FXML private MenuItem infoPatient;
-    @FXML private MenuItem recordPatient;
-    @FXML private MenuItem billPatient;
-    @FXML private MenuItem appointmentPatient;
-    @FXML private MenuItem logoutPatient;
-    @FXML private Button homeButton;
 
     private ToggleGroup genderToggleGroup;
     private final PatientService patientService = new PatientServiceImpl();
@@ -50,10 +41,26 @@ public class InfoPatientController implements Initializable {
         genderPatient1.setToggleGroup(genderToggleGroup);
         genderPatient2.setToggleGroup(genderToggleGroup);
 
-        User currentUser = UserSession.getCurrentUser();
-        if (currentUser != null) {
-            phonePatient.setText(currentUser.getUsername()); // username = số điện thoại
-            phonePatient.setEditable(false); // không cho chỉnh sửa
+        PatientDTO currentPatient = UserSession.getCurrentPatient();
+
+        if (currentPatient != null) {
+            namePatient.setText(currentPatient.getFullName());
+            birthdayPatient.setValue(currentPatient.getDateOfBirth());
+            idPatient.setText(currentPatient.getCccd());
+            addressPatient.setText(currentPatient.getAddress());
+            emailPatient.setText(currentPatient.getEmail());
+            insurrancePatient.setText(currentPatient.getInsuranceCode());
+
+            phonePatient.setText(currentPatient.getPhone());
+            phonePatient.setEditable(false);
+
+            if (currentPatient.getGender() == Gender.MALE) {
+                genderToggleGroup.selectToggle(genderPatient1);
+            } else if (currentPatient.getGender() == Gender.FEMALE) {
+                genderToggleGroup.selectToggle(genderPatient2);
+            }
+        } else {
+            System.err.println("⚠ Không có bệnh nhân!");
         }
     }
 
@@ -72,8 +79,8 @@ public class InfoPatientController implements Initializable {
             return;
         }
 
-        // 🔹 Chuyển sang DTO hoặc Entity để lưu qua Service
         PatientDTO dto = new PatientDTO();
+        dto.setId(UserSession.getCurrentPatient().getId());
         dto.setFullName(fullName);
         dto.setDateOfBirth(dateOfBirth);
         dto.setCccd(cccd);
@@ -84,11 +91,11 @@ public class InfoPatientController implements Initializable {
         dto.setInsuranceCode(insuranceCode);
 
         try {
-            patientService.create(dto);
-            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã lưu thông tin bệnh nhân mới thành công!");
-            clearForm();
+            patientService.update(dto);
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã cập nhật thông tin cá nhân thành công!");
+            UserSession.setCurrentPatient(dto);
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Thất bại", "Lưu thông tin thất bại. Có thể CCCD hoặc SĐT đã tồn tại.");
+            showAlert(Alert.AlertType.ERROR, "Thất bại", "Cập nhật thông tin thất bại. Vui lòng kiểm tra lại.");
             e.printStackTrace();
         }
     }
@@ -122,7 +129,7 @@ public class InfoPatientController implements Initializable {
     }
 
     private boolean isValidCccd(String cccd) {
-        return cccd != null && cccd.matches("\\d{12}");
+        return cccd != null && cccd.matches("^\\d{12}$");
     }
 
     private boolean isValidPhone(String phone) {
@@ -140,17 +147,6 @@ public class InfoPatientController implements Initializable {
         return "Nam".equals(selected.getText()) ? "MALE" : "FEMALE";
     }
 
-    private void clearForm() {
-        namePatient.clear();
-        birthdayPatient.setValue(null);
-        idPatient.clear();
-        phonePatient.clear();
-        addressPatient.clear();
-        emailPatient.clear();
-        insurrancePatient.clear();
-        genderToggleGroup.selectToggle(null);
-    }
-
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -159,7 +155,6 @@ public class InfoPatientController implements Initializable {
         alert.showAndWait();
     }
 
-    // ---------- Điều hướng ----------
     @FXML void handleInfo(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/InfoPatient.fxml"));
         Scene scene = namePatient.getScene();
@@ -181,12 +176,12 @@ public class InfoPatientController implements Initializable {
         scene.setRoot(root);
     }
     @FXML void handleLogout(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Logout.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml"));
         UserSession.clear();
         Scene scene = namePatient.getScene();
         scene.setRoot(root);
     }
-    @FXML void home(ActionEvent event) throws IOException {
+    @FXML void home(ActionEvent event) throws  IOException{
         Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Booking1.fxml"));
         Scene scene = namePatient.getScene();
         scene.setRoot(root);

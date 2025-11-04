@@ -30,7 +30,7 @@
                 <ComboBox fx:id="cbSpecialty" promptText="Chuyên môn" />
                 <ComboBox fx:id="cbActive" promptText="Trạng thái" />
                 <Button fx:id="btnFilter" onAction="#onApplyFilterTop" text="Lọc" />
-            <Button mnemonicParsing="false" onAction="#onClearFilterTop" text="Xóa Lọc" />
+                <Button mnemonicParsing="false" onAction="#onClearFilterTop" text="Xóa Lọc" />
                 <Region HBox.hgrow="ALWAYS" />
                 <Button fx:id="btnImport" text="Import" />
                 <Button fx:id="btnExport" text="Export" />
@@ -50,15 +50,15 @@
                         <TableColumn fx:id="colCode" text="Mã" />
                         <TableColumn fx:id="colFullName" prefWidth="180" text="Họ tên" />
                         <TableColumn fx:id="colDepartment" prefWidth="120.0" text="Khoa" />
-                  <TableColumn fx:id="colGender" text="Giới tính" />
+                        <TableColumn fx:id="colGender" text="Giới tính" />
                         <TableColumn fx:id="colStatus" prefWidth="110.0" text="Trạng thái" />
                         <TableColumn fx:id="colPhone" prefWidth="110.0" text="SĐT" />
                         <TableColumn fx:id="colEmail" prefWidth="150.0" text="Email" />
-                  <TableColumn fx:id="colFee" prefWidth="100.0" text="Phí khám" />
+                        <TableColumn fx:id="colFee" prefWidth="100.0" text="Phí khám" />
                     </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
                 </TableView>
             </VBox>
 
@@ -105,20 +105,20 @@
 
                     <Label text="Ghi chú:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
                     <TextArea fx:id="txtNotes" prefRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-               <Label text="Trạng thái" GridPane.rowIndex="6" />
-               <ComboBox fx:id="doctorStatus" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+                    <Label text="Trạng thái" GridPane.rowIndex="6" />
+                    <ComboBox fx:id="doctorStatus" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
                 </GridPane>
 
                 <VBox spacing="6.0" style="-fx-background-color: rgba(30,128,199,0.06); -fx-padding:10; -fx-background-radius:8;">

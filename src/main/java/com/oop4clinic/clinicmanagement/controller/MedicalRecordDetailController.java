@@ -93,7 +93,7 @@ public class MedicalRecordDetailController {
         scene.setRoot(root);
     }
     @FXML void handleLogout(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Logout.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml"));
         UserSession.clear();
         Scene scene = homeButton.getScene();
         scene.setRoot(root);

@@ -64,13 +64,13 @@
                 <Label text="Địa chỉ" GridPane.rowIndex="4" />
                 <TextField fx:id="txtAddress" promptText="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
             </children>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
         </GridPane>
 
         <!-- lỗi/validate -->

@@ -12,4 +12,7 @@ public interface DepartmentRepository {
     Department create(EntityManager em,Department dept);
     void deleteById(EntityManager em,Integer id);
     Department update(EntityManager em, Department dept);
+
+
+
 }

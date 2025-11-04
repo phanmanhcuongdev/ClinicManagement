@@ -16,158 +16,158 @@
 <?import javafx.scene.text.Font?>
 
 <ScrollPane fx:id="mainScrollPane" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.DashBoardController">
-   <content>
-      <VBox fillWidth="true" maxWidth="Infinity" spacing="20.0" style="-fx-padding: 20;">
-         <children>
-            <HBox maxWidth="Infinity" spacing="20.0" style="-fx-padding: 0 0 10 0;">
-               <children>
-                  <VBox alignment="CENTER" prefWidth="220.0" spacing="15.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding: 15;">
-                     <children>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
-                           <children>
-                              <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../image/benhnhan.jpg" />
-                                 </image>
-                              </ImageView>
-                              <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Bệnh nhân" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="8.0">
-                           <children>
-                              <Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Tổng số: " />
-                              <Label fx:id="totalPatient" text="0">
-                                 <font>
-                                    <Font name="System Bold Italic" size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefWidth="220.0" spacing="15.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding: 15;">
-                     <children>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
-                           <children>
-                              <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../image/bacsi.jpg" />
-                                 </image>
-                              </ImageView>
-                              <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Bác sĩ" />
-                           </children>
-                        </HBox>
-                        <HBox spacing="8.0">
-                           <children>
-                              <Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Tổng số: " />
-                              <Label fx:id="totalDoctor" text="0">
-                                 <font>
-                                    <Font name="System Bold Italic" size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefWidth="220.0" spacing="15.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding: 15;">
-                     <children>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
-                           <children>
-                              <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../image/hoanthanh.jpg" />
-                                 </image>
-                              </ImageView>
-                              <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Hoàn thành" />
-                           </children>
-                        </HBox>
-                        <HBox spacing="8.0">
-                           <children>
-                              <Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Tổng số: " />
-                              <Label fx:id="totalCompletedAP" text="0">
-                                 <font>
-                                    <Font name="System Bold Italic" size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefWidth="220.0" spacing="15.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding: 15;">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="40.0" prefWidth="197.0" spacing="10.0">
-                           <children>
-                              <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../image/chuaxacnhan.png" />
-                                 </image>
-                              </ImageView>
-                              <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Chưa xác nhận" />
-                           </children>
-                        </HBox>
-                        <HBox spacing="8.0">
-                           <children>
-                              <Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Tổng số: " />
-                              <Label fx:id="totalPendingAP" text="0">
-                                 <font>
-                                    <Font name="System Bold Italic" size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <Region HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
-            <HBox maxWidth="Infinity" spacing="20.0">
-               <children>
-                  <VBox maxWidth="Infinity" spacing="20.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <VBox maxWidth="Infinity" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Số người khám trong tuần" />
-                              <BarChart fx:id="weeklyChart" animated="false" barGap="2.0" categoryGap="2.0" legendVisible="false">
-                                 <xAxis>
-                                    <CategoryAxis fx:id="dayAxis" />
-                                 </xAxis>
-                                 <yAxis>
-                                    <NumberAxis fx:id="countAxis" />
-                                 </yAxis>
-                              </BarChart>
-                           </children>
+    <content>
+        <VBox fillWidth="true" maxWidth="Infinity" spacing="20.0" style="-fx-padding: 20;">
+            <children>
+                <HBox maxWidth="Infinity" spacing="20.0" style="-fx-padding: 0 0 10 0;">
+                    <children>
+                        <VBox alignment="CENTER" prefWidth="220.0" spacing="15.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding: 15;">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <padding>
+                                        <Insets left="20.0" />
+                                    </padding>
+                                    <children>
+                                        <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../../image/benhnhan.jpg" />
+                                            </image>
+                                        </ImageView>
+                                        <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Bệnh nhân" />
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                    <children>
+                                        <Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Tổng số: " />
+                                        <Label fx:id="totalPatient" text="0">
+                                            <font>
+                                                <Font name="System Bold Italic" size="18.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </children>
                         </VBox>
-                        <VBox maxWidth="Infinity" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Lịch hẹn sắp tới" />
-                              <TableView fx:id="upcomingAppointmentsTable">
-                                 <columns>
-                                    <TableColumn fx:id="patientNameCol" prefWidth="200.0" text="Bệnh nhân" />
-                                    <TableColumn fx:id="doctorNameCol" prefWidth="200.0" text="Bác sĩ" />
-                                    <TableColumn fx:id="startTimeCol" prefWidth="150.0" text="Thời gian" />
-                                    <TableColumn fx:id="statusCol" prefWidth="120.0" text="Trạng thái" />
-                                    <TableColumn fx:id="reasonCol" prefWidth="250.0" text="Lý do" />
-                                 </columns>
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
-                              </TableView>
-                           </children>
+                        <VBox alignment="CENTER" prefWidth="220.0" spacing="15.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding: 15;">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <padding>
+                                        <Insets left="20.0" />
+                                    </padding>
+                                    <children>
+                                        <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../../image/bacsi.jpg" />
+                                            </image>
+                                        </ImageView>
+                                        <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Bác sĩ" />
+                                    </children>
+                                </HBox>
+                                <HBox spacing="8.0">
+                                    <children>
+                                        <Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Tổng số: " />
+                                        <Label fx:id="totalDoctor" text="0">
+                                            <font>
+                                                <Font name="System Bold Italic" size="18.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </children>
                         </VBox>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </content>
+                        <VBox alignment="CENTER" prefWidth="220.0" spacing="15.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding: 15;">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <padding>
+                                        <Insets left="20.0" />
+                                    </padding>
+                                    <children>
+                                        <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../../image/hoanthanh.jpg" />
+                                            </image>
+                                        </ImageView>
+                                        <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Hoàn thành" />
+                                    </children>
+                                </HBox>
+                                <HBox spacing="8.0">
+                                    <children>
+                                        <Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Tổng số: " />
+                                        <Label fx:id="totalCompletedAP" text="0">
+                                            <font>
+                                                <Font name="System Bold Italic" size="18.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefWidth="220.0" spacing="15.0" style="-fx-background-color:#c2e7ff; -fx-background-radius:20; -fx-padding: 15;">
+                            <children>
+                                <HBox alignment="CENTER" prefHeight="40.0" prefWidth="197.0" spacing="10.0">
+                                    <children>
+                                        <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../../image/chuaxacnhan.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Label style="-fx-text-fill:#1e80c7; -fx-font-size:18; -fx-font-weight:bold;" text="Chưa xác nhận" />
+                                    </children>
+                                </HBox>
+                                <HBox spacing="8.0">
+                                    <children>
+                                        <Label style="-fx-text-fill:#1e80c7; -fx-font-weight:bold;" text="Tổng số: " />
+                                        <Label fx:id="totalPendingAP" text="0">
+                                            <font>
+                                                <Font name="System Bold Italic" size="18.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+                <HBox maxWidth="Infinity" spacing="20.0">
+                    <children>
+                        <VBox maxWidth="Infinity" spacing="20.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <VBox maxWidth="Infinity" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Số người khám trong tuần" />
+                                        <BarChart fx:id="weeklyChart" animated="false" barGap="2.0" categoryGap="2.0" legendVisible="false">
+                                            <xAxis>
+                                                <CategoryAxis fx:id="dayAxis" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis fx:id="countAxis" />
+                                            </yAxis>
+                                        </BarChart>
+                                    </children>
+                                </VBox>
+                                <VBox maxWidth="Infinity" style="-fx-background-color:#ddefff; -fx-background-radius:20; -fx-padding:12;" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Lịch hẹn sắp tới" />
+                                        <TableView fx:id="upcomingAppointmentsTable">
+                                            <columns>
+                                                <TableColumn fx:id="patientNameCol" prefWidth="200.0" text="Bệnh nhân" />
+                                                <TableColumn fx:id="doctorNameCol" prefWidth="200.0" text="Bác sĩ" />
+                                                <TableColumn fx:id="startTimeCol" prefWidth="150.0" text="Thời gian" />
+                                                <TableColumn fx:id="statusCol" prefWidth="120.0" text="Trạng thái" />
+                                                <TableColumn fx:id="reasonCol" prefWidth="250.0" text="Lý do" />
+                                            </columns>
+                                            <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                            </columnResizePolicy>
+                                        </TableView>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </content>
 </ScrollPane>

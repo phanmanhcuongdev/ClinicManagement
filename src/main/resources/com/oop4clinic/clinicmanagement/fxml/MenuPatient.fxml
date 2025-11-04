@@ -14,65 +14,65 @@
     <children>
         <Pane prefHeight="50.0" prefWidth="960.0" style="-fx-background-color: #FFFFFF;">
             <children>
-            <Line endX="783.0" endY="26.833337783813477" layoutX="3.0" layoutY="-2.0" startX="133.29290771484375" startY="26.833335876464844" />
+                <Line endX="783.0" endY="26.833337783813477" layoutX="3.0" layoutY="-2.0" startX="133.29290771484375" startY="26.833335876464844" />
                 <Label layoutX="47.0" layoutY="9.0" text="OOP4" textFill="#1e7fc9e8">
                     <font>
                         <Font name="Tahoma Bold" size="25.0" />
                     </font>
                 </Label>
-            <MenuButton layoutX="809.0" layoutY="13.0" mnemonicParsing="false" style="-fx-background-image: D:\ClinicManagement\src\main\resources\image\benhnhan.jpg;" text="Người dùng">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Thông tin" />
-                <MenuItem mnemonicParsing="false" text="Hồ sơ khám bệnh" />
-                  <MenuItem mnemonicParsing="false" text="Đăng xuất" />
-              </items>
-            </MenuButton>
+                <MenuButton layoutX="809.0" layoutY="13.0" mnemonicParsing="false" style="-fx-background-image: D:\ClinicManagement\src\main\resources\image\benhnhan.jpg;" text="Người dùng">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Thông tin" />
+                        <MenuItem mnemonicParsing="false" text="Hồ sơ khám bệnh" />
+                        <MenuItem mnemonicParsing="false" text="Đăng xuất" />
+                    </items>
+                </MenuButton>
             </children>
         </Pane>
-      <TextField layoutX="119.0" layoutY="182.0" text="Họ và tên người bệnh">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
-      <TextField layoutX="404.0" layoutY="182.0" text="Tên bác sĩ">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
-      <Button layoutX="218.0" layoutY="98.0" mnemonicParsing="false" text="Đặt lịch khám theo bác sĩ">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
-      <Button layoutX="513.0" layoutY="98.0" mnemonicParsing="false" text="Đặt lịch khám theo khoa">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
-      <ComboBox layoutX="666.0" layoutY="184.0" prefWidth="150.0" promptText="Chuyên khoa" />
-      <Pane layoutY="256.0" prefHeight="284.0" prefWidth="960.0" style="-fx-background-color: #ffffff;">
-         <children>
-            <TextField blendMode="DARKEN" layoutX="69.0" layoutY="14.0" prefHeight="50.0" prefWidth="800.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
-            <TextField blendMode="DARKEN" layoutX="69.0" layoutY="86.0" prefHeight="50.0" prefWidth="800.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
-            <TextField blendMode="DARKEN" layoutX="69.0" layoutY="153.0" prefHeight="50.0" prefWidth="800.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
-            <TextField blendMode="DARKEN" layoutX="69.0" layoutY="220.0" prefHeight="50.0" prefWidth="800.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
-         </children>
-      </Pane>
+        <TextField layoutX="119.0" layoutY="182.0" text="Họ và tên người bệnh">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+        <TextField layoutX="404.0" layoutY="182.0" text="Tên bác sĩ">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+        <Button layoutX="218.0" layoutY="98.0" mnemonicParsing="false" text="Đặt lịch khám theo bác sĩ">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Button>
+        <Button layoutX="513.0" layoutY="98.0" mnemonicParsing="false" text="Đặt lịch khám theo khoa">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Button>
+        <ComboBox layoutX="666.0" layoutY="184.0" prefWidth="150.0" promptText="Chuyên khoa" />
+        <Pane layoutY="256.0" prefHeight="284.0" prefWidth="960.0" style="-fx-background-color: #ffffff;">
+            <children>
+                <TextField blendMode="DARKEN" layoutX="69.0" layoutY="14.0" prefHeight="50.0" prefWidth="800.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <TextField blendMode="DARKEN" layoutX="69.0" layoutY="86.0" prefHeight="50.0" prefWidth="800.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <TextField blendMode="DARKEN" layoutX="69.0" layoutY="153.0" prefHeight="50.0" prefWidth="800.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <TextField blendMode="DARKEN" layoutX="69.0" layoutY="220.0" prefHeight="50.0" prefWidth="800.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+            </children>
+        </Pane>
     </children>
 </Pane>

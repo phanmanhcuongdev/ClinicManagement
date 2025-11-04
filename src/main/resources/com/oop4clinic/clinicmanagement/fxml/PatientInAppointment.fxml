@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefWidth="600.0" spacing="10.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.PatientDetailDialogController">
+    <padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
+    <children>
+        <Label prefHeight="34.0" prefWidth="341.0" text="Thông tin chi tiết bệnh nhân">
+            <font>
+                <Font name="Tahoma Bold" size="24.0" />
+            </font>
+        </Label>
+
+        <GridPane hgap="10.0" vgap="5.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" minWidth="100.0" />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
+            <children>
+                <Label text="Họ và tên:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <font><Font name="Tahoma Bold" size="14.0" /></font>
+                </Label>
+                <Label fx:id="patientNameLabel" text="[Tên]" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <font>
+                        <Font name="Tahoma" size="14.0" />
+                    </font></Label>
+
+                <Label text="Giới tính:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <font><Font name="Tahoma Bold" size="14.0" /></font>
+                </Label>
+                <Label fx:id="patientGenderLabel" text="[Giới tính]" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <font>
+                        <Font name="Tahoma" size="14.0" />
+                    </font></Label>
+
+                <Label text="Ngày sinh:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <font><Font name="Tahoma Bold" size="14.0" /></font>
+                </Label>
+                <Label fx:id="patientDobLabel" text="[Ngày sinh]" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <font>
+                        <Font name="Tahoma" size="14.0" />
+                    </font></Label>
+
+                <Label text="Số điện thoại:" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                    <font><Font name="Tahoma Bold" size="14.0" /></font>
+                </Label>
+                <Label fx:id="patientPhoneLabel" text="[SĐT]" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <font>
+                        <Font name="Tahoma" size="14.0" />
+                    </font></Label>
+            </children>
+        </GridPane>
+
+        <Label prefHeight="25.0" prefWidth="219.0" text="Lịch sử hồ sơ bệnh án">
+            <font>
+                <Font name="Tahoma Bold" size="17.0" />
+            </font>
+            <VBox.margin>
+                <Insets top="10.0" />
+            </VBox.margin>
+        </Label>
+
+        <TableView fx:id="historyTable" fixedCellSize="50.0" prefHeight="250.0">
+            <columns>
+                <TableColumn fx:id="colHistoryDate" prefWidth="120.0" text="Ngày khám" />
+                <TableColumn fx:id="colHistorySymptoms" prefWidth="150.0" text="Triệu chứng" />
+                <TableColumn fx:id="colHistoryDiagnosis" prefWidth="150.0" text="Chẩn đoán" />
+                <TableColumn fx:id="colHistoryPrescription" prefWidth="170.0" text="Đơn thuốc" />
+                <TableColumn fx:id="colHistoryNotes" prefWidth="150.0" style="-fx-alignment: center; -fx-font-size: 14;" text="Ghi chú" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+    </children>
+</VBox>

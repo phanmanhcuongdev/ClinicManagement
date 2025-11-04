@@ -25,4 +25,6 @@ public interface AppointmentRepository {
     List<Appointment> findByPatientId(EntityManager em, Integer patientId);
 
     List<Appointment> searchByPatient(EntityManager em, Integer patientId, String doctorName, AppointmentStatus status, LocalDate date);
+    List<Appointment> findAllByDoctorId(EntityManager em, int doctorId);
+
 }
