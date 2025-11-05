@@ -72,12 +72,6 @@ public class MenuAdminController {
     }
 
     @FXML
-    private void openSettings()
-    {
-        loadCenterView("/com/oop4clinic/clinicmanagement/fxml/AdminSettings.fxml");
-    }
-
-    @FXML
     private void handleExit(){
         try {
             Stage stage = (Stage) root.getScene().getWindow();

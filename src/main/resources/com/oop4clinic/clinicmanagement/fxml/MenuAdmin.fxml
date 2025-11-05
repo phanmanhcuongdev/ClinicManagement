@@ -77,16 +77,7 @@
                     <Hyperlink focusTraversable="false" onAction="#openDepartments" style="-fx-font-size:18; -fx-font-weight:bold;" text="Khoa" textFill="#1e80c7" visited="false" />
                 </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding:12 20 12 20;">
-                <children>
-                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../../../../image/settings.png" />
-                        </image>
-                    </ImageView>
-                    <Hyperlink focusTraversable="false" onAction="#openSettings" style="-fx-font-size:18; -fx-font-weight:bold;" text="Cài đặt" textFill="#1e80c7" visited="false" />
-                </children>
-            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding:12 20 12 20;" />
             <VBox alignment="CENTER" prefHeight="257.0" prefWidth="208.0" VBox.vgrow="ALWAYS">
                 <children>
                     <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20 12 20;">

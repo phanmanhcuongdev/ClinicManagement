@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainContentPane" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.doctor.MedicalProfessionController">
+<AnchorPane fx:id="mainContentPane" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.doctor.MedicalProfessionController">
 
     <Pane prefWidth="200.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
         <children>
