@@ -63,7 +63,7 @@ public class MedicalProfessionController {
     private final ObservableList<AppointmentDTO> currentAppointmentList = FXCollections.observableArrayList();
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-    private Node[] originalChildren;
+
 
 
     int  doctorId = SessionManager.getLoggedUser();
