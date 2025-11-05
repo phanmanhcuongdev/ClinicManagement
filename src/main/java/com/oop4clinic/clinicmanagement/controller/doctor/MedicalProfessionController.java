@@ -231,7 +231,7 @@ public class MedicalProfessionController {
     @FXML
     private void handleShowAppointments(ActionEvent event) {
 
-        //mainContentPane.getChildren().setAll(originalChildren);
+        // mainContentPane.getChildren().setAll(originalChildren);
 
         appointmentsTable.setItems(currentAppointmentList);
 

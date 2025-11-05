@@ -1,16 +1,38 @@
 package com.oop4clinic.clinicmanagement.dao.impl;
 
 import com.oop4clinic.clinicmanagement.dao.DoctorScheduleRepository;
+import com.oop4clinic.clinicmanagement.model.entity.Doctor;
 import com.oop4clinic.clinicmanagement.model.entity.DoctorSchedule;
 import com.oop4clinic.clinicmanagement.model.enums.DoctorScheduleStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.TypedQuery;
+
 import java.time.LocalDate; // <-- Cần import
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
 public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepository {
+
+    @Override
+    public boolean existsByDoctorAndWorkDateAndTime(EntityManager em, Doctor doctor, LocalDate workDate, LocalTime startTime) {
+        try {
+            em.createQuery(
+                            "SELECT 1 FROM DoctorSchedule s " +
+                                    "WHERE s.doctor = :doctor " +
+                                    "  AND s.workDate = :workDate " +
+                                    "  AND s.startTime = :startTime",
+                            Integer.class
+                    )
+                    .setParameter("doctor", doctor)
+                    .setParameter("workDate", workDate)
+                    .setParameter("startTime", startTime)
+                    .getSingleResult();
+            return true; // Tìm thấy
+        } catch (NoResultException e) {
+            return false; // Không tìm thấy
+        }
+    }
 
     @Override
     public Optional<DoctorSchedule> findById(EntityManager em, int id) {

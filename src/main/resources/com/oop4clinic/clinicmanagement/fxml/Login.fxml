@@ -7,37 +7,38 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.LoginController">
+<StackPane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.LoginController">
     <children>
-        <Pane layoutX="330.0" layoutY="120.0" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;">
+        <Pane maxHeight="300.0" maxWidth="300.0" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" StackPane.alignment="CENTER">
             <children>
-                <Label layoutX="116.0" layoutY="32.0" style="-fx-background-color: #FFFFFF;" text="OOP4" textAlignment="CENTER" textFill="#1e7fc9">
-                    <font>
-                        <Font name="Tahoma Bold" size="24.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="usernameField" layoutX="50.0" layoutY="97.0" prefHeight="25.0" prefWidth="200.0">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </TextField>
-                <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="165.0" prefHeight="25.0" prefWidth="200.0">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </PasswordField>
-                <Button fx:id="loginButton" layoutX="102.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleLogin" style="-fx-background-color: #1e7fc9;" text="Đăng nhập" textAlignment="CENTER" textFill="WHITE">
-                    <font>
-                        <Font name="Tahoma Bold" size="14.0" />
-                    </font>
-                </Button>
-                <Label layoutX="47.0" layoutY="75.0" text="Tên đăng nhập" />
-                <Label layoutX="48.0" layoutY="145.0" text="Mật khẩu" />
-                <Hyperlink fx:id="registerLink" layoutX="187.0" layoutY="202.0" onAction="#handleRegister" text="Đăng ký" />
-                <Label layoutX="61.0" layoutY="205.0" text="Bạn chưa có tài khoản ?" />
+                <Label layoutX="32.0" layoutY="71.0" text="Tên đăng nhập" />
+                <Label layoutX="33.0" layoutY="137.0" prefHeight="28.0" prefWidth="79.0" text="Mật khẩu" />
+                  <TextField fx:id="usernameField" layoutX="55.0" layoutY="92.0" prefHeight="25.0" prefWidth="200.0">
+                      <font>
+                          <Font size="14.0" />
+                      </font>
+                  </TextField>
+                  <PasswordField fx:id="passwordField" layoutX="56.0" layoutY="163.0" prefHeight="25.0" prefWidth="200.0">
+                      <font>
+                          <Font size="14.0" />
+                      </font>
+                  </PasswordField>
+                  <Label alignment="TOP_LEFT" layoutX="116.0" layoutY="22.0" style="-fx-background-color: #FFFFFF;" text="OOP4" textAlignment="CENTER" textFill="#1e7fc9">
+                      <font>
+                          <Font name="Tahoma Bold" size="24.0" />
+                      </font>
+                  </Label>
+                  <Button fx:id="loginButton" layoutX="103.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleLogin" style="-fx-background-color: #1e7fc9;" text="Đăng nhập" textAlignment="CENTER" textFill="WHITE">
+                      <font>
+                          <Font name="Tahoma Bold" size="14.0" />
+                      </font>
+                  </Button>
+                  <Label layoutX="64.0" layoutY="205.0" prefHeight="28.0" prefWidth="213.0" text="Bạn chưa có tài khoản ?" />
+                  <Hyperlink fx:id="registerLink" layoutX="191.0" layoutY="201.0" onAction="#handleRegister" prefHeight="36.0" prefWidth="86.0" text="Đăng ký" />
             </children>
             <effect>
                 <DropShadow offsetX="3.0">
@@ -48,4 +49,4 @@
             </effect>
         </Pane>
     </children>
-</Pane>
+</StackPane>

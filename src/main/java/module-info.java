@@ -7,12 +7,7 @@ module com.oop4clinic.clinicmanagement {
     requires java.desktop;
     requires javafx.base;
     requires javafx.graphics;
-   // requires com.oop4clinic.clinicmanagement;
-    // requires com.oop4clinic.clinicmanagement;
-    // requires com.oop4clinic.clinicmanagement;
-    // requires com.oop4clinic.clinicmanagement;
-    //requires com.oop4clinic.clinicmanagement;
-    //requires com.oop4clinic.clinicmanagement;
+
 
 
     exports com.oop4clinic.clinicmanagement;

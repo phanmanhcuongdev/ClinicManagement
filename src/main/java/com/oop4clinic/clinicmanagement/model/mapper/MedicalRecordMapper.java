@@ -32,6 +32,12 @@ public class MedicalRecordMapper {
         if (medicalRecord.getDoctor() != null) {
             dto.setDoctorId(medicalRecord.getDoctor().getId());
             dto.setDoctorName(medicalRecord.getDoctor().getFullName());
+
+            if (medicalRecord.getDoctor().getDepartment() != null) {
+                dto.setDepartmentName(medicalRecord.getDoctor().getDepartment().getName());
+            } else {
+                dto.setDepartmentName("(Không có khoa)");
+            }
         }
 
         return dto;

@@ -61,6 +61,7 @@ public class Booking1Controller {
     private DoctorScheduleDTO selectedScheduleForBooking = null;
 
     @FXML public void initialize() {
+        scheduleService.ensureSchedulesExistForNextDays(7);
         nameDoctor.textProperty().addListener((obs, oldText, newText) -> updateDoctorVBox());
         department.textProperty().addListener((obs, oldText, newText) -> updateDoctorVBox());
         updateDoctorVBox();
@@ -227,7 +228,7 @@ public class Booking1Controller {
         LocalDate today = LocalDate.now();
         ToggleGroup dateToggleGroup = new ToggleGroup(); // <- Cần group cho Date
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 7; i++) {
             LocalDate date = today.plusDays(i);
             String dateStringDB = date.format(dbDateFormatter);
             String dayOfWeek = "Thứ " + (date.getDayOfWeek().getValue() + 1);
@@ -290,39 +291,34 @@ public class Booking1Controller {
     }
 
     @FXML void handleInfo(ActionEvent event) throws IOException {
-        Stage stage = (Stage) homeButton.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/InfoPatient.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
+        Scene scene = homeButton.getScene();
+        scene.setRoot(root);
     }
     @FXML void handleRecord(ActionEvent event) throws IOException {
-        Stage stage = (Stage) homeButton.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MedicalRecord.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
+        Scene scene = homeButton.getScene();
+        scene.setRoot(root);
     }
     @FXML void handleBill(ActionEvent event) throws IOException {
-        Stage stage = (Stage) homeButton.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/InvoicePatient.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
+        Scene scene = homeButton.getScene();
+        scene.setRoot(root);
     }
     @FXML void handleAppointment(ActionEvent event) throws IOException {
-        Stage stage = (Stage) homeButton.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/AppointmentPatient.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
+        Scene scene = homeButton.getScene();
+        scene.setRoot(root);
     }
     @FXML void handleLogout(ActionEvent event) throws IOException {
-        Stage stage = (Stage) homeButton.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
+        UserSession.clear();
+        Scene scene = homeButton.getScene();
+        scene.setRoot(root);
     }
     @FXML void handleBook2(ActionEvent event) throws IOException {
-        Stage stage = (Stage) homeButton.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Booking2.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
+        Scene scene = homeButton.getScene();
+        scene.setRoot(root);
     }
 }

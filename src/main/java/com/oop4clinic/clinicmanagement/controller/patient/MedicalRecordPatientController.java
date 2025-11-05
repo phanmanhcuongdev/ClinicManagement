@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class MedicalRecordPatientController implements Initializable {
-    // --- KHAI BÁO CÁC THUỘC TÍNH FXM L ---
     @FXML private TableView<MedicalRecordDTO> medicalRecordTable;
     @FXML private TableColumn<MedicalRecordDTO, Integer> colTT;
     @FXML private TableColumn<MedicalRecordDTO, LocalDateTime> colDate;
@@ -35,11 +34,7 @@ public class MedicalRecordPatientController implements Initializable {
     @FXML private TableColumn<MedicalRecordDTO, Void> colStatus;
     @FXML private Button homeButton;
 
-    // Thay thế MedicalRecordDAO bằng MedicalRecordService
     private final MedicalRecordService medicalRecordService = new MedicalRecordServiceImpl();
-
-    // GIẢ ĐỊNH: ID của bệnh nhân đang đăng nhập
-    // BẠN CẦN THAY THẾ NÀY BẰNG CƠ CHẾ LẤY ID THỰC TẾ (ví dụ: từ Session/Login Context)
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,7 +43,6 @@ public class MedicalRecordPatientController implements Initializable {
     }
 
     private void setupTableColumns() {
-        // Cột TT: Hiển thị số thứ tự
         colTT.setCellFactory(column -> new TableCell<MedicalRecordDTO, Integer>() {
             @Override
             protected void updateItem(Integer item, boolean empty) {
@@ -61,7 +55,6 @@ public class MedicalRecordPatientController implements Initializable {
             }
         });
 
-        // Cột Date: Hiển thị createdAt và định dạng lại
         colDate.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         colDate.setCellFactory(column -> new TableCell<MedicalRecordDTO, LocalDateTime>() {
             private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
@@ -76,13 +69,10 @@ public class MedicalRecordPatientController implements Initializable {
             }
         });
 
-        // Cột Department: Giữ nguyên PropertyValueFactory
         colDepartment.setCellValueFactory(new PropertyValueFactory<>("departmentName"));
 
-        // Cột Diagnosis
         colDiagnosis.setCellValueFactory(new PropertyValueFactory<>("diagnosis"));
 
-        // Cột Status (Xem chi tiết)
         Callback<TableColumn<MedicalRecordDTO, Void>, TableCell<MedicalRecordDTO, Void>> cellFactory = col -> {
             return new TableCell<>() {
                 private final Hyperlink viewLink = new Hyperlink("Xem chi tiết");
@@ -142,8 +132,7 @@ public class MedicalRecordPatientController implements Initializable {
                 return;
             }
 
-            int patientId = currentPatient.getId(); // ✅ Lấy đúng ID bệnh nhân
-
+            int patientId = currentPatient.getId();
 
             List<MedicalRecordDTO> recordsList = medicalRecordService.getByPatientId(patientId);
 
@@ -163,7 +152,7 @@ public class MedicalRecordPatientController implements Initializable {
     }
 
 
-    // --- Xử lý chuyển trang ---
+    // chuyển trang
     @FXML void handleInfo(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/InfoPatient.fxml"));
         Scene scene = homeButton.getScene();
