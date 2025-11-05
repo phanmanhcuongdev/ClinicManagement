@@ -8,17 +8,14 @@ import jakarta.persistence.NoResultException;
 import java.util.List;
 
 public class DoctorRepositoryImpl implements DoctorRepository {
-    @Override
-    public List<Doctor> findAll(EntityManager em) {
+    @Override public List<Doctor> findAll(EntityManager em) {
         return em.createQuery(
                 "select d from Doctor d join fetch d.department order by d.id",
                 Doctor.class
         ).getResultList();
     }
 
-    @Override
-    public Doctor save(EntityManager em,Doctor doc)
-    {
+    @Override public Doctor save(EntityManager em,Doctor doc) {
         if(doc.getId() == null)
         {
             em.persist(doc);
@@ -27,8 +24,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         return em.merge(doc);
     }
 
-    @Override
-    public boolean existsByEmail(EntityManager em, String email) {
+    @Override public boolean existsByEmail(EntityManager em, String email) {
         if (email == null) return false;
         Long cnt = em.createQuery(
                 "select count(d) from Doctor d where lower(d.email) = lower(:email)",
@@ -38,8 +34,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         return cnt != null && cnt > 0;
     }
 
-    @Override
-    public boolean existsByPhone(EntityManager em, String phone) {
+    @Override public boolean existsByPhone(EntityManager em, String phone) {
         if (phone == null) return false;
         Long cnt = em.createQuery(
                 "select count(d) from Doctor d where d.phone = :phone",
@@ -49,8 +44,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         return cnt != null && cnt > 0;
     }
 
-    @Override
-    public Doctor findById(EntityManager em, int id) {
+    @Override public Doctor findById(EntityManager em, int id) {
         try {
             return em.createQuery(
                     "SELECT d FROM Doctor d WHERE d.id = :id", Doctor.class
@@ -62,8 +56,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         }
     }
 
-    @Override
-    public Doctor update(EntityManager em, Doctor doctor) {
+    @Override public Doctor update(EntityManager em, Doctor doctor) {
         if (doctor == null || doctor.getId() == null) {
             throw new IllegalArgumentException("Doctor hoặc id rỗng");
         }
@@ -94,16 +87,14 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         return em.merge(managed);
     }
 
-    @Override
-    public long countAll(EntityManager em) {
+    @Override public long countAll(EntityManager em) {
         return em.createQuery(
                 "select count(d) from Doctor d",
                 Long.class
         ).getSingleResult();
     }
 
-    @Override
-    public long countByStatus(EntityManager em,
+    @Override public long countByStatus(EntityManager em,
                               com.oop4clinic.clinicmanagement.model.enums.DoctorStatus status) {
 
         return em.createQuery(
@@ -114,8 +105,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         .getSingleResult();
     }
 
-    @Override
-    public Doctor findByPhone(EntityManager em, String phone) {
+    @Override public Doctor findByPhone(EntityManager em, String phone) {
         try {
             return em.createQuery(
                             "SELECT d FROM Doctor d WHERE d.phone = :phone", Doctor.class

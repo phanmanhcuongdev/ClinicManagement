@@ -9,34 +9,23 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox spacing="15" style="-fx-background-color: #f7f9fc;" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.admin.InvoiceManagementController">
-    <padding>
-        <Insets bottom="20" left="20" right="20" top="20" />
-    </padding>
+<VBox spacing="15" styleClass="root-pane" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.admin.InvoiceManagementController" stylesheets="/static/css/admin-styles.css">
 
     <!-- Header -->
-    <HBox alignment="CENTER_LEFT" spacing="10">
-        <Label style="-fx-text-fill: #2c3e50;" text="📄 Quản lý Hóa đơn">
-            <font>
-                <Font name="Segoe UI Semibold" size="24" />
-            </font>
-        </Label>
+    <HBox alignment="CENTER_LEFT" styleClass="page-header">
+        <Label styleClass="header-title" text="📄 Quản lý Hóa đơn" />
         <Region HBox.hgrow="ALWAYS" />
-        <Button fx:id="refreshButton" onAction="#handleRefreshAction" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold;                        -fx-background-radius: 6; -fx-cursor: hand;" text="⟳ Làm Mới" />
-        <VBox.margin>
-            <Insets bottom="10" />
-        </VBox.margin>
+        <Button fx:id="refreshButton" onAction="#handleRefreshAction" styleClass="primary-button" text="⟳ Làm Mới" />
     </HBox>
 
     <!-- Search box -->
-    <HBox spacing="10">
-        <TextField fx:id="searchField" promptText="🔍 Tìm kiếm theo tên bệnh nhân hoặc ID hóa đơn..." style="-fx-background-radius: 6; -fx-background-color: white;                           -fx-border-color: #dce1e6; -fx-border-radius: 6;                           -fx-padding: 6; -fx-font-size: 14;" />
+    <HBox>
+        <TextField fx:id="searchField" promptText="🔍 Tìm kiếm theo tên bệnh nhân hoặc ID hóa đơn..." styleClass="search-field" HBox.hgrow="ALWAYS" />
     </HBox>
 
     <!-- Table -->
-    <TableView fx:id="invoiceTable" prefHeight="600" prefWidth="900" style="-fx-background-color: white; -fx-border-color: #dce1e6;                       -fx-border-radius: 8; -fx-background-radius: 8;                       -fx-table-cell-border-color: transparent;" VBox.vgrow="ALWAYS">
+    <TableView fx:id="invoiceTable" prefHeight="600" prefWidth="900" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="invoiceIdCol" prefWidth="80" text="ID Hóa Đơn" />
             <TableColumn fx:id="patientNameCol" prefWidth="200" text="Bệnh Nhân" />

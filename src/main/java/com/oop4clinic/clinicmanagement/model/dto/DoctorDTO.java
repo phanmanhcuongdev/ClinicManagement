@@ -9,7 +9,6 @@ public class DoctorDTO {
     private Integer id;
     private Integer departmentId;
     private String departmentName;
-
     private String fullName;
     private Gender gender;
     private LocalDate dateOfBirth;
@@ -18,6 +17,9 @@ public class DoctorDTO {
     private String address;
     private Double consultationFee;
     private String notes;
+    private DoctorStatus doctorStatus;
+
+    //getter/setter
 
     public String getNotes() {
         return notes;
@@ -35,7 +37,7 @@ public class DoctorDTO {
         this.doctorStatus = doctorStatus;
     }
 
-    private DoctorStatus doctorStatus;
+
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
