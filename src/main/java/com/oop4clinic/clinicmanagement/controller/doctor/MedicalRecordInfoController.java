@@ -4,6 +4,7 @@ import com.oop4clinic.clinicmanagement.model.dto.AppointmentDTO;
 import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
 import com.oop4clinic.clinicmanagement.model.dto.PatientAppointmentInfoDto;
 import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
+import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.service.AppointmentService;
 import com.oop4clinic.clinicmanagement.service.MedicalRecordService;
 import com.oop4clinic.clinicmanagement.service.PatientService;
@@ -11,6 +12,7 @@ import com.oop4clinic.clinicmanagement.service.impl.AppointmentServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.PatientServiceImpl;
 import com.oop4clinic.clinicmanagement.util.SessionManager;
+import com.oop4clinic.clinicmanagement.util.UserSession;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -19,12 +21,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 import javafx.event.ActionEvent;
+import javafx.stage.Stage;
 
 
 import java.io.IOException;
@@ -272,6 +276,29 @@ public class MedicalRecordInfoController {
             });
             return row;
         });
+    }
+
+    @FXML
+    private void handleShowMyProfile(ActionEvent event) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/DoctorProfile.fxml")
+            );
+            Parent root = loader.load();
+
+            DoctorProfileController controller = loader.getController();
+
+            User loggedInUser = UserSession.getCurrentUser();
+            controller.setLoggedInDoctor(loggedInUser);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

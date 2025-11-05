@@ -50,6 +50,12 @@
                         <Image url="@../../../../image/hoso.jpg" />
                     </image>
                 </ImageView>
+                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="354.0">
+                    <image><Image url="@../../../../image/account.png" /></image>
+                </ImageView>
+                <Hyperlink fx:id="myProfileLink" layoutX="61.0" layoutY="348.0" onAction="#handleShowMyProfile" prefHeight="46.0" prefWidth="147.0" text="Thông tin cá nhân" textFill="#1e7fc9">
+                    <font><Font name="Tahoma Bold" size="14.0" /></font>
+                </Hyperlink>
                 <Line endX="29.33333396911621" endY="32.16666793823242" layoutX="-5.0" layoutY="24.0" startX="57.4999885559082" startY="32.16666793823242" />
                 <Line endX="29.33333396911621" endY="32.16666793823242" layoutX="113.0" layoutY="24.0" startX="57.4999885559082" startY="32.16666793823242" />
             </children>

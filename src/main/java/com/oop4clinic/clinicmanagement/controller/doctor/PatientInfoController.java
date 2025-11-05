@@ -1,9 +1,15 @@
 package com.oop4clinic.clinicmanagement.controller.doctor;
 
+import com.oop4clinic.clinicmanagement.model.dto.AppointmentDTO;
 import com.oop4clinic.clinicmanagement.model.dto.PatientAppointmentInfoDto;
 import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
+import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
 import com.oop4clinic.clinicmanagement.model.enums.Gender;
+import com.oop4clinic.clinicmanagement.service.AppointmentService;
+import com.oop4clinic.clinicmanagement.service.impl.AppointmentServiceImpl;
+import com.oop4clinic.clinicmanagement.util.SessionManager;
+import com.oop4clinic.clinicmanagement.util.UserSession;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,11 +17,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 import javafx.event.ActionEvent;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,7 +60,8 @@ public class PatientInfoController {
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
+    @FXML private Hyperlink patientInfo;
+    private final AppointmentService appointmentService = new AppointmentServiceImpl();
     @FXML
     public void initialize() {
         setupPatientTableColumns();
@@ -60,6 +70,7 @@ public class PatientInfoController {
 
     @FXML
     private Pane patientContentPane;
+    int  doctorId = SessionManager.getLoggedUser();
 
     private void setupPatientTableColumns() {
         colName.setCellValueFactory(cellData ->
@@ -217,5 +228,28 @@ public class PatientInfoController {
             });
             return row;
         });
+    }
+
+    @FXML
+    private void handleShowMyProfile(ActionEvent event) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/DoctorProfile.fxml")
+            );
+            Parent root = loader.load();
+
+            DoctorProfileController controller = loader.getController();
+
+            User loggedInUser = UserSession.getCurrentUser();
+            controller.setLoggedInDoctor(loggedInUser);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
