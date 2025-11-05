@@ -8,6 +8,7 @@ import com.oop4clinic.clinicmanagement.service.AppointmentService;
 import com.oop4clinic.clinicmanagement.service.MedicalRecordService;
 import com.oop4clinic.clinicmanagement.service.impl.AppointmentServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl;
+import com.oop4clinic.clinicmanagement.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -24,12 +25,7 @@ public class AddMedicalRecordDialogController {
     private AppointmentDTO currentAppointment;
     private boolean isEditMode = false;
 
-    private User loggedInDoctor;
-
-    public void setLoggedInDoctor(User doctor) {
-        this.loggedInDoctor = doctor;
-
-    }
+    int  doctorId = SessionManager.getLoggedUser();
 
 
 
@@ -88,7 +84,7 @@ public class AddMedicalRecordDialogController {
                 saved = medicalRecordService.createMedicalRecord(
                         currentRecord,
                         currentAppointment.getId(),
-                        loggedInDoctor.getId()
+                        doctorId
                 );
             }
             this.currentRecord = saved;

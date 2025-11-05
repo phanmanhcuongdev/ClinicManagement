@@ -10,6 +10,7 @@ module com.oop4clinic.clinicmanagement {
    // requires com.oop4clinic.clinicmanagement;
     // requires com.oop4clinic.clinicmanagement;
     // requires com.oop4clinic.clinicmanagement;
+    // requires com.oop4clinic.clinicmanagement;
     //requires com.oop4clinic.clinicmanagement;
     //requires com.oop4clinic.clinicmanagement;
 

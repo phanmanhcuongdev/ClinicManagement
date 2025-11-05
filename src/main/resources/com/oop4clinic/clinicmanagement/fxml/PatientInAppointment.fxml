@@ -1,94 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane fx:id="patientContentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.doctor.PatientInfoController">
-    <children>
-        <Pane prefHeight="540.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
-            <children>
-                <Label layoutX="61.0" layoutY="41.0" text="OOP4" textFill="#1e7fc9e8">
-                    <font>
-                        <Font name="Tahoma Bold" size="25.0" />
-                    </font>
-                </Label>
-                <Hyperlink fx:id="patientInfor" layoutX="72.0" layoutY="125.0" onAction="#handleShowPatientInfo" text="Bệnh nhân" textFill="#1e7fc9">
-                    <font>
-                        <Font name="Tahoma Bold" size="15.0" />
-                    </font>
-                </Hyperlink>
-                <Hyperlink fx:id="mainContentPane" layoutX="75.0" layoutY="210.0" onAction="#handleShowAppointments" text="Lịch hẹn" textFill="#1e7fc9">
-                    <font>
-                        <Font name="Tahoma Bold" size="15.0" />
-                    </font>
-                </Hyperlink>
-                <Hyperlink fx:id="MedicalRecordInfo" layoutX="72.0" layoutY="285.0" onAction="#handleShowMedicalRecordInfo" text="Hồ sơ " textFill="#1e7fc9">
-                    <font>
-                        <Font name="Tahoma Bold" size="15.0" />
-                    </font>
-                </Hyperlink>
-                <Button layoutX="57.0" layoutY="479.0" mnemonicParsing="false" style="-fx-background-color: #1e7fc9;" text="Đăng xuất" textFill="WHITE">
-                    <font>
-                        <Font name="System Bold" size="14.0" />
-                    </font>
-                </Button>
-                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true"  >
-                    <image>
-                        <Image url="@../../../../image/benhnhan.jpg" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="50.0" fitWidth="35.0" layoutX="31.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../../image/lich.jpg" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="35.0" fitWidth="40.0" layoutX="33.0" layoutY="283.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../../image/hoso.jpg" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="354.0">
-                    <image><Image url="@../../../../image/account.png" /></image>
-                </ImageView>
-                <Hyperlink fx:id="myProfileLink" layoutX="61.0" layoutY="348.0" onAction="#handleShowMyProfile" prefHeight="46.0" prefWidth="147.0" text="Thông tin cá nhân" textFill="#1e7fc9">
-                    <font><Font name="Tahoma Bold" size="14.0" /></font>
-                </Hyperlink>
-                <Line endX="29.33333396911621" endY="32.16666793823242" layoutX="-5.0" layoutY="24.0" startX="57.4999885559082" startY="32.16666793823242" />
-                <Line endX="29.33333396911621" endY="32.16666793823242" layoutX="113.0" layoutY="24.0" startX="57.4999885559082" startY="32.16666793823242" />
-            </children>
-        </Pane>
-        <Label layoutX="429.0" layoutY="31.0" prefHeight="46.0" prefWidth="325.0" text="Xin chào Bác sĩ!" textFill="WHITE">
-            <font>
-                <Font name="Tahoma Bold" size="36.0" />
-            </font>
-        </Label>
-        <ImageView fitHeight="30.0" fitWidth="40.0" layoutX="258.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true"  >
-            <image>
-                <Image url="@../../../../image/benhnhan.jpg" />
-            </image>
-        </ImageView>
-        <Label layoutX="307.0" layoutY="105.0" prefHeight="35.0" prefWidth="325.0" text="Danh sách bệnh nhân" textAlignment="CENTER">
-            <font>
-                <Font name="Tahoma Bold" size="24.0" />
-            </font>
-        </Label>
-        <TableView fx:id="patientsTable" layoutX="258.0" layoutY="158.0" prefHeight="346.0" prefWidth="655.0">
-            <columns>
-                <TableColumn fx:id="colName" prefWidth="58.0" text="Họ và tên" />
-                <TableColumn fx:id="colGender" prefWidth="59.0" text="Giới tính" />
-                <TableColumn fx:id="colBirthday" minWidth="0.0" prefWidth="58.0" text="Ngày sinh" />
-                <TableColumn fx:id="colPhone" minWidth="0.0" prefWidth="74.0" text="Phone" />
-                <TableColumn fx:id="colStatus" prefWidth="185.0" text="Trạng thái khám" />
-                <TableColumn fx:id="colTime" prefWidth="75.0" text="Giờ khám" />
-            </columns>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-            </columnResizePolicy>
-        </TableView>
-        <TextField fx:id="searchPatientField" layoutX="680.0" layoutY="111.0" />
-        <Button fx:id="searchPatientButton" layoutX="839.0" layoutY="110.0" mnemonicParsing="false" text="Search" onAction="#handleSearchPatient" />
-    </children>
-</Pane>
+<AnchorPane fx:id="patientContentPane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.doctor.PatientInfoController">
+    <Pane prefWidth="200.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+        <children>
+            <Label layoutX="61.0" layoutY="41.0" text="OOP4" textFill="#1e7fc9e8">
+                <font>
+                    <Font name="Tahoma Bold" size="25.0" />
+                </font>
+            </Label>
+            <Hyperlink fx:id="patientInfor" layoutX="72.0" layoutY="125.0" onAction="#handleShowPatientInfo" text="Bệnh nhân" textFill="#1e7fc9">
+                <font>
+                    <Font name="Tahoma Bold" size="15.0" />
+                </font>
+            </Hyperlink>
+            <Hyperlink fx:id="mainContentPane" layoutX="75.0" layoutY="210.0" onAction="#handleShowAppointments" text="Lịch hẹn" textFill="#1e7fc9">
+                <font>
+                    <Font name="Tahoma Bold" size="15.0" />
+                </font>
+            </Hyperlink>
+            <Hyperlink fx:id="MedicalRecordInfo" layoutX="72.0" layoutY="285.0" onAction="#handleShowMedicalRecordInfo" text="Hồ sơ " textFill="#1e7fc9">
+                <font>
+                    <Font name="Tahoma Bold" size="15.0" />
+                </font>
+            </Hyperlink>
+            <Button layoutX="57.0" layoutY="479.0" mnemonicParsing="false" style="-fx-background-color: #1e7fc9;" text="Đăng xuất" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Button>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../../../../image/benhnhan.jpg" />
+                </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="35.0" layoutX="31.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../../../../image/lich.jpg" />
+                </image>
+            </ImageView>
+            <ImageView fitHeight="35.0" fitWidth="40.0" layoutX="33.0" layoutY="283.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../../../../image/hoso.jpg" />
+                </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="354.0">
+                <image><Image url="@../../../../image/account.png" /></image>
+            </ImageView>
+            <Hyperlink fx:id="myProfileLink" layoutX="61.0" layoutY="348.0" onAction="#handleShowMyProfile" prefHeight="46.0" prefWidth="147.0" text="Thông tin cá nhân" textFill="#1e7fc9">
+                <font><Font name="Tahoma Bold" size="14.0" /></font>
+            </Hyperlink>
+            <Line endX="29.33333396911621" endY="32.16666793823242" layoutX="-5.0" layoutY="24.0" startX="57.4999885559082" startY="32.16666793823242" />
+            <Line endX="29.33333396911621" endY="32.16666793823242" layoutX="113.0" layoutY="24.0" startX="57.4999885559082" startY="32.16666793823242" />
+        </children>
+    </Pane>
+
+    <BorderPane style="-fx-background-color: #87CEEB;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+        <top>
+            <VBox spacing="10.0">
+                <children>
+                    <Label text="Xin chào Bác sĩ!" textFill="WHITE">
+                        <font>
+                            <Font name="Tahoma Bold" size="36.0" />
+                        </font>
+                    </Label>
+
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <children>
+                            <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../../../../image/benhnhan.jpg" />
+                                </image>
+                            </ImageView>
+                            <Label text="Danh sách bệnh nhân" textAlignment="CENTER">
+                                <font>
+                                    <Font name="Tahoma Bold" size="24.0" />
+                                </font>
+                            </Label>
+
+                            <Region HBox.hgrow="ALWAYS" />
+
+                            <TextField fx:id="searchPatientField" />
+                            <Button fx:id="searchPatientButton" mnemonicParsing="false" onAction="#handleSearchPatient" text="Search" />
+                        </children>
+                    </HBox>
+                </children>
+                <BorderPane.margin>
+                    <Insets bottom="15.0" left="34.0" right="20.0" top="14.0" />
+                </BorderPane.margin>
+            </VBox>
+        </top>
+
+        <center>
+            <TableView fx:id="patientsTable">
+                <columns>
+                    <TableColumn fx:id="colName" prefWidth="58.0" text="Họ và tên" />
+                    <TableColumn fx:id="colGender" prefWidth="59.0" text="Giới tính" />
+                    <TableColumn fx:id="colBirthday" minWidth="0.0" prefWidth="58.0" text="Ngày sinh" />
+                    <TableColumn fx:id="colPhone" minWidth="0.0" prefWidth="74.0" text="Phone" />
+                    <TableColumn fx:id="colStatus" prefWidth="185.0" text="Trạng thái khám" />
+                    <TableColumn fx:id="colTime" prefWidth="75.0" text="Giờ khám" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+                <BorderPane.margin>
+                    <Insets bottom="20.0" left="34.0" right="20.0" />
+                </BorderPane.margin>
+            </TableView>
+        </center>
+    </BorderPane>
+
+</AnchorPane>

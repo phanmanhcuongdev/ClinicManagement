@@ -231,7 +231,7 @@ public class MedicalProfessionController {
     @FXML
     private void handleShowAppointments(ActionEvent event) {
 
-        mainContentPane.getChildren().setAll(originalChildren);
+       // mainContentPane.getChildren().setAll(originalChildren);
 
         appointmentsTable.setItems(currentAppointmentList);
 
@@ -309,9 +309,16 @@ public class MedicalProfessionController {
             URL fxmlPath = getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/AddMedicalRecordDialog.fxml");
             System.out.println("FXML Path: " + fxmlPath);
 
+            System.out.println("FXML Path: " + fxmlPath);
+            if (fxmlPath == null) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi cấu hình",
+                        "Không thể tìm thấy tệp giao diện: " );
+                return;
+            }
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/com/oop4clinic/clinicmanagement/fxml/AddMedicalRecordDialog.fxml"));
-            VBox dialogVBox = loader.load();
+            BorderPane dialogVBox = loader.load();
 
             AddMedicalRecordDialogController controller = loader.getController();
 
