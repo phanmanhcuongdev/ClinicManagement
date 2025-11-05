@@ -68,7 +68,7 @@
             <font>
                 <Font name="Tahoma Bold" size="18.0" />
             </font></Label>
-        <ComboBox fx:id="cbDepartmentForm" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <ComboBox fx:id="cbDepartmentForm" GridPane.columnIndex="1" GridPane.rowIndex="5" style="-fx-font-size: 16px;  -fx-text-fill: black;"/>
 
         <Label text="Phí khám:" GridPane.columnIndex="0" GridPane.rowIndex="6">
             <font>

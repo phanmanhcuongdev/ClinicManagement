@@ -59,7 +59,8 @@ public class DoctorProfileController {
             ));
             Parent menuRoot = loader.load();
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            //Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) btnSave.getScene().getWindow();
             stage.setScene(new Scene(menuRoot));
             stage.show();
 
@@ -127,6 +128,7 @@ public class DoctorProfileController {
 
             this.currentDoctorDTO = saved;
             fillFormFrom(saved);
+            handleClose(new ActionEvent());
         } catch (IllegalArgumentException dup) {
             warn(dup.getMessage());
         } catch (RuntimeException e) {

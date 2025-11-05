@@ -28,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -43,7 +44,7 @@ public class MedicalProfessionController {
     @FXML private Hyperlink MedicalRecordInfo;
     @FXML private Hyperlink myProfileLink;
 
-    @FXML private Label titleLabel;
+
     @FXML private DatePicker datePicker;
     @FXML private Button showDateButton;
     @FXML private Button showAllButton;
@@ -71,10 +72,13 @@ public class MedicalProfessionController {
     @FXML
     public void initialize() {
         setupTableColumns();
+
         datePicker.setValue(LocalDate.now());
         setupAppointmentRowClickListener();
+        loadAppointmentsForDate(LocalDate.now());
 
-        this.originalChildren = mainContentPane.getChildren().toArray(new Node[0]);
+
+        // this.originalChildren = mainContentPane.getChildren().toArray(new Node[0]);
     }
 
     private void setupTableColumns() {
@@ -110,13 +114,6 @@ public class MedicalProfessionController {
 
             List<AppointmentDTO> appointments = appointmentService.getAppointmentsForDoctorByDate(loggedInDoctorId, date);
             currentAppointmentList.setAll(appointments);
-
-            if (date.equals(LocalDate.now())) {
-                titleLabel.setText("Lịch hẹn hôm nay");
-            } else {
-                titleLabel.setText("Lịch hẹn ngày " + date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            }
-
             datePicker.setDisable(false);
             searchAppointmentField.clear();
 
@@ -143,9 +140,7 @@ public class MedicalProfessionController {
 
             List<AppointmentDTO> allAppointments = appointmentService.getAllAppointmentsForDoctor(doctorId );
             currentAppointmentList.setAll(allAppointments);
-
-            titleLabel.setText("Toàn bộ lịch sử khám");
-            datePicker.setDisable(true);
+           // datePicker.setDisable(true);
             searchAppointmentField.clear();
         } catch (Exception e) {
             System.err.println("Error loading all appointments: " + e.getMessage());
@@ -311,6 +306,9 @@ public class MedicalProfessionController {
     private void openMedicalRecordDialog(AppointmentDTO appointment, MedicalRecordDTO record) {
 
         try {
+            URL fxmlPath = getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/AddMedicalRecordDialog.fxml");
+            System.out.println("FXML Path: " + fxmlPath);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/com/oop4clinic/clinicmanagement/fxml/AddMedicalRecordDialog.fxml"));
             VBox dialogVBox = loader.load();
