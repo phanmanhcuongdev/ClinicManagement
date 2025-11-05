@@ -4,12 +4,14 @@ import com.oop4clinic.clinicmanagement.model.dto.AppointmentDTO;
 import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
 import com.oop4clinic.clinicmanagement.model.dto.PatientAppointmentInfoDto;
 import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
+import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
 import com.oop4clinic.clinicmanagement.service.AppointmentService;
 import com.oop4clinic.clinicmanagement.service.MedicalRecordService;
 import com.oop4clinic.clinicmanagement.service.impl.AppointmentServiceImpl;
 import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl;
 import com.oop4clinic.clinicmanagement.util.SessionManager;
+import com.oop4clinic.clinicmanagement.util.UserSession;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,10 +20,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -34,7 +38,7 @@ import java.util.stream.Collectors;
 public class MedicalProfessionController {
 
     @FXML private Pane mainContentPane;
-    @FXML private Hyperlink patientInfo;
+
     @FXML private Hyperlink appointmentsLink;
     @FXML private Hyperlink MedicalRecordInfo;
     @FXML private Hyperlink myProfileLink;
@@ -52,7 +56,7 @@ public class MedicalProfessionController {
     @FXML private TableColumn<AppointmentDTO, String> colPatientName;
     @FXML private TableColumn<AppointmentDTO, String> colStatus;
     @FXML private TableColumn<AppointmentDTO, String> colReason;
-
+    @FXML private Hyperlink patientInfo;
     private final AppointmentService appointmentService = new AppointmentServiceImpl();
     private final MedicalRecordService medicalRecordService = new MedicalRecordServiceImpl();
     private final ObservableList<AppointmentDTO> currentAppointmentList = FXCollections.observableArrayList();
@@ -204,6 +208,7 @@ public class MedicalProfessionController {
     }
 
 
+
     @FXML
     private void handleShowMedicalRecordInfo(ActionEvent event) {
 
@@ -243,19 +248,22 @@ public class MedicalProfessionController {
     private void handleShowMyProfile(ActionEvent event) {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/DoctorProfile.fxml"));
-            Node profileView = loader.load();
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/DoctorProfile.fxml")
+            );
+            Parent root = loader.load();
 
-            DoctorProfileController profileController = loader.getController();
+            DoctorProfileController controller = loader.getController();
 
+            User loggedInUser = UserSession.getCurrentUser();
+            controller.setLoggedInDoctor(loggedInUser);
 
-            switchView(profileView);
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Lỗi Tải Giao Diện", "Không thể tải giao diện thông tin cá nhân: " + e.getMessage());
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Lỗi Không Xác Định", "Đã xảy ra lỗi: " + e.getMessage());
         }
     }
 

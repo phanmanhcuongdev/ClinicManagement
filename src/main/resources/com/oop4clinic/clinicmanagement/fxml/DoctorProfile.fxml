@@ -16,6 +16,10 @@
                 <Font size="24.0" />
             </font></Label>
         <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="btnClose"
+                onAction="#handleClose"
+                style="-fx-background-color:#c62828; -fx-text-fill:white; -fx-font-weight:bold;"
+                text="Đóng" />
         <Button fx:id="btnSave" onAction="#onSaveProfile" style="-fx-background-color:#2e7d32; -fx-text-fill:white; -fx-font-weight:bold;" text="Lưu thay đổi" />
     </HBox>
 
