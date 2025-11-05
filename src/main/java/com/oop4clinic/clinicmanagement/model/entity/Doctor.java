@@ -23,7 +23,7 @@ public class Doctor {
     private Integer id; // PK int
 
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id", nullable = false,
         foreignKey = @ForeignKey(name = "fk_doctor_department"))
     private Department department;

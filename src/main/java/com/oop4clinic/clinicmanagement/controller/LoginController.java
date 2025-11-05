@@ -47,7 +47,6 @@ public class LoginController {
             User user = authService.login(username, pass);
             registerLink.setDisable(true);
             setLabelStatus(Color.GREEN, "Đăng nhập thành công!");
-            // tbao
             String url = "";
 
             if (user.getRole() == UserRole.PATIENT) {

@@ -16,8 +16,10 @@ public class MedicalRecordImpl implements MedicalRecordRepository {
     public List<MedicalRecord> findAll(EntityManager em){
         String jpql = """
                 Select m from MedicalRecord m 
-                JOIN FETCH m.doctor 
+                JOIN FETCH m.doctor d
+                JOIN FETCH d.department
                 JOIN FETCH m.patient
+                
                 """;
         return em.createQuery(jpql,MedicalRecord.class).getResultList();
     }
@@ -27,7 +29,8 @@ public class MedicalRecordImpl implements MedicalRecordRepository {
     public List<MedicalRecord> findByPatientId(EntityManager em, int patientId) {
         String jpql = """
                 SELECT m FROM MedicalRecord m 
-                JOIN FETCH m.doctor 
+                JOIN FETCH m.doctor d
+                JOIN FETCH d.department
                 JOIN FETCH m.patient
                 WHERE m.patient.id = :patientId
                 """;
