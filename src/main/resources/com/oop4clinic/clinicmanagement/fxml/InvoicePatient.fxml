@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane styleClass="root-pane" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.patient.InvoicePatientController" stylesheets="/static/css/patient-styles.css">
+<BorderPane styleClass="root-pane" xmlns="http://javafx.com/javafx/17.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.patient.InvoicePatientController" stylesheets="/static/css/patient-styles.css">
     <top>
         <AnchorPane prefHeight="55.0" style="-fx-background-color: #ffffff; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 6);">
             <children>

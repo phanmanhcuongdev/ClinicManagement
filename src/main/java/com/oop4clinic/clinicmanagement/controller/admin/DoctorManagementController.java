@@ -71,8 +71,6 @@ public class  DoctorManagementController {
     @FXML private ComboBox<DoctorStatus> cbActive;
     @FXML private Button btnFilter;
     @FXML private Button btnAdd;
-    @FXML private Button btnImport;
-    @FXML private Button btnExport;
 
     // ============================================================
     //  STATE
