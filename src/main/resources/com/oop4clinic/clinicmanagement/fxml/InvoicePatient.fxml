@@ -13,12 +13,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane styleClass="root-pane" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.patient.InvoicePatientController" stylesheets="/static/css/patient-styles.css">
+<BorderPane styleClass="root-pane" stylesheets="/static/css/patient-styles.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.patient.InvoicePatientController">
     <top>
-        <AnchorPane prefHeight="55.0" style="-fx-background-color: #ffffff; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 6);">
+        <AnchorPane prefHeight="55.0" style="-fx-background-color: #3498db; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 6);">
             <children>
                 <Separator layoutY="30.0" AnchorPane.leftAnchor="133.0" AnchorPane.rightAnchor="160.0" />
-                <MenuButton layoutX="805.0" layoutY="15.0" mnemonicParsing="false" style="-fx-background-color: #ffffff;" text="Người dùng" textFill="#1e7fc9" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="15.0">
+                <MenuButton layoutX="805.0" layoutY="15.0" mnemonicParsing="false" style="-fx-background-color: #3498db;" text="Người dùng" textFill="WHITE" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="15.0">
                     <items>
                         <MenuItem fx:id="infoPatient" mnemonicParsing="false" onAction="#handleInfo" text="Thông tin" />
                         <MenuItem fx:id="recordPatient" mnemonicParsing="false" onAction="#handleRecord" text="Hồ sơ khám bệnh" />
@@ -30,7 +30,7 @@
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </MenuButton>
-                <Button fx:id="homeButton" layoutX="40.0" layoutY="7.0" mnemonicParsing="false" onAction="#home" style="-fx-background-color: #ffffff;" text="OOP4" textFill="#1e7fc9" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="7.0">
+                <Button fx:id="homeButton" layoutX="40.0" layoutY="7.0" mnemonicParsing="false" onAction="#home" style="-fx-background-color: #3498db;" text="OOP4" textFill="WHITE" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="7.0">
                     <font>
                         <Font name="Tahoma Bold" size="24.0" />
                     </font>

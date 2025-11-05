@@ -75,9 +75,9 @@ public class AppointmentPatientController {
         List<String> statuses = Arrays.stream(AppointmentStatus.values())
                 .map(this::mapStatusToVietnamese)
                 .toList();
-        boxStatus.getItems().addAll(statuses);
-        boxStatus.getItems().add(0, "Trạng thái");
-        boxStatus.getSelectionModel().selectFirst();
+        boxStatus.getItems().add(0, "Sắp tới");
+        boxStatus.getItems().add(0, "Hoàn thành");
+        boxStatus.getItems().add(0, "Hủy hẹn");
     }
 
     private void setupTableColumns() {
