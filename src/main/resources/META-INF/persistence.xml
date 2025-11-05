@@ -8,6 +8,7 @@
         <class>com.oop4clinic.clinicmanagement.model.entity.Appointment</class>
         <class>com.oop4clinic.clinicmanagement.model.entity.MedicalRecord</class>
         <class>com.oop4clinic.clinicmanagement.model.entity.User</class>
+        <class>com.oop4clinic.clinicmanagement.model.entity.DoctorSchedule</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlite:clinic.db"/>
