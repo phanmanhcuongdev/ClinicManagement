@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+import java.lang.annotation.ElementType;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -57,14 +58,7 @@ public class AppointmentManagementController implements Initializable {
         statusCol.setCellValueFactory(cellData ->
         {
             AppointmentDTO appointment = cellData.getValue();
-            String text;
-            if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
-                text = "Đã hoàn thành";
-            } else if (appointment.getStatus() == AppointmentStatus.CONFIRMED ){
-                text = "Đã xác nhận";
-            } else {
-                text = "Đã hủy";
-            }
+            String text = convertStatus(appointment.getStatus());
             return new SimpleStringProperty(text);
         });
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
@@ -81,11 +75,13 @@ public class AppointmentManagementController implements Initializable {
 
     private void populateStatusFilter() {
         statusFilterComboBox.getItems().add(null); // Add null for "All" option
-        statusFilterComboBox.getItems().addAll(AppointmentStatus.values());
+        statusFilterComboBox.getItems().add(AppointmentStatus.CONFIRMED);
+        statusFilterComboBox.getItems().add(AppointmentStatus.COMPLETED);
+        statusFilterComboBox.getItems().add(AppointmentStatus.CANCELED);
         statusFilterComboBox.setConverter(new javafx.util.StringConverter<>() {
             @Override
             public String toString(AppointmentStatus status) {
-                return status == null ? "Tất cả" : status.name(); // Display "Tất cả" for null
+                return status == null ? "Tất cả" : convertStatus(status); // Display "Tất cả" for null
             }
             @Override
             public AppointmentStatus fromString(String string) {
@@ -95,6 +91,12 @@ public class AppointmentManagementController implements Initializable {
         statusFilterComboBox.getSelectionModel().selectFirst(); // Select "Tất cả" initially
     }
 
+    private String convertStatus(AppointmentStatus a){
+        if(a == AppointmentStatus.COMPLETED) return "Đã hoàn thành";
+        else if( a == AppointmentStatus.CONFIRMED) return "Đã xác nhận";
+        else if(a == AppointmentStatus.CANCELED) return "Đã hủy";
+        return "";
+    }
 
     private void setupFiltering() {
         filteredData = new FilteredList<>(masterData, p -> true);

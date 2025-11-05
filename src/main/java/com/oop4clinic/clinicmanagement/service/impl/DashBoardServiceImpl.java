@@ -60,7 +60,7 @@ public class DashBoardServiceImpl implements DashBoradService {
     public long countPendingAP(){
         EntityManager em = EntityManagerProvider.em();
         try{
-            return appointmentDAO.findAllbyStatus(em,AppointmentStatus.PENDING).size();
+            return appointmentDAO.findAllbyStatus(em,AppointmentStatus.CONFIRMED).size();
         } catch (Exception e){
             e.printStackTrace();
             return 0;
