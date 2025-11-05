@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.patient.MedicalRecordPatientController">
+<BorderPane styleClass="root-pane" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.patient.MedicalRecordPatientController" stylesheets="/static/css/patient-styles.css">
     <top>
         <AnchorPane prefHeight="50.0" style="-fx-background-color: #FFFFFF;">
             <children>
@@ -41,15 +41,12 @@
     <center>
         <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Label text="Hồ Sơ Khám Bệnh" textFill="BLACK">
-                    <font>
-                        <Font name="System Bold" size="20.0" />
-                    </font>
+                <Label styleClass="header-title" text="Hồ Sơ Khám Bệnh">
                     <VBox.margin>
                         <Insets top="15.0" /> </VBox.margin>
                 </Label>
 
-                <TableView fx:id="medicalRecordTable" editable="true" fixedCellSize="50.0" style="-fx-alignment: center; -fx-font-size: 14;" VBox.vgrow="ALWAYS">
+                <TableView fx:id="medicalRecordTable" editable="true" fixedCellSize="50.0" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colTT" prefWidth="50.0" text="TT" />
                         <TableColumn fx:id="colDate" prefWidth="200.0" text="Ngày khám bệnh" />
