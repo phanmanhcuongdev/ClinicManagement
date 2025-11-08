@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainContentPane" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.doctor.MedicalProfessionController">
-
-    <Pane prefWidth="200.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+<AnchorPane fx:id="mainContentPane" minWidth="0.0" minHeight="0.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.doctor.MedicalProfessionController">
+    <Pane prefWidth="200.0"   AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
         <children>
             <Label layoutX="61.0" layoutY="41.0" text="OOP4" textFill="#1e7fc9e8">
                 <font>
@@ -30,7 +29,7 @@
                     <Image url="@../../../../image/lich.jpg" />
                 </image>
             </ImageView>
-            <Hyperlink layoutX="75.0" layoutY="210.0" text="Lịch hẹn" textFill="#1e7fc9">
+            <Hyperlink layoutX="75.0" layoutY="210.0" text="Lịch hẹn"   textFill="#1e7fc9">
                 <font>
                     <Font name="Tahoma Bold" size="15.0" />
                 </font>
@@ -55,7 +54,7 @@
                     <Font name="Tahoma Bold" size="14.0" />
                 </font>
             </Hyperlink>
-            <Button layoutX="57.0" layoutY="479.0" mnemonicParsing="false" style="-fx-background-color: #1e7fc9;" text="Đăng xuất" textFill="WHITE">
+            <Button fx:id="btnLogout" onAction="#handleLogout" layoutX="57.0" layoutY="479.0" mnemonicParsing="false" style="-fx-background-color: #1e7fc9;" text="Đăng xuất" textFill="WHITE">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
@@ -63,8 +62,7 @@
         </children>
     </Pane>
 
-    <BorderPane style="-fx-background-color: #87CEEB;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-
+    <BorderPane fx:id="mainContentArea"  style="-fx-background-color: #87CEEB;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
         <top>
             <VBox spacing="10.0">
                 <children>
@@ -106,7 +104,7 @@
         </top>
 
         <center>
-            <TableView fx:id="appointmentsTable" fixedCellSize="40.0">
+            <TableView fx:id="appointmentsTable" fixedCellSize="60.0" style="-fx-font-size: 16px;">
                 <columns>
                     <TableColumn fx:id="colTime" prefWidth="95.0" text="Giờ hẹn" />
                     <TableColumn fx:id="colPatientName" prefWidth="227.0" text="Tên bệnh nhân" />

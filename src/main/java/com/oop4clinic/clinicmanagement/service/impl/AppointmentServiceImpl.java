@@ -29,10 +29,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final InvoiceRepository invoiceRepo = new InvoiceRepositoryImpl(); // MỚI
 
-    // ... (Các hàm find, search, updateStatus, getAll giữ nguyên) ...
     @Override
     public List<AppointmentDTO> findAppointmentsByPatientId(Integer patientId) {
-        // ... (Giữ nguyên code của bạn)
+
         EntityManager em = EntityManagerProvider.em();
         try {
             List<Appointment> appointments = appointmentRepo.findByPatientId(em, patientId);
@@ -50,7 +49,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             String doctorName,
             AppointmentStatus status,
             LocalDate date) {
-        // ... (Giữ nguyên code của bạn)
+
         EntityManager em = EntityManagerProvider.em();
         try {
             List<Appointment> appointments = appointmentRepo.searchByPatient(
@@ -67,7 +66,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentDTO updateStatus(Integer appointmentId, AppointmentStatus newStatus) {
-        // ... (Giữ nguyên code của bạn)
+
         EntityManager em = EntityManagerProvider.em();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -102,18 +101,15 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
 
-    // tao moi lich hen tu booking
+
     @Override
     public void createAppointment(CreateAppointmentDTO dto) {
         EntityManager em = EntityManagerProvider.em();
         EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin(); // Bắt đầu Giao dịch TỔNG
-
-            // === 1. VALIDATE DỮ LIỆU ===
+            tx.begin();
             if (dto.getPatientId() == null) throw new IllegalArgumentException("Bệnh nhân rỗng");
             if (dto.getDoctorId() == null) throw new IllegalArgumentException("Bác sĩ rỗng");
-            // ... (các kiểm tra khác)
 
             Patient patient = patientRepo.findById(em, dto.getPatientId())
                     .orElseThrow(() -> new IllegalArgumentException("Bệnh nhân không tồn tại"));
@@ -124,7 +120,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             Department department = deptRepo.findById(em, dto.getDepartmentId())
                     .orElseThrow(() -> new IllegalArgumentException("Khoa không tồn tại"));
 
-            // === 2. TẠO VÀ LƯU APPOINTMENT ===
+
             Appointment appt = new Appointment();
             appt.setPatient(patient);
             appt.setDoctor(doctor);
@@ -135,37 +131,26 @@ public class AppointmentServiceImpl implements AppointmentService {
             appt.setStartTime(startTime);
             appt.setAppointment_date(dto.getAppointmentDate());
 
-            // Lưu Appointment VÀO GIAO DỊCH
             Appointment savedAppt = appointmentRepo.save(em, appt);
 
-            // === 3. TẠO VÀ LƯU INVOICE (TRONG CÙNG GIAO DỊCH) ===
-            // XÓA DÒNG LỖI: invoiceService.createInvoiceForAppointment(savedAppt.getId());
-
-            // THAY BẰNG:
             Invoice invoice = new Invoice();
             invoice.setAppointment(savedAppt); // Dùng đối tượng vừa lưu
             invoice.setPatient(patient);     // Dùng đối tượng đã tìm
             invoice.setTotal(doctor.getConsultationFee()); // Dùng đối tượng đã tìm
             invoice.setStatus(InvoiceStatus.UNPAID);
             invoice.setDetails("Phí đặt lịch hẹn trước");
-            // @CreationTimestamp sẽ tự lo 'createdAt'
 
-            // Lưu Invoice VÀO CÙNG GIAO DỊCH
             invoiceRepo.save(em, invoice);
 
-            // === 4. COMMIT ===
-            // Chỉ khi cả 2 (Appt và Invoice) lưu OK thì mới commit
             tx.commit();
 
             em.refresh(savedAppt);
             mapperAp.toDto(savedAppt);
 
         } catch (RuntimeException e) {
-            // Nếu 1 trong 2 thất bại, rollback tất cả
             if (tx.isActive()) tx.rollback();
             throw e;
         } catch (Exception e) {
-            // Giữ lại catch block của bạn
             if (tx.isActive()) tx.rollback();
             throw new RuntimeException(e);
         } finally {
@@ -178,7 +163,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<AppointmentDTO> getAppointmentsForToday(int doctorId) {
         EntityManager em = EntityManagerProvider.em();
         try {
-//            thoi gian tu 0-23h
+            // thoi gian tu 0-23h
             LocalDate today = LocalDate.now();
             LocalDateTime startOfDay = today.atStartOfDay();
             LocalDateTime endOfDay = today.atTime(23, 59, 59);

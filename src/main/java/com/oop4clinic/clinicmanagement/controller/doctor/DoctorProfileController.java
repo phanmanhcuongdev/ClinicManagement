@@ -53,21 +53,8 @@ public class DoctorProfileController {
 
     @FXML
     private void handleClose(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    "/com/oop4clinic/clinicmanagement/fxml/MenuDoctor.fxml"
-            ));
-            Parent menuRoot = loader.load();
-
-            //Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Stage stage = (Stage) btnSave.getScene().getWindow();
-            stage.setScene(new Scene(menuRoot));
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể quay lại Menu chính: " + e.getMessage());
-        }
+        Stage stage = (Stage) btnSave.getScene().getWindow();
+        stage.close();
     }
     public void setLoggedInDoctor(User doctor) {
         this.loggedInDoctor = doctor;
