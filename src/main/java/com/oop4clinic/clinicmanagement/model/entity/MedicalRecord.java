@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "medical_records",
-    uniqueConstraints = @UniqueConstraint(name = "uk_mr_appointment", columnNames = "appointment_id"))
+@Table(name = "medical_records", uniqueConstraints = @UniqueConstraint(name = "uk_mr_appointment", columnNames = "appointment_id"))
 public class MedicalRecord {
 
 

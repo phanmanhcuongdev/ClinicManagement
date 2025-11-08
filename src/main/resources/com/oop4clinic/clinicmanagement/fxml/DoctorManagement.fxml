@@ -18,23 +18,21 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.admin.DoctorManagementController">
+<BorderPane prefHeight="700.0" prefWidth="900.0" styleClass="root-pane" stylesheets="/static/css/admin-styles.css" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.admin.DoctorManagementController">
 
     <!-- Thanh tiêu đề + tìm kiếm / hành động nhanh -->
     <top>
-        <VBox spacing="12.0" style="-fx-background-color: transparent;">
-            <Label style="-fx-text-fill:#0088ff; -fx-font-size:20; -fx-font-weight:bold;" text="Quản lý bác sĩ" />
-            <HBox spacing="10.0">
-                <TextField fx:id="txtSearch" promptText="Tìm theo tên / SĐT / Email" HBox.hgrow="ALWAYS" />
-                <ComboBox fx:id="cbDepartment" promptText="Khoa" />
-                <ComboBox fx:id="cbSpecialty" promptText="Chuyên môn" />
-                <ComboBox fx:id="cbActive" promptText="Trạng thái" />
+        <VBox spacing="12.0">
+            <Label styleClass="header-title" text="👨‍⚕️ Quản lý bác sĩ" />
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <TextField fx:id="txtSearch" promptText="Tìm theo tên / SĐT / Email" styleClass="search-field" HBox.hgrow="ALWAYS" />
+                <ComboBox fx:id="cbDepartment" promptText="Khoa" styleClass="styled-combo-box" />
+                <ComboBox fx:id="cbSpecialty" promptText="Chuyên môn" styleClass="styled-combo-box" />
+                <ComboBox fx:id="cbActive" promptText="Trạng thái" styleClass="styled-combo-box" />
                 <Button fx:id="btnFilter" onAction="#onApplyFilterTop" text="Lọc" />
                 <Button mnemonicParsing="false" onAction="#onClearFilterTop" text="Xóa Lọc" />
                 <Region HBox.hgrow="ALWAYS" />
-                <Button fx:id="btnImport" text="Import" />
-                <Button fx:id="btnExport" text="Export" />
-                <Button fx:id="btnAdd" onAction="#onAddDoctor" style="-fx-background-color:#1e80c7; -fx-text-fill:white;" text="+ Thêm bác sĩ" />
+                <Button fx:id="btnAdd" onAction="#onAddDoctor" styleClass="primary-button" text="+ Thêm bác sĩ" />
             </HBox>
         </VBox>
     </top>
@@ -68,7 +66,7 @@
                     <Label style="-fx-text-fill:#0088ff; -fx-font-size:16; -fx-font-weight:bold;" text="Chi tiết bác sĩ" />
                     <Region HBox.hgrow="ALWAYS" />
                     <Button fx:id="btnEdit" disable="true" onAction="#onUpdateDoctor" text="Sửa" />
-                    <Button fx:id="btnSave" onAction="#onSaveDoctor" style="-fx-background-color:#1e80c7; -fx-text-fill:white;" text="Lưu" />
+                    <Button fx:id="btnSave" onAction="#onSaveDoctor" styleClass="primary-button" text="Lưu" />
                     <Button fx:id="btnDeactivate" text="Ngưng kích hoạt" />
                 </HBox>
 

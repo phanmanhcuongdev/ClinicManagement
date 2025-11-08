@@ -16,12 +16,6 @@
       </assistant-state>
     </assistants>
   </component>
-  <component name="DBNavigator.Project.DatabaseBrowserManager">
-    <autoscroll-to-editor value="false" />
-    <autoscroll-from-editor value="true" />
-    <show-object-properties value="false" />
-    <loaded-nodes />
-  </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="8ca77543-55aa-4d08-9471-7605530538cc">
       <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[delete from users 
@@ -41,18 +35,6 @@ values (4,1,1762271955813,'123','DOCTOR','0905111222')]]></console>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="8ca77543-55aa-4d08-9471-7605530538cc" />
-  </component>
-  <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="8ca77543-55aa-4d08-9471-7605530538cc" dataset="main.users" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="8ca77543-55aa-4d08-9471-7605530538cc" dataset="main.departments" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="8ca77543-55aa-4d08-9471-7605530538cc" dataset="main.doctors" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="8ca77543-55aa-4d08-9471-7605530538cc" dataset="main.invoices" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="8ca77543-55aa-4d08-9471-7605530538cc" dataset="main.patients" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="8ca77543-55aa-4d08-9471-7605530538cc" dataset="main.appointments" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="8ca77543-55aa-4d08-9471-7605530538cc" dataset="main.medical_records" active-filter-id="EMPTY_FILTER" />
-  </component>
-  <component name="DBNavigator.Project.ExecutionManager">
-    <retain-sticky-names value="false" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />

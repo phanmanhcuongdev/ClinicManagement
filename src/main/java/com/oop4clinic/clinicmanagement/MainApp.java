@@ -28,8 +28,8 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml")
-                // getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MenuPatient.fxml")
+                 getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml")
+                //getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Booking1.fxml")
                 //getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MenuAdmin.fxml")
                 //getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MenuDoctor.fxml")
         );
@@ -52,16 +52,9 @@ public class MainApp extends Application {
 
     }
 
-
-
     public static void main(String[] args) {
         launch(args);
     }
-
-
-
-
-
 }
 
 

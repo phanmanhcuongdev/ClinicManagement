@@ -2,41 +2,28 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?> <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox spacing="15.0" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.admin.AppointmentManagementController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
+<VBox spacing="15.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.admin.AppointmentManagementController" stylesheets="/static/css/admin-styles.css">
 
-    <HBox alignment="CENTER_LEFT" spacing="10.0">
-        <Label text="Quản lý Lịch hẹn">
-            <font>
-                <Font name="System Bold" size="24.0" />
-            </font>
-        </Label>
+    <HBox alignment="CENTER_LEFT" styleClass="page-header">
+        <Label styleClass="header-title" text="📅 Quản lý Lịch hẹn" />
         <Region HBox.hgrow="ALWAYS" />
-        <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#handleRefreshAction" text="Làm Mới" />
-        <VBox.margin>
-            <Insets bottom="10.0" />
-        </VBox.margin>
+        <Button fx:id="refreshButton" onAction="#handleRefreshAction" styleClass="primary-button" text="⟳ Làm Mới" />
     </HBox>
 
     <HBox alignment="CENTER_LEFT" spacing="10.0">
-        <Label text="Tìm kiếm:" />
-        <TextField fx:id="searchField" promptText="Tên bệnh nhân, bác sĩ..." HBox.hgrow="ALWAYS" /> <Label text="Trạng thái:" />
-        <ComboBox fx:id="statusFilterComboBox" prefWidth="150.0" promptText="Tất cả" /> <VBox.margin>
-        <Insets bottom="5.0" /> </VBox.margin>
+        <TextField fx:id="searchField" promptText="🔍 Tìm kiếm theo tên bệnh nhân, bác sĩ..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+        <Label text="Trạng thái:" />
+        <ComboBox fx:id="statusFilterComboBox" prefWidth="150.0" promptText="Tất cả" styleClass="styled-combo-box" />
     </HBox>
-
 
     <TableView fx:id="appointmentTable" prefHeight="600.0" prefWidth="1000.0" VBox.vgrow="ALWAYS">
         <columns>
