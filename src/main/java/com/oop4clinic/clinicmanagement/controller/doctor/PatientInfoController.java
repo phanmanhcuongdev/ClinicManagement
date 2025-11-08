@@ -157,25 +157,7 @@ public class PatientInfoController {
         }
     }
 
-//    @FXML
-//    private void handleShowPatientInfo(ActionEvent event) {
-//        try {
-//            Stage stage = (Stage) patientInfo.getScene().getWindow();
-//
-//            boolean isMaximized = stage.isMaximized();
-//
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-//                    "/com/oop4clinic/clinicmanagement/fxml/PatientInAppointment.fxml"));
-//            Parent root = loader.load();
-//            Scene newScene = new Scene(root);
-//            stage.setScene(newScene);
-//            stage.setMaximized(isMaximized);
-//
-//        } catch (IOException e) {
-//            showAlert(Alert.AlertType.ERROR, "Lỗi tải giao diện",
-//                    "Không thể tải giao diện thông tin bệnh nhân: " + e.getMessage());
-//        }
-//    }
+
 
     @FXML
     private void handleShowMedicalRecordInfo(ActionEvent event) {
@@ -203,14 +185,6 @@ public class PatientInfoController {
         }
     }
 
-
-    private void switchView(Node view) {
-        if (patientContentPane instanceof BorderPane) {
-            ((BorderPane) patientContentPane).setCenter(view);
-        } else {
-            patientContentPane.getChildren().setAll(view);
-        }
-    }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
@@ -301,7 +275,7 @@ public class PatientInfoController {
     private Button btnLogout;
 
     @FXML
-    private void handleLogout(ActionEvent event) {
+    public void handleLogout(ActionEvent event) {
         try {
             Stage stage = (Stage) btnLogout.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml"));

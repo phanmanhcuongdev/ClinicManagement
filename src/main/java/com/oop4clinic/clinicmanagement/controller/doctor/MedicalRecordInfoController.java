@@ -197,7 +197,6 @@ public class MedicalRecordInfoController {
     @FXML
     private void handleShowPatientInfo(ActionEvent event) {
         try {
-            // --- 1️⃣ Lấy dữ liệu ---
             List<AppointmentDTO> allDoctorAppointments = appointmentService.getAllAppointmentsForDoctor(doctorId);
             List<PatientAppointmentInfoDto> patientAppointmentList = allDoctorAppointments.stream()
                     .filter(appt -> appt != null && appt.getPatient() != null)
@@ -212,12 +211,10 @@ public class MedicalRecordInfoController {
                     .map(appt -> new PatientAppointmentInfoDto(appt.getPatient(), appt))
                     .collect(Collectors.toList());
 
-            // --- 2️⃣ Load FXML mới ---
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/com/oop4clinic/clinicmanagement/fxml/PatientInAppointment.fxml"));
             AnchorPane newContent = loader.load();
 
-            // --- 3️⃣ Lấy controller và truyền dữ liệu ---
             PatientInfoController patientController = loader.getController();
             patientController.populatePatientAppointments(patientAppointmentList);
 
@@ -322,7 +319,7 @@ public class MedicalRecordInfoController {
     @FXML
     private Button btnLogout;
     @FXML
-    private void handleLogout(ActionEvent event) {
+    public void handleLogout(ActionEvent event) {
         try {
             Stage stage = (Stage) btnLogout.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml"));
