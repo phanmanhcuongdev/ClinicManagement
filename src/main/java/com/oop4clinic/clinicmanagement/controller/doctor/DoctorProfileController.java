@@ -68,7 +68,7 @@ public class DoctorProfileController {
 
     private void loadDoctorProfile() {
         try {
-            this.currentDoctorDTO = doctorService.findById(loggedInDoctor.getId());
+            this.currentDoctorDTO = doctorService.findByPhone(loggedInDoctor.getUsername());
             if (this.currentDoctorDTO != null) {
                 fillFormFrom(this.currentDoctorDTO);
             } else {
