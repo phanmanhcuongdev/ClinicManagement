@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="900.0" styleClass="root-pane" stylesheets="/static/css/admin-styles.css" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.admin.DoctorManagementController">
+<BorderPane prefHeight="700.0" prefWidth="900.0" styleClass="root-pane" stylesheets="/static/css/admin-styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.admin.DoctorManagementController">
 
     <!-- Thanh tiêu đề + tìm kiếm / hành động nhanh -->
     <top>
@@ -27,7 +13,6 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                 <TextField fx:id="txtSearch" promptText="Tìm theo tên / SĐT / Email" styleClass="search-field" HBox.hgrow="ALWAYS" />
                 <ComboBox fx:id="cbDepartment" promptText="Khoa" styleClass="styled-combo-box" />
-                <ComboBox fx:id="cbSpecialty" promptText="Chuyên môn" styleClass="styled-combo-box" />
                 <ComboBox fx:id="cbActive" promptText="Trạng thái" styleClass="styled-combo-box" />
                 <Button fx:id="btnFilter" onAction="#onApplyFilterTop" text="Lọc" />
                 <Button mnemonicParsing="false" onAction="#onClearFilterTop" text="Xóa Lọc" />
