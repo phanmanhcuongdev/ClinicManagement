@@ -51,32 +51,19 @@
                             <children>
                                 <VBox spacing="5.0">
                                     <children>
-                                        <Label text="Họ và tên:">
+                                        <Label text="Tên bác sĩ:">
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
                                         </Label>
-                                        <TextField fx:id="namePatient" prefHeight="35.0" prefWidth="250.0" styleClass="styled-text-field">
+                                        <TextField fx:id="nameDoctor" prefHeight="35.0" prefWidth="250.0" styleClass="styled-text-field">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
                                         </TextField>
                                     </children>
                                 </VBox>
-                                <VBox spacing="5.0">
-                                    <children>
-                                        <Label text="Trạng thái:">
-                                            <font>
-                                                <Font size="16.0" />
-                                            </font>
-                                        </Label>
-                                        <TextField fx:id="status" prefHeight="35.0" prefWidth="250.0" styleClass="styled-text-field">
-                                            <font>
-                                                <Font size="14.0" />
-                                            </font>
-                                        </TextField>
-                                    </children>
-                                </VBox>
+                                <VBox spacing="5.0" />
                                 <VBox spacing="5.0">
                                     <children>
                                         <Label text="Ngày hẹn:">

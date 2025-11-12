@@ -29,9 +29,6 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
                  getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml")
-                //getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Booking1.fxml")
-                //getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MenuAdmin.fxml")
-                //getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MenuDoctor.fxml")
         );
         init();
         Scene scene = new Scene(loader.load());
@@ -51,7 +48,6 @@ public class MainApp extends Application {
         EntityManagerProvider.init();
 
     }
-
     public static void main(String[] args) {
         launch(args);
     }

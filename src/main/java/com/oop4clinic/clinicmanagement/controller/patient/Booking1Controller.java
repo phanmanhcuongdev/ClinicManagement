@@ -19,7 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.scene.Cursor;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -31,6 +30,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Controller này quản lý màn hình "Booking1" (Đặt lịch - Giai đoạn 1).
+ * Chức năng:
+ * 1. Tìm kiếm bác sĩ.
+ * 2. Hiển thị lịch làm việc có sẵn của bác sĩ (7 ngày tới).
+ * 3. Cho phép bệnh nhân chọn ngày, giờ và nhập triệu chứng.
+ * 4. Lưu lịch hẹn mới.
+ */
 public class Booking1Controller {
 
     @FXML private Button homeButton;
@@ -43,8 +50,6 @@ public class Booking1Controller {
     @FXML private TextField nameDoctor;
     @FXML private TextField symptom;
     @FXML private TextField department;
-    @FXML private Button book1;
-    @FXML private Button Book2;
     @FXML private Button saveButton;
     @FXML private VBox doctorVBox;
 
@@ -53,20 +58,32 @@ public class Booking1Controller {
     private final AppointmentService appointmentService = new AppointmentServiceImpl();
 
     private final DateTimeFormatter dbDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private final DateTimeFormatter dbTimeFormatter = DateTimeFormatter.ofPattern("HH:mm"); // <- Cần cho DTO
+    private final DateTimeFormatter dbTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
     private final DateTimeFormatter displayDayMonthFormatter = DateTimeFormatter.ofPattern("dd/MM");
-    private final Locale vietnameseLocale = new Locale("vi", "VN");
 
     private DoctorDTO selectedDoctorForBooking = null;
+    // bac si duoc chon
     private DoctorScheduleDTO selectedScheduleForBooking = null;
+    // lich duoc chon
 
     @FXML public void initialize() {
+        // lich lam viec trong 7 ngay toi của bac si
         scheduleService.ensureSchedulesExistForNextDays(7);
-        nameDoctor.textProperty().addListener((obs, oldText, newText) -> updateDoctorVBox());
-        department.textProperty().addListener((obs, oldText, newText) -> updateDoctorVBox());
+
+        // o tim kiem ten bac si
+        nameDoctor.textProperty().addListener((obs, oldText, newText) -> {
+            updateDoctorVBox();
+        });
+
+        // o tim kiem khoa bac si
+        department.textProperty().addListener((obs, oldText, newText) -> {
+            updateDoctorVBox();
+        });
         updateDoctorVBox();
     }
 
+    // xu ly du lieu khi an nut dat lich
     @FXML void saveTime(ActionEvent event) {
         String patientSymptom = symptom.getText();
 
@@ -81,6 +98,7 @@ public class Booking1Controller {
             return;
         }
 
+        // hop thoai xac nhan
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setTitle("Xác nhận đặt lịch");
         confirmAlert.setHeaderText("Bạn có chắc muốn đặt lịch hẹn này?");
@@ -91,6 +109,7 @@ public class Booking1Controller {
                 selectedScheduleForBooking.getWorkDate(),
                 selectedScheduleForBooking.getWorkTime()
         ));
+
 
         Optional<ButtonType> result = confirmAlert.showAndWait();
 
@@ -103,22 +122,23 @@ public class Booking1Controller {
                     return;
                 }
 
+                // tao lich hen va luu vao du lieu
                 CreateAppointmentDTO newAppointment = new CreateAppointmentDTO();
                 newAppointment.setPatientId(currentPatientId);
                 newAppointment.setDepartmentId(selectedDoctorForBooking.getDepartmentId());
                 newAppointment.setDoctorId(selectedDoctorForBooking.getId());
-
                 newAppointment.setAppointmentDate(LocalDate.parse(selectedScheduleForBooking.getWorkDate(), dbDateFormatter));
                 newAppointment.setAppointmentTime(LocalTime.parse(selectedScheduleForBooking.getWorkTime(), dbTimeFormatter));
-
                 newAppointment.setReason(patientSymptom);
 
+                // 7. Gọi service để thực sự tạo lịch hẹn trong CSDL
                 appointmentService.createAppointment(newAppointment);
 
-                scheduleService.updateScheduleStatus(selectedScheduleForBooking.getId(), DoctorScheduleStatus.OFF); // Dùng Enum
+                // cap nhat lich duoc chon là off
+                scheduleService.updateScheduleStatus(selectedScheduleForBooking.getId(), DoctorScheduleStatus.OFF);
 
+                // reset du lieu sau khi dat lich thanh cong
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đặt lịch thành công!");
-
                 updateDoctorVBox();
                 selectedDoctorForBooking = null;
                 selectedScheduleForBooking = null;
@@ -133,24 +153,36 @@ public class Booking1Controller {
 
     private void updateDoctorVBox() {
         doctorVBox.getChildren().clear();
+
         String nameQuery = nameDoctor.getText();
         String deptQuery = department.getText().trim().toLowerCase();
 
         try {
+            // tim bac si theo ten va loc lich trong
             List<DoctorDTO> serviceResults = doctorService.searchDoctors(nameQuery, null, DoctorStatus.ACTIVE);
+
             List<DoctorDTO> filteredDoctors;
             if (deptQuery.isEmpty()) {
                 filteredDoctors = serviceResults;
+
             } else {
-                filteredDoctors = serviceResults.stream()
-                        .filter(d -> d.getDepartmentName() != null &&
-                                d.getDepartmentName().toLowerCase().contains(deptQuery))
-                        .collect(Collectors.toList());
+                List<DoctorDTO> tempList = new ArrayList<>();
+
+                for (DoctorDTO doctor : serviceResults) {
+                    String departmentName = doctor.getDepartmentName();
+                    if (departmentName != null) {
+                        if (departmentName.toLowerCase().contains(deptQuery)) {
+                            tempList.add(doctor);
+                        }
+                    }
+                }
+                filteredDoctors = tempList;
             }
 
-            // lay lich cua bac si duoc tim kiem
+            // hien thi ds bac si co lich trong
             for (DoctorDTO doctor : filteredDoctors) {
                 List<DoctorScheduleDTO> schedules = scheduleService.getAvailableSchedulesByDoctorId(doctor.getId());
+
                 if (!schedules.isEmpty()) {
                     VBox doctorCard = createDoctorCard(doctor, schedules);
                     doctorVBox.getChildren().add(doctorCard);
@@ -162,7 +194,7 @@ public class Booking1Controller {
         }
     }
 
-    // giao diện hiển thị bác si
+    // giao dien card
     private VBox createDoctorCard(DoctorDTO doctor, List<DoctorScheduleDTO> schedules) {
         VBox card = new VBox();
         card.setStyle("""
@@ -202,8 +234,10 @@ public class Booking1Controller {
         FlowPane timeSlotsPane = new FlowPane(10, 10);
         ToggleGroup timeToggleGroup = new ToggleGroup();
 
+        // xu ly su kien khi an chon bac si
         doctorInfoBox.setOnMouseClicked(event -> {
             boolean showing = scheduleContainer.isVisible();
+
             scheduleContainer.setVisible(!showing);
             scheduleContainer.setManaged(!showing);
 
@@ -217,7 +251,7 @@ public class Booking1Controller {
         return card;
     }
 
-
+    // ve nut cho gio hen
     private void populateDateStrip(HBox dateStrip, DoctorDTO doctor, List<DoctorScheduleDTO> schedules, FlowPane timeSlotsPane, ToggleGroup timeToggleGroup) {
         dateStrip.getChildren().clear();
 
@@ -226,10 +260,11 @@ public class Booking1Controller {
                 .collect(Collectors.toSet());
 
         LocalDate today = LocalDate.now();
-        ToggleGroup dateToggleGroup = new ToggleGroup(); // <- Cần group cho Date
+        ToggleGroup dateToggleGroup = new ToggleGroup();
 
         for (int i = 0; i < 7; i++) {
             LocalDate date = today.plusDays(i);
+
             String dateStringDB = date.format(dbDateFormatter);
             String dayOfWeek = "Thứ " + (date.getDayOfWeek().getValue() + 1);
             if (date.getDayOfWeek().getValue() == 7) dayOfWeek = "Chủ nhật";
@@ -245,24 +280,29 @@ public class Booking1Controller {
             } else {
                 dateButton.setOnAction(e -> {
                     if (dateButton.isSelected()) {
+                        // Reset trạng thái
                         this.selectedScheduleForBooking = null;
                         this.selectedDoctorForBooking = null;
 
                         timeSlotsPane.getChildren().clear();
                         timeToggleGroup.getToggles().clear();
 
+                        // lọc và sắp xếp các giờ khám chi cho ngày vừa chọn
                         List<DoctorScheduleDTO> slotsForDay = schedules.stream()
-                                .filter(s -> Objects.equals(s.getWorkDate(), dateStringDB))
+                                .filter(s -> Objects.equals(s.getWorkDate(), dateStringDB)) // Lọc theo ngày
                                 .sorted(Comparator.comparing(DoctorScheduleDTO::getWorkTime))
                                 .toList();
 
+                        // tao nut cho tung gio kham
                         for (DoctorScheduleDTO schedule : slotsForDay) {
                             ToggleButton timeButton = new ToggleButton(schedule.getWorkTime());
                             timeButton.setUserData(schedule);
                             timeButton.setToggleGroup(timeToggleGroup);
                             timeButton.getStyleClass().add("time-slot-button");
 
+                            // xu ly su kien khi chon gio kham
                             timeButton.setOnAction(ev -> {
+                                // luu du lieu khi chon xong
                                 selectedScheduleForBooking = schedule;
                                 selectedDoctorForBooking = doctor;
                             });
@@ -271,6 +311,7 @@ public class Booking1Controller {
                         }
                     }
                     else {
+                        // restart dữ liệu
                         timeSlotsPane.getChildren().clear();
                         timeToggleGroup.getToggles().clear();
                         this.selectedScheduleForBooking = null;
@@ -281,7 +322,7 @@ public class Booking1Controller {
         }
     }
 
-    //tbao
+
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -290,35 +331,27 @@ public class Booking1Controller {
         alert.showAndWait();
     }
 
-    @FXML void handleInfo(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/InfoPatient.fxml"));
-        Scene scene = homeButton.getScene();
+    private void switchScene(String fxmlFile, Control currentControl) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
+        Scene scene = currentControl.getScene();
         scene.setRoot(root);
+    }
+
+    @FXML void handleInfo(ActionEvent event) throws IOException {
+        switchScene("/com/oop4clinic/clinicmanagement/fxml/InfoPatient.fxml", homeButton);
     }
     @FXML void handleRecord(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MedicalRecord.fxml"));
-        Scene scene = homeButton.getScene();
-        scene.setRoot(root);
+        switchScene("/com/oop4clinic/clinicmanagement/fxml/MedicalRecord.fxml", homeButton);
     }
     @FXML void handleBill(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/InvoicePatient.fxml"));
-        Scene scene = homeButton.getScene();
-        scene.setRoot(root);
+        switchScene("/com/oop4clinic/clinicmanagement/fxml/InvoicePatient.fxml", homeButton);
     }
     @FXML void handleAppointment(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/AppointmentPatient.fxml"));
-        Scene scene = homeButton.getScene();
-        scene.setRoot(root);
+        switchScene("/com/oop4clinic/clinicmanagement/fxml/AppointmentPatient.fxml", homeButton);
     }
+
     @FXML void handleLogout(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml"));
         UserSession.clear();
-        Scene scene = homeButton.getScene();
-        scene.setRoot(root);
-    }
-    @FXML void handleBook2(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Booking2.fxml"));
-        Scene scene = homeButton.getScene();
-        scene.setRoot(root);
+        switchScene("/com/oop4clinic/clinicmanagement/fxml/Login.fxml", homeButton);
     }
 }

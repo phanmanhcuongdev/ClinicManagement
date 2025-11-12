@@ -56,15 +56,6 @@ public class RegisterController {
                 setLabelStatus(Color.RED, "Đăng ký thất bại!");
             }
 
-//            FXMLLoader loader = new FXMLLoader(
-//                    MainApp.class.getResource("/com/oop4clinic/clinicmanagement/fxml/PatientDashboard.fxml")
-//            );
-//            Parent root = loader.load();
-//            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//            stage.setScene(new Scene(root));
-//            stage.setTitle("Clinic OOP4 - Patient");
-//            stage.show();
-
         } catch (Exception e) {
             e.printStackTrace();
             setLabelStatus(Color.RED, e.getMessage());

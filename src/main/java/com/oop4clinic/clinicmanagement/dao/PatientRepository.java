@@ -14,7 +14,7 @@ public interface PatientRepository {
     // 🔹 Thêm bệnh nhân mới
     Patient create(EntityManager em, Patient e);
 
-    // 🔹 Lấy danh sách toàn bộ bệnh nhân
+    // Lấy danh sách toàn bộ bệnh nhân
     List<Patient> findAll(EntityManager em);
 
     // 🔹 Cập nhật thông tin bệnh nhân

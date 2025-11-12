@@ -10,11 +10,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.patient.Booking1Controller">
+<BorderPane prefHeight="540.0" prefWidth="960.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.patient.Booking1Controller">
     <top>
         <AnchorPane prefHeight="50.0" style="-fx-background-color: #FFFFFF;">
             <children>
@@ -43,35 +42,16 @@
         <VBox spacing="20.0" BorderPane.alignment="CENTER">
             <children>
 
-                <HBox>
+                <HBox alignment="CENTER" prefHeight="160.0" prefWidth="960.0" spacing="40.0">
                     <children>
-                        <Pane HBox.hgrow="ALWAYS" />
-
-                        <VBox alignment="CENTER" spacing="27.0">
+                        <VBox alignment="CENTER" prefHeight="167.0" prefWidth="255.0" spacing="20.0">
                             <children>
-                                <Button fx:id="book1" mnemonicParsing="false" prefHeight="38.0" prefWidth="258.0" style="-fx-background-color: #1e7fc9; -fx-background-radius: 5;" text="ĐẶT LỊCH KHÁM THEO BÁC SĨ" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="16.0" />
-                                    </font>
-                                </Button>
-                                <Button fx:id="Book2" mnemonicParsing="false" onAction="#handleBook2" prefHeight="38.0" prefWidth="258.0" style="-fx-background-color: #1e7fc9; -fx-background-radius: 5;" text="Đặt lịch khám theo khoa" textFill="WHITE">
-                                    <font>
-                                        <Font size="16.0" />
-                                    </font>
-                                </Button>
-                            </children>
-                        </VBox>
-
-                        <Pane HBox.hgrow="ALWAYS" />
-
-                        <VBox alignment="CENTER" spacing="27.0">
-                            <children>
-                                <TextField fx:id="nameDoctor" prefHeight="38.0" prefWidth="198.0" promptText="Tên bác sĩ" style="-fx-background-color: #ffffff;">
+                                <TextField fx:id="nameDoctor" prefHeight="40.0" prefWidth="200.0" promptText="Tên bác sĩ" style="-fx-background-color: #ffffff;">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </TextField>
-                                <TextField fx:id="department" prefHeight="38.0" prefWidth="198.0" promptText="Chuyên khoa" style="-fx-background-color: #ffffff;">
+                                <TextField fx:id="department" prefHeight="40.0" prefWidth="200.0" promptText="Chuyên khoa" style="-fx-background-color: #ffffff;">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
@@ -79,32 +59,26 @@
                             </children>
                         </VBox>
 
-                        <Pane HBox.hgrow="ALWAYS" />
-
-                        <VBox alignment="CENTER" spacing="27.0">
+                        <VBox alignment="CENTER" prefHeight="122.0" prefWidth="250.0" spacing="20.0">
                             <children>
-                                <TextField fx:id="symptom" prefHeight="38.0" prefWidth="198.0" promptText="Triệu chứng" style="-fx-background-color: #ffffff;">
+                                <TextField fx:id="symptom" prefHeight="40.0" prefWidth="208.0" promptText="Triệu chứng" style="-fx-background-color: #ffffff;">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </TextField>
-                                <Button fx:id="saveButton" minHeight="21.0" mnemonicParsing="false" onAction="#saveTime" prefHeight="38.0" prefWidth="198.0" style="-fx-background-color: #1e7fc9; -fx-background-radius: 5;" text="Đặt lịch" textFill="WHITE">
+                                <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveTime" prefHeight="40.0" prefWidth="255.0" style="-fx-background-color: #1e7fc9; -fx-background-radius: 5;" text="Đặt lịch" textFill="WHITE">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Button>
                             </children>
                         </VBox>
-
-                        <Pane HBox.hgrow="ALWAYS" />
-
                     </children>
                     <padding>
-                        <Insets top="20.0" />
+                        <Insets bottom="20.0" top="20.0" />
                     </padding>
                 </HBox>
-
-                <ScrollPane fitToWidth="true" style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
+                <ScrollPane fitToWidth="true" prefHeight="330.0" style="-fx-background-color: #ffffff;" VBox.vgrow="ALWAYS">
                     <content>
                         <VBox fx:id="doctorVBox" style="-fx-background-color: #ffffff;" />
                     </content>

@@ -43,6 +43,7 @@ public class MedicalRecordPatientController implements Initializable {
     }
 
     private void setupTableColumns() {
+        // cot hien stt trong bang
         colTT.setCellFactory(column -> new TableCell<MedicalRecordDTO, Integer>() {
             @Override
             protected void updateItem(Integer item, boolean empty) {
@@ -75,6 +76,7 @@ public class MedicalRecordPatientController implements Initializable {
 
         Callback<TableColumn<MedicalRecordDTO, Void>, TableCell<MedicalRecordDTO, Void>> cellFactory = col -> {
             return new TableCell<>() {
+                // hien link chuyen sang trang moi
                 private final Hyperlink viewLink = new Hyperlink("Xem chi tiết");
                 {
                     viewLink.setOnAction(event -> {
@@ -94,7 +96,6 @@ public class MedicalRecordPatientController implements Initializable {
                 }
             };
         };
-
         colStatus.setCellFactory(cellFactory);
     }
 
@@ -102,14 +103,10 @@ public class MedicalRecordPatientController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/MedicalRecordDetail.fxml"));
             Parent root = loader.load();
-            // Lưu ý: Cần đảm bảo MedicalRecordDetailController đã được chỉnh sửa để dùng DTO
-            // và đã được load thành công.
             Object controller = loader.getController();
-            // Giả định controller có phương thức loadRecordDetails(int)
             if (controller.getClass().getSimpleName().equals("MedicalRecordDetailController")) {
                 ((MedicalRecordDetailController) controller).loadRecordDetails(recordId);
             }
-
 
             Stage stage = new Stage();
             stage.setTitle("Chi Tiết Hồ Sơ Bệnh Án");
@@ -133,7 +130,6 @@ public class MedicalRecordPatientController implements Initializable {
             }
 
             int patientId = currentPatient.getId();
-
             List<MedicalRecordDTO> recordsList = medicalRecordService.getByPatientId(patientId);
 
             if (recordsList != null && !recordsList.isEmpty()) {

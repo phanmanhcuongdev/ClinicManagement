@@ -24,7 +24,6 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     public List<MedicalRecordDTO> getAll(){
         EntityManager em = EntityManagerProvider.em();
         try{
-            // Sử dụng medicalRecordImpl.findAll(em) từ file gốc
             return mapper.toDtoList(medicalRecordImpl.findAll(em));
         } catch (Exception e){
             e.printStackTrace();
@@ -37,10 +36,6 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     @Override
     public boolean updateMedicalRecord(MedicalRecordDTO record) {
         EntityManager em = EntityManagerProvider.em();
-        // Khai báo lại impl và mapper là không cần thiết vì đã có ở trên
-        // MedicalRecordImpl medicalRecordImpl = new MedicalRecordImpl();
-        // MedicalRecordMapper mapper = new MedicalRecordMapper();
-
         MedicalRecord recordEntity = medicalRecordImpl.findById(em,record.getId());
 
         if (recordEntity == null) {
@@ -60,14 +55,11 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         }
     }
 
-
-
-    // THÊM: Phương thức lấy hồ sơ theo ID bệnh nhân (phục vụ lọc dữ liệu)
+    // hien ds theo patientId
     @Override
     public List<MedicalRecordDTO> getByPatientId(int patientId){
         EntityManager em = EntityManagerProvider.em();
         try{
-            // Gọi phương thức DAO mới
             return mapper.toDtoList(medicalRecordImpl.findByPatientId(em, patientId));
         } catch (Exception e){
             e.printStackTrace();
@@ -77,14 +69,14 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         }
     }
 
-    // THÊM: Phương thức lấy chi tiết hồ sơ theo ID (phục vụ xem chi tiết)
+    // lay id cua ho so de ien chi tiet
     @Override
     public MedicalRecordDTO getById(int id) {
         EntityManager em = EntityManagerProvider.em();
         try {
-            // Lấy Entity từ DAO
+            // lay du lieu tu db qua entity
             MedicalRecord entity = medicalRecordImpl.findById(em, id);
-            // Chuyển Entity sang DTO
+            // chuyen tu entity sang dto
             return mapper.toDto(entity);
         } catch (Exception e) {
             e.printStackTrace();

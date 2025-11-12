@@ -38,7 +38,7 @@ public class PatientServiceImpl implements PatientService {
             em.close();
         }
     }
-// tbao
+
     @Override
     public List<PatientDTO> findAll() {
         EntityManager em = EntityManagerProvider.em();
@@ -109,7 +109,7 @@ public class PatientServiceImpl implements PatientService {
         return rs;
     }
 
-    // ✅ Mới thêm: tìm bệnh nhân theo số điện thoại
+    // tìm bệnh nhân theo số điện thoại
     @Override
     public PatientDTO findByPhone(String phone) {
         EntityManager em = EntityManagerProvider.em();

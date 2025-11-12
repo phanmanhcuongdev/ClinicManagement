@@ -24,7 +24,7 @@ import java.util.List;
 
 public class AppointmentPatientController {
 
-    @FXML private TextField namePatient;
+    @FXML private TextField nameDoctor;
     @FXML private DatePicker time;
     @FXML private ComboBox<String> boxStatus;
     @FXML private TableView<AppointmentDTO> table;
@@ -40,6 +40,7 @@ public class AppointmentPatientController {
     private final ObservableList<AppointmentDTO> appointmentList = FXCollections.observableArrayList();
     private final AppointmentService appointmentService = new AppointmentServiceImpl();
 
+    // chuyen doi kieu du lieu ngay va gio
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -62,6 +63,10 @@ public class AppointmentPatientController {
     }
 
     private AppointmentStatus mapVietnameseToStatus(String vietnameseStatus) {
+        if (vietnameseStatus == null) {
+            return null;
+        }
+
         return switch (vietnameseStatus) {
             case "Sắp tới" -> AppointmentStatus.PENDING;
             case "Đã xác nhận" -> AppointmentStatus.CONFIRMED;
@@ -72,12 +77,13 @@ public class AppointmentPatientController {
     }
 
     private void setupStatusComboBox() {
-        List<String> statuses = Arrays.stream(AppointmentStatus.values())
-                .map(this::mapStatusToVietnamese)
-                .toList();
+        boxStatus.getItems().clear();
+        boxStatus.getItems().add(0,"Trạng thái");
         boxStatus.getItems().add(0, "Sắp tới");
         boxStatus.getItems().add(0, "Hoàn thành");
         boxStatus.getItems().add(0, "Hủy hẹn");
+
+        boxStatus.setValue("Trạng thái");
     }
 
     private void setupTableColumns() {
@@ -113,6 +119,7 @@ public class AppointmentPatientController {
 
             {
                 comboBox.getItems().addAll(updatableStatuses);
+                // xu ly su kien ki nguoi dung chon trang thai moi
                 comboBox.setOnAction(e -> {
                     AppointmentDTO dto = getTableView().getItems().get(getIndex());
                     if (dto != null) {
@@ -120,11 +127,13 @@ public class AppointmentPatientController {
                         AppointmentStatus newStatus = mapVietnameseToStatus(vietStatus);
 
                         if (newStatus == AppointmentStatus.CANCELED &&
-                                (dto.getStatus() == AppointmentStatus.PENDING || dto.getStatus() == AppointmentStatus.CONFIRMED)) {
+                                (dto.getStatus() == AppointmentStatus.PENDING)) {
                             try {
+                                // luu trang thai moi vào db
                                 AppointmentDTO updated = appointmentService.updateStatus(dto.getId(), newStatus);
                                 dto.setStatus(updated.getStatus());
                                 getTableView().refresh();
+
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 new Alert(Alert.AlertType.ERROR, "Lỗi cập nhật trạng thái: " + ex.getMessage()).showAndWait();
@@ -139,6 +148,7 @@ public class AppointmentPatientController {
             }
 
             @Override
+            // chi cho comboBox hien khi là Pending
             protected void updateItem(AppointmentStatus status, boolean empty) {
                 super.updateItem(status, empty);
                 if (empty) {
@@ -146,7 +156,7 @@ public class AppointmentPatientController {
                     setText(null);
                 } else {
                     String vietStatus = mapStatusToVietnamese(status);
-                    if (status == AppointmentStatus.PENDING || status == AppointmentStatus.CONFIRMED) {
+                    if (status == AppointmentStatus.PENDING) {
                         comboBox.setValue(vietStatus);
                         setGraphic(comboBox);
                         setText(null);
@@ -178,8 +188,9 @@ public class AppointmentPatientController {
 
     @FXML
     private void loadAppointments() {
-        String doctorName = namePatient.getText() == null ? "" : namePatient.getText().trim();
+        String doctorName = nameDoctor.getText() == null ? "" : nameDoctor.getText().trim();
         String vietStatus = boxStatus.getValue();
+
         AppointmentStatus status = "Trạng thái".equals(vietStatus) ? null : mapVietnameseToStatus(vietStatus);
         LocalDate date = time.getValue();
 
@@ -187,10 +198,8 @@ public class AppointmentPatientController {
             PatientDTO currentPatient = UserSession.getCurrentPatient();
             if (currentPatient == null)
                 throw new IllegalStateException("Không có bệnh nhân nào đang đăng nhập!");
-
             int patientId = currentPatient.getId();
             List<AppointmentDTO> data = appointmentService.searchAppointmentsByPatient(patientId, doctorName, status, date);
-
             appointmentList.setAll(data);
             table.setItems(appointmentList);
         } catch (Exception e) {
@@ -200,12 +209,11 @@ public class AppointmentPatientController {
     }
 
     private void addSearchListeners() {
-        namePatient.textProperty().addListener((obs, o, n) -> loadAppointments());
+        nameDoctor.textProperty().addListener((obs, o, n) -> loadAppointments());
         boxStatus.valueProperty().addListener((obs, o, n) -> loadAppointments());
         time.valueProperty().addListener((obs, o, n) -> loadAppointments());
     }
 
-    // ====== CHUYỂN MÀN HÌNH ======
     @FXML void handleInfo(ActionEvent e) throws IOException { switchScene("/com/oop4clinic/clinicmanagement/fxml/InfoPatient.fxml"); }
     @FXML void handleRecord(ActionEvent e) throws IOException { switchScene("/com/oop4clinic/clinicmanagement/fxml/MedicalRecord.fxml"); }
     @FXML void handleBill(ActionEvent e) throws IOException { switchScene("/com/oop4clinic/clinicmanagement/fxml/InvoicePatient.fxml"); }
@@ -215,7 +223,7 @@ public class AppointmentPatientController {
 
     private void switchScene(String fxmlPath) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
-        Scene scene = namePatient.getScene();
+        Scene scene = nameDoctor.getScene();
         scene.setRoot(root);
     }
 }

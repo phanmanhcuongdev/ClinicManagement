@@ -11,6 +11,7 @@ import java.util.Optional;
 public class PatientRepositoryImpl implements PatientRepository {
 
     @Override
+    // tim kiem theo id benh nhan
     public Optional<Patient> findById(EntityManager em, int id) {
         try {
             Patient p = em.find(Patient.class, id);
@@ -56,7 +57,7 @@ public class PatientRepositoryImpl implements PatientRepository {
                 .getResultList();
     }
 
-    // ✅ MỚI THÊM: Tìm bệnh nhân theo số điện thoại (đăng nhập)
+    // tim benh nhan theo so dien thoai
     @Override
     public Optional<Patient> findByPhone(EntityManager em, String phone) {
         try {

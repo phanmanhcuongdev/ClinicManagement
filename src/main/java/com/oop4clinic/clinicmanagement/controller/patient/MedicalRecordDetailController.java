@@ -25,30 +25,20 @@ public class MedicalRecordDetailController {
     @FXML private TextArea notesRecord;
     @FXML private Button homeButton;
 
-    // Thay thế MedicalRecordDAO bằng MedicalRecordService
     private final MedicalRecordService medicalRecordService = new MedicalRecordServiceImpl();
-    // Định dạng ngày giờ hiển thị
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
 
     public void loadRecordDetails(int recordId) {
-        // Sử dụng Service để lấy DTO theo ID
         MedicalRecordDTO record = medicalRecordService.getById(recordId);
 
         if (record != null) {
-            // dateRecord (Sử dụng createdAt và định dạng)
             dateRecord.setText(record.getCreatedAt() != null
                     ? record.getCreatedAt().format(DATE_FORMATTER)
                     : "N/A");
 
-            // doctorRecord (Sử dụng doctorName từ DTO)
             doctorRecord.setText(record.getDoctorName());
-
-            // Chú ý: Trường 'departmentRecord' không có sẵn trong MedicalRecordDTO đã cung cấp.
-            // Cần bổ sung vào DTO hoặc lấy từ Appointment/Doctor Entity nếu cần.
-            departmentRecord.setText("N/A (Không có trong DTO)");
-
-            // Các trường còn lại lấy trực tiếp từ DTO
+            departmentRecord.setText(record.getDepartmentName());
             diagnosisRecord.setText(record.getDiagnosis());
             symptomsRecord.setText(record.getSymptoms());
             prescriptionRecord.setText(record.getPrescription());

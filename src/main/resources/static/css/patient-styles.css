@@ -49,7 +49,7 @@
     -fx-border-radius: 6px;
     -fx-background-radius: 6px;
     -fx-padding: 4px 8px 4px 12px;
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-cursor: hand;
 }
 
@@ -63,7 +63,7 @@
 
 .combo-box-popup .list-cell {
     -fx-padding: 8px 12px;
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
 }
 
 .combo-box-popup .list-cell:hover {

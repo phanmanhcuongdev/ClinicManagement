@@ -3,7 +3,6 @@ package com.oop4clinic.clinicmanagement.model.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-// DTO này được Controller gửi đến Service để tạo Appointment
 public class CreateAppointmentDTO {
     private Integer patientId;
     private Integer departmentId;
@@ -11,8 +10,6 @@ public class CreateAppointmentDTO {
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
     private String reason;
-
-    // --- Thêm Getters và Setters cho tất cả các trường ---
 
     public Integer getPatientId() { return patientId; }
     public void setPatientId(Integer patientId) { this.patientId = patientId; }

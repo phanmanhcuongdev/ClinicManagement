@@ -61,6 +61,23 @@ public class InfoPatientController implements Initializable {
         } else {
             System.err.println("⚠ Không có bệnh nhân!");
         }
+
+        // chi nhap so ("\\d*")
+        namePatient.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[\\p{L}\\s]*")) {
+                namePatient.setText(oldValue);
+            }
+        });
+
+        idPatient.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                idPatient.setText(oldValue);
+            }
+            else if(newValue.length() > 12){
+                idPatient.setText(oldValue);
+            }
+        });
+
     }
 
     @FXML
@@ -137,7 +154,7 @@ public class InfoPatientController implements Initializable {
 
     private boolean isValidEmail(String email) {
         if (email == null || email.trim().isEmpty()) return true;
-        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
+        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]$");
     }
 
     private String getSelectedGender() {
