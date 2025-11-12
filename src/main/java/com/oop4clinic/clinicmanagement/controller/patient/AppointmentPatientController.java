@@ -40,7 +40,7 @@ public class AppointmentPatientController {
     private final ObservableList<AppointmentDTO> appointmentList = FXCollections.observableArrayList();
     private final AppointmentService appointmentService = new AppointmentServiceImpl();
 
-    // chuyen doi kieu du lieu ngay va gio
+    // dinh dang du lieu ngay gio
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -55,8 +55,8 @@ public class AppointmentPatientController {
     private String mapStatusToVietnamese(AppointmentStatus status) {
         if (status == null) return "Không rõ";
         return switch (status) {
-            case PENDING -> "Sắp tới";
-            case CONFIRMED -> "Đã xác nhận";
+            case PENDING -> "Chưa xác nhận";
+            case CONFIRMED -> "Sắp tới";
             case CANCELED -> "Hủy hẹn";
             case COMPLETED -> "Hoàn thành";
         };
@@ -68,8 +68,8 @@ public class AppointmentPatientController {
         }
 
         return switch (vietnameseStatus) {
-            case "Sắp tới" -> AppointmentStatus.PENDING;
-            case "Đã xác nhận" -> AppointmentStatus.CONFIRMED;
+            case "Chưa xác nhận" -> AppointmentStatus.PENDING;
+            case "Sắp tới" -> AppointmentStatus.CONFIRMED;
             case "Hủy hẹn" -> AppointmentStatus.CANCELED;
             case "Hoàn thành" -> AppointmentStatus.COMPLETED;
             default -> null;
@@ -127,7 +127,7 @@ public class AppointmentPatientController {
                         AppointmentStatus newStatus = mapVietnameseToStatus(vietStatus);
 
                         if (newStatus == AppointmentStatus.CANCELED &&
-                                (dto.getStatus() == AppointmentStatus.PENDING)) {
+                                (dto.getStatus() == AppointmentStatus.CONFIRMED)) {
                             try {
                                 // luu trang thai moi vào db
                                 AppointmentDTO updated = appointmentService.updateStatus(dto.getId(), newStatus);
@@ -156,7 +156,7 @@ public class AppointmentPatientController {
                     setText(null);
                 } else {
                     String vietStatus = mapStatusToVietnamese(status);
-                    if (status == AppointmentStatus.PENDING) {
+                    if (status == AppointmentStatus.CONFIRMED) {
                         comboBox.setValue(vietStatus);
                         setGraphic(comboBox);
                         setText(null);
