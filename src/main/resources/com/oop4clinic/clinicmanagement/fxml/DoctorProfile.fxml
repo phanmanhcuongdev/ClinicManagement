@@ -5,98 +5,123 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox spacing="15.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/17.0.14" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oop4clinic.clinicmanagement.controller.doctor.DoctorProfileController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.oop4clinic.clinicmanagement.controller.doctor.DoctorProfileController"
+            style="-fx-background-color: #87CEEB;">
 
-    <HBox alignment="CENTER_LEFT" spacing="20.0">
-        <Label prefHeight="35.0" prefWidth="253.0" style="-fx-text-fill:#0D47A1; -fx-font-size:24; -fx-font-weight:700;" text="Thông tin cá nhân">
-            <font>
-                <Font size="24.0" />
-            </font></Label>
-        <Region HBox.hgrow="ALWAYS" />
-        <Button fx:id="btnClose"
-                onAction="#handleClose"
-                style="-fx-background-color:#c62828; -fx-text-fill:white; -fx-font-weight:bold;"
-                text="Đóng" />
-        <Button fx:id="btnSave" onAction="#onSaveProfile" style="-fx-background-color:#2e7d32; -fx-text-fill:white; -fx-font-weight:bold;" text="Lưu thay đổi" />
-    </HBox>
+    <children>
+        <StackPane AnchorPane.topAnchor="0.0"
+                   AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0">
 
-    <Label style="-fx-text-fill:#555;" text="Cập nhật thông tin liên hệ, phí khám và các ghi chú cá nhân của bạn.">
-        <font>
-            <Font size="15.0" />
-        </font></Label>
+            <children>
+                <VBox spacing="15.0"
+                      maxWidth="900" prefWidth="800"
+                      StackPane.alignment="TOP_CENTER">
 
-    <GridPane hgap="12" style="-fx-padding: 20 0 0 0;" vgap="10">
-        <columnConstraints>
-            <ColumnConstraints percentWidth="20" />
-            <ColumnConstraints percentWidth="80" />
-        </columnConstraints>
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20" />
+                    </padding>
 
-        <Label text="Họ tên:" GridPane.columnIndex="0" GridPane.rowIndex="0">
-            <font>
-                <Font name="Tahoma Bold" size="18.0" />
-            </font></Label>
-        <TextField fx:id="txtFullName" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <!-- Tiêu đề -->
+                    <HBox alignment="CENTER_LEFT" spacing="20.0">
+                        <Label prefHeight="35.0" prefWidth="253.0"
+                               style="-fx-text-fill:#0D47A1; -fx-font-size:24; -fx-font-weight:700;"
+                               text="Thông tin cá nhân" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnClose"
+                                onAction="#handleClose"
+                                style="-fx-background-color:#c62828; -fx-text-fill:white; -fx-font-weight:bold;"
+                                text="Đóng" />
+                        <Button fx:id="btnSave"
+                                onAction="#onSaveProfile"
+                                style="-fx-background-color:#2e7d32; -fx-text-fill:white; -fx-font-weight:bold;"
+                                text="Lưu thay đổi" />
+                    </HBox>
 
-        <Label text="Giới tính:" GridPane.columnIndex="0" GridPane.rowIndex="1">
-            <font>
-                <Font name="Tahoma Bold" size="18.0" />
-            </font></Label>
-        <ComboBox fx:id="cbGender" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label style="-fx-text-fill:#333;"
+                           text="Cập nhật thông tin liên hệ, phí khám và các ghi chú cá nhân của bạn.">
+                        <font><Font size="15.0" /></font>
+                    </Label>
+                    <Region prefHeight="15" />
 
-        <Label text="Ngày sinh:" GridPane.columnIndex="0" GridPane.rowIndex="2">
-            <font>
-                <Font name="Tahoma Bold" size="18.0" />
-            </font></Label>
-        <DatePicker fx:id="dpDob" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <GridPane hgap="12" vgap="15" style="-fx-padding: 20 0 0 0;">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="30" />
+                            <ColumnConstraints percentWidth="70" hgrow="ALWAYS" />
+                        </columnConstraints>
 
-        <Label text="SĐT:" GridPane.columnIndex="0" GridPane.rowIndex="3">
-            <font>
-                <Font name="Tahoma Bold" size="18.0" />
-            </font></Label>
-        <TextField fx:id="txtPhone" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <!-- Họ tên -->
+                        <Label text="Họ tên:" GridPane.rowIndex="0">
+                            <font><Font name="Tahoma Bold" size="20.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtFullName" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS"  style="-fx-font-size: 16px;"/>
 
-        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="4">
-            <font>
-                <Font name="Tahoma Bold" size="18.0" />
-            </font></Label>
-        <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <!-- Giới tính -->
+                        <Label text="Giới tính:" GridPane.rowIndex="1">
+                            <font><Font name="Tahoma Bold" size="20.0" /></font>
+                        </Label>
+                        <ComboBox fx:id="cbGender" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" style="-fx-font-size: 16px;"/>
 
-        <Label text="Khoa:" GridPane.columnIndex="0" GridPane.rowIndex="5">
-            <font>
-                <Font name="Tahoma Bold" size="18.0" />
-            </font></Label>
-        <ComboBox fx:id="cbDepartmentForm" GridPane.columnIndex="1" GridPane.rowIndex="5" style="-fx-font-size: 16px;  -fx-text-fill: black;"/>
+                        <!-- Ngày sinh -->
+                        <Label text="Ngày sinh:" GridPane.rowIndex="2">
+                            <font><Font name="Tahoma Bold" size="20.0" /></font>
+                        </Label>
+                        <DatePicker fx:id="dpDob" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS" style="-fx-font-size: 16px;"/>
 
-        <Label text="Phí khám:" GridPane.columnIndex="0" GridPane.rowIndex="6">
-            <font>
-                <Font name="Tahoma Bold" size="18.0" />
-            </font></Label>
-        <TextField fx:id="txtFee" promptText="VD: 350000" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <!-- SĐT -->
+                        <Label text="SĐT:" GridPane.rowIndex="3">
+                            <font><Font name="Tahoma Bold" size="20.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtPhone" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.hgrow="ALWAYS" style="-fx-font-size: 16px;" />
 
-        <Label text="Địa chỉ:" GridPane.columnIndex="0" GridPane.rowIndex="7">
-            <font>
-                <Font name="Tahoma Bold" size="18.0" />
-            </font></Label>
-        <TextArea fx:id="txtAddress" prefRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <!-- Email -->
+                        <Label text="Email:" GridPane.rowIndex="4">
+                            <font><Font name="Tahoma Bold" size="20.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.hgrow="ALWAYS" style="-fx-font-size: 16px;"/>
 
-        <Label text="Ghi chú:" GridPane.columnIndex="0" GridPane.rowIndex="8">
-            <font>
-                <Font name="Tahoma Bold" size="18.0" />
-            </font></Label>
-        <TextArea fx:id="txtNotes" prefRowCount="3" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-        <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-        </rowConstraints>
-    </GridPane>
-</VBox>
+                        <!-- Khoa -->
+                        <Label text="Khoa:" GridPane.rowIndex="5">
+                            <font><Font name="Tahoma Bold" size="20.0" /></font>
+                        </Label>
+                        <ComboBox fx:id="cbDepartmentForm"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="5"
+                                  GridPane.hgrow="ALWAYS"
+                                  disable="true" style="-fx-font-size: 16px; -fx-text-fill: black; -fx-background-color: #ADD8E6; -fx-opacity: 1.0;" />
+
+                        <!-- Phí khám -->
+                        <Label text="Phí khám:" GridPane.rowIndex="6">
+                            <font><Font name="Tahoma Bold" size="20.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtFee"
+                                   promptText="VD: 350000"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="6"
+                                   GridPane.hgrow="ALWAYS" style="-fx-font-size: 16px;"/>
+
+                        <!-- Địa chỉ -->
+                        <Label text="Địa chỉ:" GridPane.rowIndex="7">
+                            <font><Font name="Tahoma Bold" size="20.0" /></font>
+                        </Label>
+                        <TextArea fx:id="txtAddress"
+                                  prefRowCount="2"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="7"
+                                  GridPane.hgrow="ALWAYS" style="-fx-font-size: 16px;"/>
+
+                        <!-- Ghi chú -->
+                        <Label text="Ghi chú:" GridPane.rowIndex="8">
+                            <font><Font name="Tahoma Bold" size="20.0" /></font>
+                        </Label>
+                        <TextArea fx:id="txtNotes"
+                                  prefRowCount="3"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="8"
+                                  GridPane.hgrow="ALWAYS"
+                                  GridPane.vgrow="ALWAYS" style="-fx-font-size: 16px;"/>
+                    </GridPane>
+                </VBox>
+            </children>
+        </StackPane>
+    </children>
+</AnchorPane>

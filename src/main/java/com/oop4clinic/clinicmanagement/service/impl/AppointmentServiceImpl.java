@@ -24,27 +24,39 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final PatientRepository patientRepo = new PatientRepositoryImpl();
     private final DoctorRepository doctorRepo = new DoctorRepositoryImpl();
     private final DepartmentRepository deptRepo = new DepartmentRepositoryImpl();
-    private final InvoiceRepository invoiceRepo = new InvoiceRepositoryImpl();
+    private final AppointmentMapper mapperAp = new AppointmentMapper();
 
+
+    private final InvoiceRepository invoiceRepo = new InvoiceRepositoryImpl(); // MỚI
+
+    // ... (Các hàm find, search, updateStatus, getAll giữ nguyên) ...
     @Override
-    // hien ds lich hen theo patientId
     public List<AppointmentDTO> findAppointmentsByPatientId(Integer patientId) {
-        try (EntityManager em = EntityManagerProvider.em()) {
+        // ... (Giữ nguyên code của bạn)
+        EntityManager em = EntityManagerProvider.em();
+        try {
             List<Appointment> appointments = appointmentRepo.findByPatientId(em, patientId);
-            return AppointmentMapper.toDtoList(appointments);
+            return mapperAp.toDtoList(appointments);
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
+        } finally {
+            em.close();
         }
     }
-
-    // hien ds theo tim kiem
     @Override
-    public List<AppointmentDTO> searchAppointmentsByPatient(Integer patientId, String doctorName, AppointmentStatus status, LocalDate date) {
+    public List<AppointmentDTO> searchAppointmentsByPatient(
+            Integer patientId,
+            String doctorName,
+            AppointmentStatus status,
+            LocalDate date) {
+        // ... (Giữ nguyên code của bạn)
         EntityManager em = EntityManagerProvider.em();
         try {
-            List<Appointment> appointments = appointmentRepo.searchByPatient(em, patientId, doctorName, status, date);
-            return AppointmentMapper.toDtoList(appointments);
+            List<Appointment> appointments = appointmentRepo.searchByPatient(
+                    em, patientId, doctorName, status, date
+            );
+            return mapperAp.toDtoList(appointments);
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
@@ -55,10 +67,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentDTO updateStatus(Integer appointmentId, AppointmentStatus newStatus) {
+        // ... (Giữ nguyên code của bạn)
         EntityManager em = EntityManagerProvider.em();
-        EntityTransaction tx = null;
-        try (em) {
-            tx = em.getTransaction();
+        EntityTransaction tx = em.getTransaction();
+        try {
             tx.begin();
             Appointment appt = em.find(Appointment.class, appointmentId);
             if (appt == null) {
@@ -68,15 +80,10 @@ public class AppointmentServiceImpl implements AppointmentService {
             Appointment updatedAppt = appointmentRepo.save(em, appt);
             tx.commit();
             em.refresh(updatedAppt);
-            return AppointmentMapper.toDto(updatedAppt);
-
+            return mapperAp.toDto(updatedAppt);
         } catch (RuntimeException e) {
-            // Nếu 1 trong 2 thất bại, rollback tất cả
             if (tx.isActive()) tx.rollback();
             throw e;
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw new RuntimeException(e);
         } finally {
             em.close();
         }
@@ -86,7 +93,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<AppointmentDTO> getAll(){
         EntityManager em = EntityManagerProvider.em();
         try {
-            return AppointmentMapper.toDtoList(appointmentRepo.findAll(em));
+            return mapperAp.toDtoList(appointmentRepo.findAll(em));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -101,9 +108,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         EntityManager em = EntityManagerProvider.em();
         EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
+            tx.begin(); // Bắt đầu Giao dịch TỔNG
+
+            // === 1. VALIDATE DỮ LIỆU ===
             if (dto.getPatientId() == null) throw new IllegalArgumentException("Bệnh nhân rỗng");
             if (dto.getDoctorId() == null) throw new IllegalArgumentException("Bác sĩ rỗng");
+            // ... (các kiểm tra khác)
 
             Patient patient = patientRepo.findById(em, dto.getPatientId())
                     .orElseThrow(() -> new IllegalArgumentException("Bệnh nhân không tồn tại"));
@@ -114,6 +124,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             Department department = deptRepo.findById(em, dto.getDepartmentId())
                     .orElseThrow(() -> new IllegalArgumentException("Khoa không tồn tại"));
 
+            // === 2. TẠO VÀ LƯU APPOINTMENT ===
             Appointment appt = new Appointment();
             appt.setPatient(patient);
             appt.setDoctor(doctor);
@@ -124,31 +135,44 @@ public class AppointmentServiceImpl implements AppointmentService {
             appt.setStartTime(startTime);
             appt.setAppointment_date(dto.getAppointmentDate());
 
+            // Lưu Appointment VÀO GIAO DỊCH
             Appointment savedAppt = appointmentRepo.save(em, appt);
-            // tao hoa don tu dong khi tao lich hen
+
+            // === 3. TẠO VÀ LƯU INVOICE (TRONG CÙNG GIAO DỊCH) ===
+            // XÓA DÒNG LỖI: invoiceService.createInvoiceForAppointment(savedAppt.getId());
+
+            // THAY BẰNG:
             Invoice invoice = new Invoice();
-            invoice.setAppointment(savedAppt);
-            invoice.setPatient(patient);
-            invoice.setTotal(doctor.getConsultationFee());
+            invoice.setAppointment(savedAppt); // Dùng đối tượng vừa lưu
+            invoice.setPatient(patient);     // Dùng đối tượng đã tìm
+            invoice.setTotal(doctor.getConsultationFee()); // Dùng đối tượng đã tìm
             invoice.setStatus(InvoiceStatus.UNPAID);
             invoice.setDetails("Phí đặt lịch hẹn trước");
+            // @CreationTimestamp sẽ tự lo 'createdAt'
 
+            // Lưu Invoice VÀO CÙNG GIAO DỊCH
             invoiceRepo.save(em, invoice);
 
+            // === 4. COMMIT ===
+            // Chỉ khi cả 2 (Appt và Invoice) lưu OK thì mới commit
             tx.commit();
+
             em.refresh(savedAppt);
-            AppointmentMapper.toDto(savedAppt);
+            mapperAp.toDto(savedAppt);
 
         } catch (RuntimeException e) {
+            // Nếu 1 trong 2 thất bại, rollback tất cả
             if (tx.isActive()) tx.rollback();
             throw e;
         } catch (Exception e) {
+            // Giữ lại catch block của bạn
             if (tx.isActive()) tx.rollback();
             throw new RuntimeException(e);
         } finally {
             em.close();
         }
     }
+    //tbao
 
     @Override
     public List<AppointmentDTO> getAppointmentsForToday(int doctorId) {
@@ -222,7 +246,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         EntityManager em = EntityManagerProvider.em();
         try {
             List<Appointment> entities = appointmentRepo.findAllByDoctorId(em, doctorId);
-            return AppointmentMapper.toDtoList(entities);
+            return mapperAp.toDtoList(entities);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

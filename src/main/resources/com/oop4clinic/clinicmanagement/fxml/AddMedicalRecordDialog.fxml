@@ -22,15 +22,15 @@
     <center>
         <VBox spacing="12" alignment="CENTER" style="-fx-padding: 20;">
             <TextField fx:id="patientNameField" promptText="Tên bệnh nhân"
-                       style="-fx-background-radius: 8; -fx-padding: 8;" prefWidth="300"/>
+                       style="-fx-background-radius: 8; -fx-padding: 8;  -fx-font-size: 16px;" prefWidth="300"/>
             <TextField fx:id="symptomsField" promptText="Triệu chứng"
-                       style="-fx-background-radius: 8; -fx-padding: 8;" prefWidth="300"/>
+                       style="-fx-background-radius: 8; -fx-padding: 8;-fx-font-size: 16px;" prefWidth="300"/>
             <TextField fx:id="diagnosisField" promptText="Chẩn đoán"
-                       style="-fx-background-radius: 8; -fx-padding: 8;" prefWidth="300"/>
+                       style="-fx-background-radius: 8; -fx-padding: 8;-fx-font-size: 16px;" prefWidth="300"/>
             <TextField fx:id="prescriptionField" promptText="Đơn thuốc"
-                       style="-fx-background-radius: 8; -fx-padding: 8;" prefWidth="300"/>
+                       style="-fx-background-radius: 8; -fx-padding: 8;-fx-font-size: 16px;" prefWidth="300"/>
             <TextArea fx:id="notesField" promptText="Ghi chú" prefRowCount="3"
-                      style="-fx-background-radius: 8; -fx-padding: 8;" prefWidth="300"/>
+                      style="-fx-background-radius: 8; -fx-padding: 8;-fx-font-size: 16px;" prefWidth="300"/>
         </VBox>
     </center>
 

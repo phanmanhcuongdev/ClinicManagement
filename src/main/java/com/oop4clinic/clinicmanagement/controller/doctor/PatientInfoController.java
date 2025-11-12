@@ -1,13 +1,16 @@
 package com.oop4clinic.clinicmanagement.controller.doctor;
 
 import com.oop4clinic.clinicmanagement.model.dto.AppointmentDTO;
+import com.oop4clinic.clinicmanagement.model.dto.MedicalRecordDTO;
 import com.oop4clinic.clinicmanagement.model.dto.PatientAppointmentInfoDto;
 import com.oop4clinic.clinicmanagement.model.dto.PatientDTO;
 import com.oop4clinic.clinicmanagement.model.entity.User;
 import com.oop4clinic.clinicmanagement.model.enums.AppointmentStatus;
 import com.oop4clinic.clinicmanagement.model.enums.Gender;
 import com.oop4clinic.clinicmanagement.service.AppointmentService;
+import com.oop4clinic.clinicmanagement.service.MedicalRecordService;
 import com.oop4clinic.clinicmanagement.service.impl.AppointmentServiceImpl;
+import com.oop4clinic.clinicmanagement.service.impl.MedicalRecordServiceImpl;
 import com.oop4clinic.clinicmanagement.util.SessionManager;
 import com.oop4clinic.clinicmanagement.util.UserSession;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -19,10 +22,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 import javafx.event.ActionEvent;
+import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -67,6 +73,7 @@ public class PatientInfoController {
         setupPatientTableColumns();
         setupRowClickListener();
     }
+    private final MedicalRecordService medicalRecordService = new MedicalRecordServiceImpl();
 
     @FXML
     private Pane patientContentPane;
@@ -131,49 +138,53 @@ public class PatientInfoController {
     @FXML
     private void handleShowAppointments(ActionEvent event) {
         try {
+            Stage stage = (Stage) patientContentPane.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/com/oop4clinic/clinicmanagement/fxml/MenuDoctor.fxml"));
-            Node view = loader.load();
-            switchView(view);
+
+            AnchorPane newContent = loader.load();
+            AnchorPane.setTopAnchor(newContent, 0.0);
+            AnchorPane.setBottomAnchor(newContent, 0.0);
+            AnchorPane.setLeftAnchor(newContent, 0.0);
+            AnchorPane.setRightAnchor(newContent, 0.0);
+
+            patientContentPane.getChildren().setAll(newContent);
+
         } catch (IOException e) {
+            e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Lỗi tải giao diện",
                     "Không thể tải giao diện lịch hẹn: " + e.getMessage());
         }
     }
 
-    @FXML
-    private void handleShowPatientInfo(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    "/com/oop4clinic/clinicmanagement/fxml/PatientInAppointment.fxml"));
-            Node view = loader.load();
-            switchView(view);
-        } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi tải giao diện",
-                    "Không thể tải giao diện thông tin bệnh nhân: " + e.getMessage());
-        }
-    }
+
 
     @FXML
     private void handleShowMedicalRecordInfo(ActionEvent event) {
         try {
+            Stage stage = (Stage) patientContentPane.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/com/oop4clinic/clinicmanagement/fxml/MedicalRecordInAppointment.fxml"));
-            Node view = loader.load();
-            switchView(view);
+
+            AnchorPane newContent = loader.load();
+            AnchorPane.setTopAnchor(newContent, 0.0);
+            AnchorPane.setBottomAnchor(newContent, 0.0);
+            AnchorPane.setLeftAnchor(newContent, 0.0);
+            AnchorPane.setRightAnchor(newContent, 0.0);
+
+            patientContentPane.getChildren().setAll(newContent);
+
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi tải giao diện",
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Lỗi Tải Giao Diện",
                     "Không thể tải giao diện hồ sơ bệnh án: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Lỗi Không Xác Định",
+                    "Đã xảy ra lỗi: " + e.getMessage());
         }
     }
 
-    private void switchView(Node view) {
-        if (patientContentPane instanceof BorderPane) {
-            ((BorderPane) patientContentPane).setCenter(view);
-        } else {
-            patientContentPane.getChildren().setAll(view);
-        }
-    }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
@@ -230,6 +241,8 @@ public class PatientInfoController {
         });
     }
 
+    @FXML private Hyperlink myProfileLink;
+
     @FXML
     private void handleShowMyProfile(ActionEvent event) {
 
@@ -244,11 +257,34 @@ public class PatientInfoController {
             User loggedInUser = UserSession.getCurrentUser();
             controller.setLoggedInDoctor(loggedInUser);
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage profileStage = new Stage();
+            profileStage.setTitle("Thông tin cá nhân Bác sĩ");
+            profileStage.setScene(new Scene(root));
+            profileStage.initModality(Modality.APPLICATION_MODAL);
+            Stage ownerStage = (Stage) myProfileLink.getScene().getWindow();
+            profileStage.initOwner(ownerStage);
+            profileStage.showAndWait();
 
         } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải giao diện hồ sơ: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private Button btnLogout;
+
+    @FXML
+    public void handleLogout(ActionEvent event) {
+        try {
+            Stage stage = (Stage) btnLogout.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/com/oop4clinic/clinicmanagement/fxml/Login.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Đăng nhập");
+            stage.centerOnScreen();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -110,7 +110,6 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     public List<MedicalRecordDTO> searchByPatientName(String keyword) {
         List<MedicalRecord> entities = medicalRecordImpl.searchByPatientName(keyword);
         return entities.stream().map(MedicalRecordMapper::toDto).toList();
-
     }
 
     @Override
